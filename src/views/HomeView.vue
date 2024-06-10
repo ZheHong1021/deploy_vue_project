@@ -19,7 +19,6 @@ export default {
     };
   },
   mounted() {
-    
   },
   beforeDestroy() {
     
@@ -41,8 +40,8 @@ export default {
       catch(err){
         console.log(err);
       }
+    },
 
-    }
   },
 };
 </script>

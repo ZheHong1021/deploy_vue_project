@@ -9,23 +9,23 @@ class BaseService {
   }
 
   getAll(params) {
-    return server.get(`/${this.resource}`, {params});
+    return server.get(`/${this.resource}/`, {params});
   }
 
   getById(id, params) {
-    return server.get(`/${this.resource}/${id}`, {params});
+    return server.get(`/${this.resource}/${id}/`, {params});
   }
 
   create(data) {
-    return server.post(`/${this.resource}`, data);
+    return server.post(`/${this.resource}/`, data);
   }
 
   update(id, data) {
-    return server.put(`/${this.resource}/${id}`, data);
+    return server.put(`/${this.resource}/${id}/`, data);
   }
 
   delete(id) {
-    return server.delete(`/${this.resource}/${id}`);
+    return server.delete(`/${this.resource}/${id}/`);
   }
 }
 
