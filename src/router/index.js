@@ -1,32 +1,42 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import HomeView from '../views/HomeView.vue';
+import ParentRoutes  from '@/router/ParentRoutes'
+import { loadView } from '@/router/loadview';
+import { RouteService } from '@/api/services'
 
 Vue.use(VueRouter);
 
+
+
 const routes = [
-  {
+  { // 『/』導引到 『/f ({name: Home})』
     path: '/',
-    name: 'HomeView',
-    component: HomeView,
+    redirect: (to) => ({ name: "Home" }),
+  },
+  {
+    path: '/f',
+    name: 'Home',
+    component: loadView('HomeView'),
   },
   {
     path: '/about',
-    name: 'AboutView',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue'),
+    name: 'About',
+    component: loadView('AboutView'),
+  },
+  {
+    path: '/login',
+    name: 'LoginView',
+    component: loadView('LoginView'),
   },
   {
     path: '/web-socket',
     name: 'WebSocket',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/WebSocket.vue'),
+    component: loadView('WebSocket'),
   },
+
+  ...ParentRoutes,
 ];
+
 
 const router = new VueRouter({
   mode: 'history',
