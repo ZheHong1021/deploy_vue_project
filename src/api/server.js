@@ -1,19 +1,27 @@
 // src/api/apiClient.js
 import axios from 'axios';
+import store from '@/store';
 
 const server = axios.create({
-//   baseURL: 'https://api.example.com', // 替換成你的API根URL
-  baseURL: 'http://127.0.0.1:8000/api', // 替換成你的API根URL
+  // baseURL: "/api",
+  baseURL: process.env.VUE_APP_API_URL || '/api',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
   }
 });
 
-server.interceptors.request.use(config => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+server.interceptors.request.use(async (config) => {
+  // 當前TOKEN(在 localStorage)
+  let accessToken = localStorage.getItem('accessToken') || null;
+  
+  // 如果有 TOKEN => 需要去驗證
+  if (accessToken) {
+    await store.dispatch("auth/verifyAccessToken")
+
+    // 可能會刷新 TOKEN，因此要重新捕捉
+    accessToken = localStorage.getItem('accessToken')
+    config.headers.Authorization = `Bearer ${accessToken}`;
   }
   return config;
 }, error => {
@@ -23,9 +31,7 @@ server.interceptors.request.use(config => {
 server.interceptors.response.use(response => {
   return response;
 }, error => {
-  if (error.response.status === 401) {
-    // 處理未授權錯誤
-  }
+
   return Promise.reject(error);
 });
 

@@ -16,17 +16,17 @@ const routes = [
   {
     path: '/f',
     name: 'Home',
-    component: loadView('HomeView'),
+    component: loadView('Home'),
   },
   {
     path: '/about',
     name: 'About',
-    component: loadView('AboutView'),
+    component: loadView('About'),
   },
   {
     path: '/login',
-    name: 'LoginView',
-    component: loadView('LoginView'),
+    name: 'Login',
+    component: loadView('Auth/Login'),
   },
   {
     path: '/web-socket',

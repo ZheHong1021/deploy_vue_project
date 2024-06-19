@@ -25,55 +25,13 @@ Vue.use(VueScrollTo);
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
 
-
-// import { loadView } from '@/router/loadview';
-// import { RouteService } from '@/api/services'
-// function processRoutes(routes) {
-//   return routes.map(route => {
-//     // 如果有子路由，遞歸處理
-//     if (route.children && route.children.length > 0) {
-//       route.children = processRoutes(route.children);
-//     }
-
-//     // 動態導入組件
-//     return {
-//       path: `/${route['path']}`,
-//       name: route['name'],
-//       component: loadView(route['component'])
-//     };
-//   });
-// }
-
-// async function getRoutes() {
-//   try {
-//     const params = new URLSearchParams({
-//       is_children: false,
-//     })
-//     const response = await RouteService.getAll(params);
-//     const routes = processRoutes(response.data);
-//     // // 動態添加路由
-//     // routes.forEach(route => {
-//     //   router.addRoute(route);
-//     // });
+//#region (sweetalert2)
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+Vue.use(VueSweetalert2);
+//#endregion
 
 
-//   } catch (error) {
-//     console.error('Failed to fetch routes:', error);
-//   }
-// }
-
-
-
-// getRoutes().then(() => {
-//     new Vue({
-//       router,
-//       store,
-//       vuetify,
-//       render: (h) => h(App),
-//     }).$mount('#app');
-    
-//   })
-  
 new Vue({
   router,
   store,
