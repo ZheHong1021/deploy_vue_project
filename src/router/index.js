@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import ParentRoutes  from '@/router/ParentRoutes'
-import {checkAuthIsLoggedIn} from "@/router/utils"
 import { loadView } from '@/router/loadview';
 import { RouteService } from '@/api/services'
 
@@ -17,20 +16,17 @@ const routes = [
   {
     path: '/f',
     name: 'Home',
-    component: loadView('Home'),
+    component: loadView('HomeView'),
   },
   {
-    path: '/dashboard',
-    name: 'Dashboard',
-    component: loadView('Dashboard'),
-    meta: {
-      requireAuth: true, // 必須登入才可以進入
-    }
+    path: '/about',
+    name: 'About',
+    component: loadView('AboutView'),
   },
   {
     path: '/login',
-    name: 'Login',
-    component: loadView('Auth/Login'),
+    name: 'LoginView',
+    component: loadView('LoginView'),
   },
   {
     path: '/web-socket',
@@ -40,8 +36,6 @@ const routes = [
 
   ...ParentRoutes,
 ];
-
-
 
 
 const router = new VueRouter({
