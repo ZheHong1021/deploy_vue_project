@@ -66,8 +66,9 @@
 
         <!-- Footer(routes就在該組件中) -->
         <v-list nav shaped class="sidebar-footer">
-          <!-- 登出 -->
-          <v-list-item class="menu v-list-item" path @click="logout">
+          <!-- 登出(只有登入才可以使用) -->
+          <v-list-item v-if="isLoggedIn"
+          class="menu v-list-item" path @click="logout">
             <!-- 路由 Icon -->
             <v-list-item-icon>
               <v-icon class="menu-icon"> mdi-logout </v-icon>
