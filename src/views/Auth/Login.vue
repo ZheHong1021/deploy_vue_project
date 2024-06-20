@@ -1,6 +1,6 @@
 <template>
   <v-container class="d-flex justify-center align-center" fill-height>
-    <v-card class="pa-5">
+    <v-card class="pa-5" elevation="10">
       <v-card-title class="text-h5 font-weight-bold">
         登入頁面
       </v-card-title>

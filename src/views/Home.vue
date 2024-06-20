@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-btn color="primary" @click="getOrders">Click</v-btn>
-
+    {{isLoggedIn }}
     <p v-for="order in orders" :key="order['id']">
       {{ order }}
     </p>
@@ -11,7 +11,7 @@
 
 <script>
 import { OrderService } from '@/api/services'
-import axios from 'axios'
+import { mapGetters } from 'vuex';
 export default {
   data() {
     return {
@@ -21,8 +21,9 @@ export default {
   mounted() {
     this.getOrders()
   },
-  beforeDestroy() {
-    
+
+  computed: {
+    ...mapGetters('auth', ['isLoggedIn'])
   },
 
 

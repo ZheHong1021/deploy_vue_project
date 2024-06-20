@@ -110,9 +110,9 @@ export default {
         meta: { is_menu: true, title: "首頁", icon: "home" },
       },
       {
-        name: "About",
-        path: "/about",
-        meta: { is_menu: true, title: "關於我們", icon: "home" },
+        name: "Dashboard",
+        path: "/dashboard",
+        meta: { is_menu: true, title: "儀錶板", icon: "mdi-monitor-dashboard" },
       },
       {
         name: "ParentView",

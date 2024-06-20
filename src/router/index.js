@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import ParentRoutes  from '@/router/ParentRoutes'
+import {checkAuthIsLoggedIn} from "@/router/utils"
 import { loadView } from '@/router/loadview';
 import { RouteService } from '@/api/services'
 
@@ -19,9 +20,12 @@ const routes = [
     component: loadView('Home'),
   },
   {
-    path: '/about',
-    name: 'About',
-    component: loadView('About'),
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: loadView('Dashboard'),
+    meta: {
+      requireAuth: true, // 必須登入才可以進入
+    }
   },
   {
     path: '/login',
@@ -38,10 +42,23 @@ const routes = [
 ];
 
 
+
+
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
 });
+
+router.beforeEach((to, from, next) => {
+
+  // 檢查路由是否需要進行登入驗證
+  if (checkAuthIsLoggedIn(to)) {
+    next({name: 'Login'});
+  }
+
+  next()
+})
+
 
 export default router;

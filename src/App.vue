@@ -68,8 +68,6 @@ export default {
     /* https://iter01.com/548137.html */
       window.addEventListener("scroll", this.scrollToTop);
 
-      console.log(this.$router);
-
   },
   methods:{
     toggleNavigation(bool){
@@ -82,11 +80,10 @@ export default {
               document.body.scrollTop ||
               window.pageYOffset;
           this.scrollNum = top;
-          if (top >= 200) {
-              this.isTop = true;
-          } else {
-              this.isTop = false;
-          }
+
+          this.isTop = top >= 200
+                      ? true
+                      : false
     },
 
   },
