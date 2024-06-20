@@ -37,7 +37,6 @@ export default {
         const response = await OrderService.getAll(params)
         if(response.status === 200){
           this.orders = response.data
-          console.log(this.orders);
         }
       }
       catch(err){
