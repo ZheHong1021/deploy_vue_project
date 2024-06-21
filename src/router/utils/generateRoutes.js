@@ -18,23 +18,25 @@ function transformRoute(menu){
     }
 }
 
+function hasRoute(name){
+    // 當前前端路由的列表
+    const routes = router.getRoutes()
+
+    // 判斷該name是否已經存在
+    return routes.some(route => route['name'] === name)
+}
+
 
 // 用來載入 view的函式
 export function generateRoutes() {
     const menus = store.state.menu.menus
     
     for(const menu of menus){
-        // 當前前端路由的列表
-        const routes = router.getRoutes()
-
         // 讀取路由的專屬名稱
         const { name } = menu 
-
-        // 判斷該name是否已經存在
-        const is_exist = routes.some(route => route['name'] === name)
         
         // 如果尚未存在 => 立即新增
-        if(!is_exist){
+        if(!hasRoute(name)){
             router.addRoute(transformRoute(menu))
         }
     }

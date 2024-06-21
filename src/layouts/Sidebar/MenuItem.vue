@@ -4,7 +4,7 @@
         <div v-for="menu in menus" :key="menu['name']" class="py-0 my-0">
 
             <!-- 沒有子路由 -->
-            <v-list-item v-if="!menu.children" 
+            <v-list-item v-if="!has_children_menu(menu)" 
                 class="menu v-list-item my-1" link
                 :dense="depth > 0"
                 :to="{name: menu['name']}"
@@ -12,23 +12,23 @@
                 :class="{'d-flex flex-row-reverse pl-10': depth > 0}">
 
                 <!-- 路由 Icon -->
-                <v-list-item-icon v-if="depth === 0 || !menu.children">
+                <v-list-item-icon v-if="depth === 0 || !menu['children']">
                     <v-icon class="menu-icon">
-                      {{ menu['meta']['icon'] }}
+                      {{ menu['icon'] }}
                     </v-icon>
                 </v-list-item-icon>
 
                 <!-- 路由標題 -->
                   <v-list-item-title class="menu-text"
                     :style="`font-size: ${depthFontSize};`">
-                    {{ menu['meta']['title'] }}
+                    {{ menu['title'] }}
                   </v-list-item-title>
             </v-list-item>
 
             <!-- 有子路由處理 -->
-            <v-list-group class="my-2"
-                v-else no-action 
-                :prepend-icon="menu['meta']['icon']" 
+            <v-list-group v-else no-action 
+                class="my-2"
+                :prepend-icon="menu['icon']" 
                 :key="menu['name']"
                 :value="isGroupActive(menu)">
                 <template v-slot:activator>
@@ -39,7 +39,7 @@
                             <!-- 路由標題 -->
                             <v-list-item-title class="menu-text"
                                 :style="`font-size: ${depthFontSize};`">
-                                {{ menu['meta']['title'] }} 
+                                {{ menu['title'] }} 
                             </v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
@@ -48,7 +48,8 @@
                 <!-- 子路由列表 => 重新呼叫該 Component進行 => 實現遞迴效果 -->
                 <!-- Recursive Route List -->
                 <menu-item
-                    :menus="menu.children"
+                    v-if="has_children_menu(menu)"
+                    :menus="menu['children']"
                     :depth="depth + 1"
                 />
             </v-list-group>
@@ -76,10 +77,8 @@ export default {
     }),
 
     mounted(){
-        // console.log(this.$menu.path);
     },
     computed: {
-
         depthFontSize(){
             const { depth } = this
             const map_depth_size = {
@@ -98,7 +97,12 @@ export default {
                     this.$route.path.startsWith(item['path']) // 第一層
                 || (item['children'] && this.isGroupActive(item)) // 第二層(遞迴): 如果下方還有 children
             )
-       }
+       },
+
+        // 判斷是否該路由有 children
+       has_children_menu(menu){
+        return menu['children'] && menu['children'].length > 0
+       },
     },
     
 }

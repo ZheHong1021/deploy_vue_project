@@ -93,9 +93,6 @@ export default {
           // 登入後要向後端請求相對應的菜單列
           await dispatch("menu/getMenus")
 
-          
-          
-
           // 成功登入後導引到首頁
           router.push({name: "Home"})
         }

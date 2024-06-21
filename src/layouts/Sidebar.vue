@@ -36,18 +36,11 @@
               </v-list-item-title>
 
               <!-- 角色 -->
-              <!-- <v-list-item-subtitle class="d-flex flex-wrap gap-2">
-                          <v-chip small class="white--text" 
-                            v-for="role, i in roles" :key="role"
-                              :color="role === 'admin' 
-                                  ? 'red darken-2' 
-                                    : role === 'manager' 
-                                      ? 'green lighten' 
-                                      : 'blue'" 
-                              >
-                              {{ role_names ? role_names[i] : role }}
-                          </v-chip>
-                        </v-list-item-subtitle> -->
+              <v-list-item-subtitle class="d-flex flex-wrap gap-2">
+                <v-chip small class="white--text" color="info">
+                  角色
+                </v-chip>
+              </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
         </v-list>
@@ -151,17 +144,19 @@ export default {
   }),
 
   mounted() {
-    
   },
 
   computed: {
     ...mapGetters('auth', ['isLoggedIn']),
-
-    menus(){
-      const menus = this.$router.getRoutes()
-      console.log(menus);
-      return menus.filter((menu) => menu['meta']['is_menu'])
-    },
+    ...mapState('menu', ['menus']),
+    
+    // menus(){
+    //   const menus = this.$router.getRoutes()
+    //   // 菜單列顯示必須is_menu = True且為 Parent Route
+    //   const filter_menus = menus.filter((menu) => menu['meta']['is_menu'] && !menu['parent'])
+    //   console.log(filter_menus);
+    //   return filter_menus
+    // },
    
     // 底部 Menus
     footer_menus(){

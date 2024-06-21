@@ -6,7 +6,7 @@ export default {
   namespaced: true,
   state: {
     // 菜單 (預設所需)
-    menus: JSON.parse(localStorage.getItem("menus")) || [], 
+    menus: [], 
   },
   getters: {
   },
@@ -14,17 +14,17 @@ export default {
     // 設定菜單列
     async setMenus(state, payload){
       state.menus = payload
-      localStorage.setItem("menus", JSON.stringify(payload))
+      
+      // 添加進去前，先清除一次
+      await resetRouter()
       
       // 請求完畢後 => 添加進前端路由
-      await resetRouter()
       await generateRoutes()
     },
     
     // 刪除菜單列
     clearMenus(state, payload){
       state.menus = []
-      localStorage.removeItem("menus")
 
       // 登出後清空路由
       resetRouter()
@@ -41,7 +41,10 @@ export default {
         const response = await MenuService.getAll(params)
         if(response.status === 200){
           const menus = response.data
+          
           commit("setMenus", menus)
+
+          // 將新路添加進去
           generateRoutes()
         }
       }

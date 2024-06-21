@@ -46,10 +46,7 @@ export default {
     ...mapGetters('auth', ['isLoggedIn']),
   },
 
-
-
   async mounted(){
-
   },
 
   methods:{
