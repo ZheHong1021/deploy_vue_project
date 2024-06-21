@@ -45,6 +45,12 @@ const routes = [
   }
 ];
 
+// 解決重複點擊路由所報錯的BUG
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch((err) => err)
+}
+
 // 建立 Router(初始化設定)
 const createRouter = () => new VueRouter({
   mode: 'history',
@@ -66,14 +72,7 @@ router.beforeEach((to, from, next) => {
   next()
 })
 
-
-// router.onReady(() => {
-//   console.log("onReady....");
-//   console.log(router.getRoutes());
-  
-// })
-
-
+// 重設路由
 export function resetRouter() {
   const newRouter = createRouter(); // 變回初始化設定
   router.matcher = newRouter.matcher; // 重置路由匹配器
