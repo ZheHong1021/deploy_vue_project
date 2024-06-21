@@ -32,9 +32,21 @@ Vue.use(VueSweetalert2);
 //#endregion
 
 
-new Vue({
-  router,
-  store,
-  vuetify,
-  render: (h) => h(App),
-}).$mount('#app');
+
+
+import { generateRoutes } from './router/utils/generateRoutes';
+async function initApp() {
+  const isLoggedIn = store.getters['auth/isLoggedIn'];
+  if (isLoggedIn){
+      generateRoutes()
+  }
+
+  new Vue({
+    router,
+    store,
+    vuetify,
+    render: (h) => h(App),
+  }).$mount('#app');
+}
+
+initApp();

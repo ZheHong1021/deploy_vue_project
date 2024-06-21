@@ -55,7 +55,8 @@
         <v-divider width="80%" class="mx-auto my-2"></v-divider>
 
         <!-- Router Link List -->
-        <MenuItem :routes="routes" />
+        <MenuItem
+          :menus="menus" />
       </div>
 
       <!-- Footer -->
@@ -64,20 +65,24 @@
 
         <v-divider color="white"></v-divider>
 
-        <!-- Footer(routes就在該組件中) -->
-        <v-list nav shaped class="sidebar-footer">
-          <!-- 登出(只有登入才可以使用) -->
-          <v-list-item v-if="isLoggedIn"
-          class="menu v-list-item" path @click="logout">
-            <!-- 路由 Icon -->
-            <v-list-item-icon>
-              <v-icon class="menu-icon"> mdi-logout </v-icon>
-            </v-list-item-icon>
+        <!-- Footer(menus就在該組件中) -->
+        <template v-for="menu in footer_menus">
+          <v-list v-if="menu['ifShow']" :key="menu['title']"
+            nav shaped class="sidebar-footer" 
+          >
+              <v-list-item
+                class="menu v-list-item" path @click="menu['click']">
+                  <!-- 路由 Icon -->
+                  <v-list-item-icon>
+                    <v-icon class="menu-icon"> {{ menu['icon'] }} </v-icon>
+                  </v-list-item-icon>
 
-            <!-- 路由標題 -->
-            <v-list-item-title class="menu-text"> 登出 </v-list-item-title>
-          </v-list-item>
-        </v-list>
+                  <!-- 路由標題 -->
+                  <v-list-item-title class="menu-text"> {{menu['title']}} </v-list-item-title>
+              </v-list-item>
+          </v-list>
+
+        </template>
       </div>
     </div>
   </v-navigation-drawer>
@@ -101,56 +106,71 @@ export default {
 
   data: () => ({
     drawerState: null, // 開關
-    // routes: [], // 動態路由(vue-router)
+    
 
-    routes: [
-      /* 沒有 requireXXX: 代表該頁面只有 Admin才可以瀏覽 ； allowAll: true 代表所有使用者都可以瀏覽 */
-      {
-        name: "Home",
-        path: "/f",
-        meta: { is_menu: true, title: "首頁", icon: "home" },
-      },
-      {
-        name: "Dashboard",
-        path: "/dashboard",
-        meta: { is_menu: true, title: "儀錶板", icon: "mdi-monitor-dashboard" },
-      },
-      {
-        name: "ParentView",
-        path: "/parent",
-        meta: { is_menu: true, title: "子路由測試", icon: "home" },
-        children: [
-          {
-            name: "Children1",
-            path: "/parent/children-1",
-            meta: { is_menu: true, title: "子路由1", icon: "home" },
-          },
-          {
-            name: "Children2",
-            path: "/parent/children-2",
-            meta: { is_menu: true, title: "子路由2", icon: "home" },
-          },
-          {
-            name: "Children3",
-            path: "/parent/children-3",
-            meta: { is_menu: true, title: "子路由3", icon: "home" },
-          },
-        ],
-      },
-      {
-        name: "WebSocket",
-        path: "/web-socket",
-        meta: { is_menu: true, title: "WebSocket", icon: "home" },
-      },
-    ],
+    // menus: [
+      // /* 沒有 requireXXX: 代表該頁面只有 Admin才可以瀏覽 ； allowAll: true 代表所有使用者都可以瀏覽 */
+      // {
+      //   name: "Home",
+      //   path: "/f",
+      //   meta: { is_menu: true, title: "首頁", icon: "home" },
+      // },
+      // {
+      //   name: "Dashboard",
+      //   path: "/dashboard",
+      //   meta: { is_menu: true, title: "儀錶板", icon: "mdi-monitor-dashboard" },
+      // },
+      // {
+      //   name: "ParentView",
+      //   path: "/parent",
+      //   meta: { is_menu: true, title: "子路由測試", icon: "home" },
+      //   children: [
+      //     {
+      //       name: "Children1",
+      //       path: "/parent/children-1",
+      //       meta: { is_menu: true, title: "子路由1", icon: "home" },
+      //     },
+      //     {
+      //       name: "Children2",
+      //       path: "/parent/children-2",
+      //       meta: { is_menu: true, title: "子路由2", icon: "home" },
+      //     },
+      //     {
+      //       name: "Children3",
+      //       path: "/parent/children-3",
+      //       meta: { is_menu: true, title: "子路由3", icon: "home" },
+      //     },
+      //   ],
+      // },
+      // {
+      //   name: "WebSocket",
+      //   path: "/web-socket",
+      //   meta: { is_menu: true, title: "WebSocket", icon: "home" },
+      // },
+    // ],
   }),
 
   mounted() {
-    //   this.routes = this.$router.options.routes // 讀取 Vue-Router所定義的路由列表
+    
   },
 
   computed: {
-    ...mapGetters('auth', ['isLoggedIn'])
+    ...mapGetters('auth', ['isLoggedIn']),
+
+    menus(){
+      const menus = this.$router.getRoutes()
+      console.log(menus);
+      return menus.filter((menu) => menu['meta']['is_menu'])
+    },
+   
+    // 底部 Menus
+    footer_menus(){
+      return [
+        {title: "登出", icon: "mdi-logout", ifShow: this.isLoggedIn, click: this.logout},
+        {title: "登入", icon: "mdi-login-variant", ifShow: !this.isLoggedIn, click: this.login},
+      ]
+    },
+
   },
 
   watch: {
@@ -170,26 +190,12 @@ export default {
 
     // 登出
     async logout() {
-      // 如果失敗代表Refresh Token過期了，無法再進行更新(必須重新登入)
-      const response = await this.$swal.fire({
-        title: "登出提醒",
-        text: "你確定要登出系統了嗎?",
-        icon: "warning",
-        showCancelButton: true,
-        cancelButtonText: "取消",
-        confirmButtonText: "登出",
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-      });
+      this.$store.dispatch("auth/logout")
+    },
 
-      if (response.isConfirmed) {
-        // 清除Token
-        this.$store.commit("auth/clearToken");
-
-        // 導引到登入頁面
-        this.$router.push({ name: "Login" });
-        this.$swal.fire("登出成功", "", "success")
-      }
+    // 登入
+    login(){
+      this.$router.push({name: "Login"})
     },
   },
 };

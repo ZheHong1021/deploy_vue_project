@@ -13,7 +13,6 @@ const checkAuthIsLoggedIn = (to) => {
 }
 
 
-
 export {
     checkAuthIsLoggedIn
 }

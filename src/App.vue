@@ -1,8 +1,7 @@
 <template>
   <v-app >
-
-    <!-- 要先登入才能使用 -->
-    <Sidebar :drawer="drawer" 
+    <!-- 菜單 -->
+    <Sidebar :drawer="drawer"
       @toggleNavigation="toggleNavigation"
     />
     
@@ -26,6 +25,7 @@ import Sidebar from '@/layouts/Sidebar';
 import Main from '@/layouts/Main';
 import Footer from '@/layouts/Footer';
 import goTopButton from '@/layouts/goTopButton';
+import { mapGetters, mapState } from 'vuex';
 export default {
   name: 'App',
   components: { 
@@ -42,8 +42,14 @@ export default {
     }
   },
 
+  computed: {
+    ...mapGetters('auth', ['isLoggedIn']),
+  },
+
+
 
   async mounted(){
+
   },
 
   methods:{
@@ -79,8 +85,6 @@ export default {
     text-decoration:none;
   }
 
-
-  
 
 
 

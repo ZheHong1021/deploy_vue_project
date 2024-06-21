@@ -1,54 +1,60 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import ParentRoutes  from '@/router/ParentRoutes'
 import {checkAuthIsLoggedIn} from "@/router/utils"
-import { loadView } from '@/router/loadview';
-import { RouteService } from '@/api/services'
+import { loadView } from '@/router/utils/loadview';
 
 Vue.use(VueRouter);
 
 
-
+// 固定路由路徑
 const routes = [
   { // 『/』導引到 『/f ({name: Home})』
     path: '/',
     redirect: (to) => ({ name: "Home" }),
+    meta: {
+      is_menu: false,
+    }
   },
   {
     path: '/f',
     name: 'Home',
     component: loadView('Home'),
-  },
-  {
-    path: '/dashboard',
-    name: 'Dashboard',
-    component: loadView('Dashboard'),
     meta: {
-      requireAuth: true, // 必須登入才可以進入
+      is_menu: true,
+      title: '首頁',
+      icon: 'mdi-home',
     }
   },
   {
     path: '/login',
     name: 'Login',
     component: loadView('Auth/Login'),
-  },
-  {
-    path: '/web-socket',
-    name: 'WebSocket',
-    component: loadView('WebSocket'),
+    meta: {
+      is_menu: false,
+    }
   },
 
-  ...ParentRoutes,
+  // 其他路由定義
+  {
+    path: '*', // 捕獲所有未匹配的路徑
+    name: 'PageNotFound',
+    component: loadView('PageNotFound'),
+    meta: {
+      is_menu: false,
+    }
+  }
 ];
 
-
-
-
-const router = new VueRouter({
+// 建立 Router(初始化設定)
+const createRouter = () => new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes,
+  routes
 });
+
+// 套用初始化設定 => 之後會變動
+const router = createRouter()
+
 
 router.beforeEach((to, from, next) => {
 
@@ -59,6 +65,19 @@ router.beforeEach((to, from, next) => {
 
   next()
 })
+
+
+// router.onReady(() => {
+//   console.log("onReady....");
+//   console.log(router.getRoutes());
+  
+// })
+
+
+export function resetRouter() {
+  const newRouter = createRouter(); // 變回初始化設定
+  router.matcher = newRouter.matcher; // 重置路由匹配器
+}
 
 
 export default router;

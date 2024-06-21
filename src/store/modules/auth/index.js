@@ -1,8 +1,14 @@
 import { apiAuthToken } from "@/api/services";
 import Swal from 'sweetalert2';
 import router from "@/router";
+import menu from "@/store/modules/menu"
+
+
 export default {
   namespaced: true,
+  modules: {
+    menu
+  },
   state: {
     accessToken: localStorage.getItem("accessToken") || null,
     refreshToken: localStorage.getItem("refreshToken") || null,
@@ -11,7 +17,6 @@ export default {
     isLoggedIn: state => !!state.accessToken,
   },
   mutations: {
-
     setAccessToken(state, payload){
       state.accessToken = payload
       localStorage.setItem("accessToken", payload)
@@ -74,7 +79,7 @@ export default {
     },
     
     // 登入
-    async login({commit}, payload){
+    async login({commit, dispatch}, payload){
       try{
         const response = await apiAuthToken.login(payload)
         if(response.status === 200){
@@ -82,8 +87,14 @@ export default {
 
           // 將數據傳入到 VueX當中
           const { data: {access, refresh} } = response
-          commit("setAccessToken", access)
-          commit("setRefreshToken", refresh)
+          commit("setAccessToken", access) // 將TOKEN設定到store中
+          commit("setRefreshToken", refresh) // 將TOKEN設定到store中
+
+          // 登入後要向後端請求相對應的菜單列
+          await dispatch("menu/getMenus")
+
+          
+          
 
           // 成功登入後導引到首頁
           router.push({name: "Home"})
@@ -95,8 +106,39 @@ export default {
       catch(err){
         Swal.fire("登入失敗", err, "error")
       }
-
     },
+
+
+
+    // 登出
+    async logout({commit}, payload){
+      // 如果失敗代表Refresh Token過期了，無法再進行更新(必須重新登入)
+      const response = await Swal.fire({
+        title: "登出提醒",
+        text: "你確定要登出系統了嗎?",
+        icon: "warning",
+        showCancelButton: true,
+        cancelButtonText: "取消",
+        confirmButtonText: "登出",
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+      });
+
+      if (response.isConfirmed) {
+        // 清除Token
+        await commit("clearToken");
+
+        // 清除菜單列
+        await commit("menu/clearMenus")
+
+        // 導引到登入頁面
+        router.push({ name: "Login" });
+        Swal.fire("登出成功", "", "success")
+      }
+    },
+
+
+
   },
 
 };
