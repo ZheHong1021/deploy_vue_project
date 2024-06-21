@@ -65,25 +65,6 @@ export default {
 <style lang="scss">
   @import url('assets/scss/styles.scss');
 
-  *{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    
-  }
-
-  body{
-    font-size: 100%;
-    overflow-y: initial;
-  }
-
-  a{
-    list-style: none;
-    text-decoration:none;
-  }
-
-
-
 
 /* // 【Sidebar】
   //  預設 icon顏色為 black，但背景顏色為深色會看不見

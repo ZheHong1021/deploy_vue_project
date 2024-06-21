@@ -1,25 +1,25 @@
 <template>
   <v-container>
-    <h4>Parent</h4>
-
-    <router-view></router-view>
+    <v-row>
+      <v-col cols="12">
+        <h4>Parent</h4>
+      </v-col>
+      <v-col cols="12">
+        <router-view></router-view>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script>
 export default {
-  data(){
-    return {
-        
-    }
+  data() {
+    return {};
   },
 
-  mounted(){
-
-  },
-}
+  mounted() {},
+};
 </script>
 
 <style>
-
 </style>

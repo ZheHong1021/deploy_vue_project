@@ -1,16 +1,16 @@
 <template>
   <v-container>
-    <h4>SubChildren 1</h4>
-
+    <v-row>
+      <v-col cols="12">
+        <h4>SubChildren 1</h4>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
 <style>
-
 </style>

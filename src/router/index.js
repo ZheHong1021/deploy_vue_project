@@ -34,9 +34,8 @@ const routes = [
     }
   },
 
-  // 其他路由定義
   {
-    path: '*', // 捕獲所有未匹配的路徑
+    path: '*',
     name: 'PageNotFound',
     component: loadView('PageNotFound'),
     meta: {

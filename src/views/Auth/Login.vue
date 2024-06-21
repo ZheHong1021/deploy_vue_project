@@ -39,7 +39,6 @@
 </template>
 
 <script>
-import { apiAuthToken } from "@/api/services";
 export default {
   data() {
     return {

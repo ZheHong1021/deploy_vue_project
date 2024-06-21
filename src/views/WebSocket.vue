@@ -1,10 +1,12 @@
 <template>
-  <div>
-    <input v-model="message" @keyup.enter="sendMessage" placeholder="Type a message"/>
-    <button @click="sendMessage">Send</button>
-    <div v-for="(msg, index) in messages" :key="index">{{ msg }}</div>
-    <div>Status: {{ statusMessage }}</div>
-  </div>
+  <v-row>
+    <v-col cols="12">
+      <input v-model="message" @keyup.enter="sendMessage" placeholder="Type a message"/>
+      <button @click="sendMessage">Send</button>
+      <div v-for="(msg, index) in messages" :key="index">{{ msg }}</div>
+      <div>Status: {{ statusMessage }}</div>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
