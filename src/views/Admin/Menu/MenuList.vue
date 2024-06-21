@@ -2,34 +2,38 @@
   <v-container>
     <v-row>
       <v-col cols="12">
-        12312
+        <v-btn @click="dialog = true">新增數據</v-btn>
+        <CustomDialog v-model="dialog">
+          <template v-slot:body>
+            <div>
+              測試內容
+            </div>
+          </template>
+        </CustomDialog>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
+import CustomDialog from "@/components/utils/CustomDialog.vue";
 export default {
-    data(){
-        return {
+  components: {
+    CustomDialog,
+  },
+  data() {
+    return {
+      dialog: false,
+    };
+  },
 
-        }
-    },
+  computed: {},
 
-    computed: {
+  async mounted() {},
 
-    },
-
-    async mounted(){
-
-    },
-
-    methods: {
-
-    },
-}
+  methods: {},
+};
 </script>
 
 <style>
-
 </style>
