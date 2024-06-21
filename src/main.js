@@ -32,9 +32,21 @@ Vue.use(VueSweetalert2);
 //#endregion
 
 
-new Vue({
-  router,
-  store,
-  vuetify,
-  render: (h) => h(App),
-}).$mount('#app');
+async function initApp() {
+  // 當前用戶是否登入
+  const isLoggedIn = store.getters['auth/isLoggedIn'];
+  
+  if (isLoggedIn){
+    // 登入後要向後端請求相對應的菜單列
+      await store.dispatch("menu/getMenus")
+  }
+
+  new Vue({
+    router,
+    store,
+    vuetify,
+    render: (h) => h(App),
+  }).$mount('#app');
+}
+
+initApp();
