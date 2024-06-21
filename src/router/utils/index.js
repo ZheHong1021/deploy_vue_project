@@ -1,5 +1,6 @@
 import store from "@/store";
 import router from "@/router"
+import {loadView} from "@/router/utils/loadView"
 
 // 檢驗是否有登入
 const checkAuthIsLoggedIn = (to) => {
@@ -57,10 +58,22 @@ const generateRoutes = () => {
 
 }
 
-// 用來載入 view的函式
-const loadView = (view) => {
-    return () => import(`@/views/${view}.vue`);
-}
+// 篩選出都是is_menu=true
+const filterMenus = (menus) => {
+    return menus
+      .filter(menu => menu.is_menu)
+      .map(menu => {
+        if (menu.children && menu.children.length) {
+          return {
+            ...menu,
+            children: filterMenus(menu.children)
+          };
+        }
+        return menu;
+      });
+  }
+
+
 
 
 export {
@@ -68,5 +81,5 @@ export {
     transformRoute,
     hasRoute,
     generateRoutes,
-    loadView,
+    filterMenus,
 }

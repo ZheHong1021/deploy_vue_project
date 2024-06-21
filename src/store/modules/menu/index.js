@@ -58,8 +58,10 @@ export default {
     async getMenus({state, commit, dispatch}, payload){
       try{
         const params = new URLSearchParams({
-          is_children: false,
-          no_page: true,
+          is_children: false, // 不是子路由
+          no_page: true, // 不要分頁
+          include_children: true, // 包含children
+          is_menu: true, // 必須為菜單
         })
         const response = await MenuService.getAll(params)
         if(response.status === 200){
