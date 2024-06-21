@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import {checkAuthIsLoggedIn} from "@/router/utils"
-import { loadView } from '@/router/utils';
+import {loadView} from "@/router/utils/loadView"
 
 Vue.use(VueRouter);
 

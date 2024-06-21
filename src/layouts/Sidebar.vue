@@ -49,7 +49,7 @@
 
         <!-- Router Link List -->
         <MenuItem
-          :menus="menus" />
+          :menus="filter_menus" />
       </div>
 
       <!-- Footer -->
@@ -83,8 +83,8 @@
 
 <script>
 import MenuItem from "@/layouts/Sidebar/MenuItem.vue";
-import { RouteService } from "@/api/services";
 import { mapGetters, mapState } from 'vuex';
+import { filterMenus } from "@/router/utils"
 export default {
   name: "Sidebar",
   components: {
@@ -99,48 +99,6 @@ export default {
 
   data: () => ({
     drawerState: null, // 開關
-    
-
-    // menus: [
-      // /* 沒有 requireXXX: 代表該頁面只有 Admin才可以瀏覽 ； allowAll: true 代表所有使用者都可以瀏覽 */
-      // {
-      //   name: "Home",
-      //   path: "/f",
-      //   meta: { is_menu: true, title: "首頁", icon: "home" },
-      // },
-      // {
-      //   name: "Dashboard",
-      //   path: "/dashboard",
-      //   meta: { is_menu: true, title: "儀錶板", icon: "mdi-monitor-dashboard" },
-      // },
-      // {
-      //   name: "ParentView",
-      //   path: "/parent",
-      //   meta: { is_menu: true, title: "子路由測試", icon: "home" },
-      //   children: [
-      //     {
-      //       name: "Children1",
-      //       path: "/parent/children-1",
-      //       meta: { is_menu: true, title: "子路由1", icon: "home" },
-      //     },
-      //     {
-      //       name: "Children2",
-      //       path: "/parent/children-2",
-      //       meta: { is_menu: true, title: "子路由2", icon: "home" },
-      //     },
-      //     {
-      //       name: "Children3",
-      //       path: "/parent/children-3",
-      //       meta: { is_menu: true, title: "子路由3", icon: "home" },
-      //     },
-      //   ],
-      // },
-      // {
-      //   name: "WebSocket",
-      //   path: "/web-socket",
-      //   meta: { is_menu: true, title: "WebSocket", icon: "home" },
-      // },
-    // ],
   }),
 
   mounted() {
@@ -150,14 +108,11 @@ export default {
     ...mapGetters('auth', ['isLoggedIn']),
     ...mapState('menu', ['menus']),
     
-    // menus(){
-    //   const menus = this.$router.getRoutes()
-    //   // 菜單列顯示必須is_menu = True且為 Parent Route
-    //   const filter_menus = menus.filter((menu) => menu['meta']['is_menu'] && !menu['parent'])
-    //   console.log(filter_menus);
-    //   return filter_menus
-    // },
-   
+    // 過濾只有is_menu=true
+    filter_menus(){
+      return filterMenus(this.menus)
+    },
+  
     // 底部 Menus
     footer_menus(){
       return [
@@ -178,6 +133,7 @@ export default {
   },
 
   methods: {
+
     // 將該 Component針對 drawer影響的變化傳回 App.vue
     toggleNavigation(isDraw) {
       this.$emit("toggleNavigation", isDraw);
