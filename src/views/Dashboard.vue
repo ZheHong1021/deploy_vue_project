@@ -2,10 +2,6 @@
   <v-container>
     <v-row>
       <v-col cols="12">
-        <h6 class="text-h6 font-weight-bold">儀錶板</h6>
-      </v-col>
-
-      <v-col cols="12">
         <p v-for="order in orders" :key="order['id']">
           {{ order }}
         </p>

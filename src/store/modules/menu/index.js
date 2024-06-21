@@ -59,6 +59,7 @@ export default {
       try{
         const params = new URLSearchParams({
           is_children: false,
+          no_page: true,
         })
         const response = await MenuService.getAll(params)
         if(response.status === 200){

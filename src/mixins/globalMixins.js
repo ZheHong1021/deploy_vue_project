@@ -11,7 +11,7 @@ export const globalMixins = {
 
     computed: {
         // 查看手機目前介面的size (xs → sm → md → lg → xl)【由小排到大】
-         rwd_name(){
+        rwd_name(){
             return this.$vuetify.breakpoint.name;
         },
         is_mobile(){ // 是否為手機介面(vuetify)

@@ -1,17 +1,17 @@
 <template>
-  <v-container>
-    <h4>Children 1</h4>
+<v-container>
+  <v-row>
+    <v-col cols="12">
+      <h4>Children 1</h4>
+    </v-col>
+  </v-row>
 
-    <router-view></router-view>
-  </v-container>
+</v-container>
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
 <style>
-
 </style>

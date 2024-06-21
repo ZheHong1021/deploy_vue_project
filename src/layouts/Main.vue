@@ -1,17 +1,26 @@
 <template>
     <v-main class="main-container">
-    
-      <keep-alive>
-        <router-view v-if="$route.meta.keepAlive"></router-view>
-      </keep-alive>
-      <router-view v-if="!$route.meta.keepAlive"></router-view>
-      
+      <v-container class="h-100">
+        <!-- 標題 -->
+        <Title />
+
+        <!-- 內容 -->
+        <keep-alive>
+          <router-view v-if="$route.meta.keepAlive"></router-view>
+        </keep-alive>
+        <router-view v-if="!$route.meta.keepAlive"></router-view>
+
+      </v-container>
     </v-main>
 </template>
 
 <script>
+import Title from '@/layouts/Title.vue'
 export default {
-    name: "Main"
+    name: "Main",
+    components: {
+      Title,
+    },
 }
 </script>
 
