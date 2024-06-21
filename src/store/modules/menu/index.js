@@ -1,6 +1,11 @@
 import { MenuService } from '@/api/services'
-import { generateRoutes } from '@/router/utils/generateRoutes';
-import { resetRouter } from '@/router';
+import { generateRoutes } from '@/router/utils';
+import router, { resetRouter } from "@/router"
+
+// 預設的前端路由
+const CONST_ROUTES = router.options.routes
+const CONST_MENU_ROUTES = CONST_ROUTES.filter(route => route['meta']['is_menu'])
+console.log(CONST_MENU_ROUTES);
 
 export default {
   namespaced: true,
@@ -42,6 +47,7 @@ export default {
         if(response.status === 200){
           const menus = response.data
           
+          // 設定路由到store中
           commit("setMenus", menus)
 
           // 將新路添加進去
