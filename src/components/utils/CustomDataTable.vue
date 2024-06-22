@@ -1,7 +1,7 @@
 <template>
     <v-row>
         <!-- 欄位顯示功能 -->
-        <v-col cols="12" v-if="hideFilterColumn" class="d-flex flex-wrap gap-4 align-end">
+        <v-col cols="12" v-if="!hideFilterColumn" class="d-flex flex-wrap gap-4 align-end">
             
             <!-- 搜尋功能 -->
             <v-text-field
@@ -21,7 +21,7 @@
 
             <!-- 新增按鈕 -->
             <v-btn 
-                v-if="allowCreate"
+                v-if="!hideCreate"
                 :x-small="rwd_name === 'xs'" 
                 :small="rwd_name !== 'xs'"
                 height="50" class="d-flex align-center rounded-lg" 
@@ -67,7 +67,7 @@
 
             <!-- 匯出按鈕 -->
             <v-btn 
-                v-if="allowExport"
+                v-if="!hideExport"
                 :x-small="rwd_name === 'xs'" 
                 :small="rwd_name !== 'xs'"
                 height="50" class="d-flex align-center rounded-lg" 
@@ -82,7 +82,7 @@
 
             <!-- 排序資訊 -->
             <CustomSortDisplay
-                v-if="hideSortBox"
+                v-if="!hideSortBox"
                 :sortBy="options['sortBy'][0]"
                 :sortDesc="options['sortDesc'][0]"
                 :headers="headers"
@@ -538,8 +538,6 @@ export default {
         },
 
 
-        
-
         //#region (select)
         // [select] 被勾選時的觸發樣式
         itemRowBackground(item) { // 觸發背景顏色
@@ -577,6 +575,7 @@ export default {
     .data-table >>> .v-data-table__wrapper thead th.active-left,
     .data-table >>> .v-data-table__wrapper tbody tr td{
         left: 0 !important;
+        line-height: 3.5rem;
     }
 
     /* sticky-column */

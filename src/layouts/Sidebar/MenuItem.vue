@@ -9,10 +9,11 @@
                 :dense="depth > 0"
                 :to="{name: menu['name']}"
                 active-class="active-menu"
-                :class="{'d-flex flex-row-reverse pl-10': depth > 0}">
+                :class="{'d-flex  pl-10': depth > 0}">
 
                 <!-- 路由 Icon -->
-                <v-list-item-icon v-if="depth === 0 || !menu['children']">
+                <!-- <v-list-item-icon v-if="depth === 0 || !menu['children']"> -->
+                <v-list-item-icon v-if="menu['icon']">
                     <v-icon class="menu-icon">
                       {{ menu['icon'] }}
                     </v-icon>
@@ -34,6 +35,7 @@
                 <template v-slot:activator>
                     <v-list-item class="menu v-list-item menu-group px-0"
                         :class="{'pl-8': depth > 0}">
+
                         
                         <v-list-item-content>
                             <!-- 路由標題 -->

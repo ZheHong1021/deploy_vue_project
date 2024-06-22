@@ -10,6 +10,39 @@
             </div>
           </template>
         </CustomDialog>
+       
+      </v-col>
+
+      <!-- 表格區域 -->
+      <v-col cols="12">
+        <CustomDataTable
+            :items="items"
+            :itemsLength="itemsLength"
+            :options="options"
+            :headers="headers"
+            :loading="loading"
+            :disabled_select="disabled_select"
+            fixed-header
+            :height="550"
+            @emitUpdateOptions="emitUpdateOptions"
+            @create="clickCreateButton"
+            show-select
+            >
+            <!--#region (Items) -->
+            <template #item.icon="{item}">
+              <td>
+                <v-icon>{{ item['icon'] }}</v-icon>
+              </td>
+            </template>
+            <!-- #endregion -->
+
+            <template #expand="{item}">
+              <div>
+                <h6 class="font-weight-bold text-subtitle-2">{{ item['title'] }}</h6>
+              </div>
+            </template>
+        </CustomDataTable>
+
       </v-col>
     </v-row>
   </v-container>
@@ -17,11 +50,13 @@
 
 <script>
 import CustomDialog from "@/components/utils/CustomDialog.vue";
+import CustomDataTable from "@/components/utils/CustomDataTable.vue";
 import { MenuService } from '@/api/services';
 import { get_api_pagniation_query_parameter } from "@/utils"
 export default {
   components: {
     CustomDialog,
+    CustomDataTable,
   },
   data() {
     return {
@@ -29,6 +64,7 @@ export default {
       //#region (API擷取)
       loading: true,
       items: [],
+      itemsLength: 0, // 資料長度
       //#endregion
 
 
@@ -44,6 +80,7 @@ export default {
       },
       headers: [ // 欄位設定
           { text: '菜單標題', value: 'title', sortable: true,},
+          { text: '菜單圖案', value: 'icon', sortable: true,},
           { text: '創建時間', value: 'created_at', sortable: true, },
           { text: '更新時間', value: 'updated_at', sortable: true, },
       ],
@@ -61,6 +98,7 @@ export default {
   },
 
   methods: {
+    //#region (API擷取)
     async fetchData(){
       this.loading = true
       try{
@@ -68,7 +106,9 @@ export default {
         const params = get_api_pagniation_query_parameter(this.options)
         const response = await MenuService.getAll(params)
         if(response.status === 200){
-          console.log(response.data);
+          const { data, count } = response.data
+          this.items = data
+          this.itemsLength = count
         }
       }
       catch(err){
@@ -78,6 +118,23 @@ export default {
         this.loading = false
       }
     },
+    //#endregion
+
+
+    //#region ($emit)
+    // 更新option並且重新呼叫API
+        emitUpdateOptions(options){
+            this.options = options
+            this.fetchData()
+        },
+
+        clickCreateButton(){
+            this.$router.push({
+                name: "CreateAnnouncement"
+            })
+        },
+
+    //#endregion
 
   },
 };

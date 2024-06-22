@@ -111,89 +111,83 @@
 
 <script>
 export default {
-    name: "CustomTableSelectExpand",
-    props: {
-        table_selected: { // 目前表格選取的資訊
-            type: Array,
-            default: () => []
-        }
+  name: "CustomTableSelectExpand",
+  props: {
+    table_selected: {
+      // 目前表格選取的資訊
+      type: Array,
+      default: () => [],
+    },
+  },
+
+  data() {
+    return {
+      // 顯示 / 隱藏列表
+      is_expand_bottom: true,
+    };
+  },
+
+  computed: {},
+
+  methods: {
+    // expand Icon
+    get_expand_icon() {
+      const { is_expand_bottom } = this;
+      return is_expand_bottom
+        ? "mdi-arrow-down-drop-circle" // 開啟時
+        : "mdi-arrow-up-drop-circle"; // 關閉時
     },
 
-    data(){
-        return {
-            // 顯示 / 隱藏列表
-            is_expand_bottom: true,
-        }
+    // 匯出按鈕
+    exportBtnSet() {
+      this.$emit("export"); // 回傳Parent Component進行匯出
     },
 
-    computed: {
-
+    // 刪除選項
+    deleteSelect(select) {
+      this.$emit("delete", select); // 回傳Parent Component進行刪除
     },
 
-    methods: {
-
-        // expand Icon
-        get_expand_icon(){
-            const { is_expand_bottom } = this
-            return is_expand_bottom 
-                    ? 'mdi-arrow-down-drop-circle' // 開啟時
-                    : 'mdi-arrow-up-drop-circle' // 關閉時
-        },
-
-        // 匯出按鈕
-        exportBtnSet(){ 
-            this.$emit("export") // 回傳Parent Component進行匯出
-        },
-
-        // 刪除選項
-        deleteSelect(select){
-            this.$emit('delete', select) // 回傳Parent Component進行刪除
-        },
-        
-        // 刪除全部選項
-        deleteAllSelect(){
-            this.$emit('delete-all') // 回傳Parent Component進行刪除
-        },
+    // 刪除全部選項
+    deleteAllSelect() {
+      this.$emit("delete-all"); // 回傳Parent Component進行刪除
     },
-
-}
+  },
+};
 </script>
 
 <style scoped>
-    /* 整個區塊的容器 */
-    .bottom-sheet{
-        max-width: 400px;
-        width: 100%;
-        z-index: 10;
-        position: fixed;
-        bottom: 1.5rem;
-    }
+/* 整個區塊的容器 */
+.bottom-sheet {
+  max-width: 400px;
+  width: 100%;
+  z-index: 10;
+  position: fixed;
+  bottom: 1.5rem;
+}
 
-    @media screen and (min-width: 650px) {
-        .bottom-sheet{
-            right: 1.5rem;
-        } 
-    }
+@media screen and (min-width: 650px) {
+  .bottom-sheet {
+    right: 1.5rem;
+  }
+}
 
-    @media screen and (max-width: 500px) {
-        .bottom-sheet{
-            width: 80%;
-            bottom: 0;
-        } 
-    }
+@media screen and (max-width: 500px) {
+  .bottom-sheet {
+    width: 80%;
+    bottom: 0;
+  }
+}
 
-    /* 匯出列表的容器 */
-    .bottom-expand-box{
-        height: 150px;
-        max-height: 150px;
-        width: 100%;
-        overflow-y: auto;
-        overflow-x: hidden;
-        display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
-    }
-
-
-
+/* 匯出列表的容器 */
+.bottom-expand-box {
+  height: 150px;
+  max-height: 150px;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
 </style>
