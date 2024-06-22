@@ -50,7 +50,7 @@
                     </strong>
                 </div>
 
-                <v-text-field v-model="create_data['path']"
+                <v-text-field v-model="create_data['name']"
                     background-color="white" outlined label="請填寫組件名稱"
                     :rules="[rules['required']]"
                     placeholder="填寫範例: PathName">
@@ -67,7 +67,7 @@
                     </strong>
                 </div>
 
-                <v-text-field v-model="create_data['path']"
+                <v-text-field v-model="create_data['component']"
                     background-color="white" outlined label="請填寫組件路徑"
                     :rules="[rules['required']]"
                     placeholder="填寫範例: Path/PathName">
@@ -111,10 +111,33 @@
             </v-col> 
             <!-- #endregion -->
 
-
+            <!--#region (顯示順序) -->
+            <v-col cols="4" class="d-flex flex-wrap align-center gap-4">
+                <span class="font-weight-bold text-subtitle-1">
+                    顯示順序：
+                </span>
 
          
-        
+                <v-text-field v-model.number="create_data['priority']" type="number" input-mode="tel"
+                    background-color="white" outlined label="請填寫跳轉路徑路徑"
+                    hide-details=""
+                    style="max-width: 150px;"
+                    :rules="[rules['required']]">
+                </v-text-field>
+            </v-col>
+            <!-- #endregion -->
+
+            <!--#region (菜單) -->
+            <v-col cols="3" class="d-flex flex-wrap align-center gap-4">
+                <div class="font-weight-bold text-subtitle-1">
+                    菜單：
+                </div>
+                <v-switch inset class="w-max-content" color="pink"
+                    v-model="create_data['is_menu']"
+                ></v-switch>
+            </v-col>
+            <!-- #endregion -->
+
 
             <v-col cols="12" class="d-flex align-center justify-center gap-4">
                 <v-btn color="pink darken-2" type="submit" class="font-weight-bold white--text"
@@ -138,7 +161,15 @@ export default {
     data(){
       
         return {
-            create_data: {},
+            create_data: {
+                title: null,
+                path: null,
+                name: null,
+                component: null,
+                is_menu: null,
+                redirect: null,
+                priority: null,
+            },
             createFormValid: false, // 是否符合規則
             rules: {
                 required: value => !!value || '此欄位必須填寫!.',
@@ -172,6 +203,7 @@ export default {
                 if(response.status === 201){
                     this.$swal.fire("創建成功", "", "success")
                     this.$emit("refresh")
+                    this.$store.dispatch("menu/getMenus")
                 }
                 else{
                     this.$swal.fire("創建失敗", "", "error")

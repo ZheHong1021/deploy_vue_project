@@ -62,6 +62,7 @@ export default {
           no_page: true, // 不要分頁
           include_children: true, // 包含children
           is_menu: true, // 必須為菜單
+          is_disabled: false, // 必須是起用中
         })
         const response = await MenuService.getAll(params)
         if(response.status === 200){

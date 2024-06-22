@@ -62,9 +62,9 @@
       title="瀏覽菜單"
       color="grey darken-2">
       <template v-slot:body>
-        <div>
-          Read
-        </div>
+        <ReadMenuForm 
+          :id="read_id"
+        />
       </template>
     </CustomDialog>
 
@@ -74,9 +74,10 @@
       title="修改菜單"
       color="primary darken-2">
       <template v-slot:body>
-        <div>
-          Update
-        </div>
+        <UpdateMenuForm 
+          :id="update_id"
+          @refresh="refreshData"
+        />
       </template>
     </CustomDialog>
   </v-container>
@@ -84,19 +85,23 @@
 
 <script>
 import { MenuService } from '@/api/services';
-import { get_api_pagniation_query_parameter } from "@/utils"
+import { get_api_pagniation_query_parameter, showConfirmDelete, showDeleteWarning } from "@/utils"
 import CustomDialog from "@/components/utils/CustomDialog.vue";
 import CustomDataTable from "@/components/utils/CustomDataTable.vue";
 import MenuTableItem from '@/components/Admin/Menu/MenuTableItem.vue';
 import MenuRecursiveTable from "@/components/Admin/Menu/MenuRecursiveTable.vue"
-import CreateMenuForm from '@/components/Admin/Menu/CRUD/CreateMenuForm.vue';
+import ReadMenuForm from '@/components/Admin/Menu/Form/ReadMenuForm.vue';
+import CreateMenuForm from '@/components/Admin/Menu/Form/CreateMenuForm.vue';
+import UpdateMenuForm from '@/components/Admin/Menu/Form/UpdateMenuForm.vue';
 export default {
   components: {
     CustomDialog,
     CustomDataTable,
     MenuTableItem,
     MenuRecursiveTable,
+    ReadMenuForm,
     CreateMenuForm,
+    UpdateMenuForm,
   },
   data() {
     return {
@@ -125,6 +130,7 @@ export default {
           { text: '菜單圖案', value: 'icon', sortable: true,},
           { text: '顯示順序', value: 'priority', sortable: true,},
           { text: '菜單', value: 'is_menu', sortable: true,},
+          { text: '狀態', value: 'is_disabled', sortable: true,},
           { text: '路徑', value: 'path', sortable: true,},
           { text: '組件名稱', value: 'name', sortable: true,},
           { text: '組件路徑', value: 'component', sortable: true,},
@@ -137,6 +143,8 @@ export default {
       create_dialog: false,
       read_dialog: false,
       update_dialog: false,
+      read_id: null, // 要修改的數據ID
+      update_id: null, // 要修改的數據ID
       //#endregion
 
       depth: 1,
@@ -217,12 +225,32 @@ export default {
         },
         read(id){
           this.read_dialog = true
+          this.read_id = id
         },
+        
         update(id){
           this.update_dialog = true
+          this.update_id = id
         },
-        delete(id){
-          this.$swal.fire("刪除", id, "warning")
+
+        async delete(id){
+            const first_response = await showDeleteWarning()
+            if(first_response.isConfirmed){
+              const is_confirm = await showConfirmDelete()
+              if(is_confirm){
+                try{
+                    const response = await MenuService.delete(id)
+                    if(response.status === 204){
+                        this.$swal.fire('刪除成功', '', 'success')
+                        await this.fetchData() // 重新讀取資料
+                        await this.$store.dispatch("menu/getMenus")
+                    }
+                }
+                catch(err){
+                    this.$swal.fire('刪除失敗', err, 'error')
+                }
+              }
+            }
         },
 
 

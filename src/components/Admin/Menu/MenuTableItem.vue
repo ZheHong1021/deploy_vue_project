@@ -131,13 +131,24 @@
         class="is_menu-column"
         :key="header['value']">
         <v-chip label small
+          class="font-weight-bold elevation-2"
+          :color="get_is_menu_style(item[header.value], 'color')">
+          {{ get_is_menu_style(item[header.value], 'text') }}
+        </v-chip>
+      </td>
+      
+      <!-- is_disabled -->
+      <td
+        v-else-if="header['value'] === 'is_disabled'"
+        class="is_disabled-column"
+        :key="header['value']">
+        <v-chip label small
           class="black--text font-weight-bold elevation-2"
-          :color="item[header.value] ? 'success lighten-4' : 'error lighten-4'">
-          <v-icon :color="item[header.value] ? 'success darken-1' : 'error darken-1'" x-small left>
+          :color="get_is_disabled_style(item[header.value], 'color')">
+          <v-icon :color="get_is_disabled_style(item[header.value], 'icon_color')" x-small left>
             mdi-circle
           </v-icon>
-
-          {{ item[header.value] ? '是' : '否' }}
+          {{ get_is_disabled_style(item[header.value], 'text') }}
         </v-chip>
       </td>
 
@@ -196,8 +207,25 @@ export default {
   },
 
   methods: {
+    // 檢查是否還有 children
     checkHasChildren(item) {
       return item["children"] && item["children"].length > 0;
+    },
+
+    get_is_menu_style(value, mode="color"){
+      const map_style = {
+        true: {text: '是', color: 'primary'},
+        false: {text: '否', color: 'error'},
+      }
+      return map_style[value][mode]
+    },
+
+    get_is_disabled_style(value, mode="color"){
+      const map_style = {
+        true: {text: '停用', color: 'error lighten-4', icon_color: 'error darken-1'},
+        false: {text: '啟動', color: 'success lighten-4', icon_color: 'success darken-1'},
+      }
+      return map_style[value][mode]
     },
   },
 };
@@ -253,6 +281,10 @@ export default {
       min-width: 120px;
     }
     td.is_menu-column{
+      width: 80px;
+      min-width: 80px;
+    }
+    td.is_disabled-column{
       width: 80px;
       min-width: 80px;
     }
