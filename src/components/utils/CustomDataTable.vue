@@ -97,6 +97,7 @@
                 class="data-table elevation-2"
                 :headers="selectedHeaders"
                 :items="items"
+                item-key="id"
                 :item-class="itemRowBackground"
                 :server-items-length="itemsLength"
                 :loading="loading"
@@ -114,6 +115,9 @@
                 no-results-text="查詢不到你所蒐尋的內容"
                 v-model="selected"
                 :show-select="showSelect"
+                single-expand
+                :show-expand="showExpand"
+                :expanded.sync="expanded"
             >   
 
                 <!-- Header Group -->
@@ -139,6 +143,8 @@
                         </div>
                     </td>
                 </template>
+
+
 
                 <!-- #region (Parent Slots) -->
                 <!-- pass through scoped slots -->
@@ -184,6 +190,22 @@
                         </template>
                     </td>
                 </template>
+
+                <!-- Expand -->
+                <template v-slot:item.data-table-expand="{ item, expand, isExpanded }">
+                    <v-btn @click="expand(!isExpanded)"
+                        icon  v-if="item['children'] && item['children'].length > 0">
+                        <v-icon>
+                            {{ isExpanded ? 'mdi-chevron-up' : 'mdi-chevron-down' }}
+                        </v-icon>
+                    </v-btn>
+                </template>
+
+                <!-- Expanded Item -->
+                <!-- <template v-slot:expanded-item="{ item, headers }">
+                 
+                </template> -->
+         
 
                 <!-- 頁尾 -->
                 <template v-slot:footer="{ 
@@ -368,6 +390,11 @@ export default {
             type: Boolean,
             default: false,
         },
+        
+        showExpand:{ // 顯示 expand
+            type: Boolean,
+            default: false,
+        },
 
         hideFilterColumn: { // 隱藏篩選欄位顯示的功能
             type: Boolean,
@@ -443,6 +470,8 @@ export default {
 
             // 勾選列內容
             selected: [],
+
+            expanded: [],
 
             // 該子組件專門使用的，最後會 $emit回去
             emitOptions: {},
@@ -612,6 +641,7 @@ export default {
         //#endregion
 
 
+
         //#region (select)
         // [select] 被勾選時的觸發樣式
         itemRowBackground(item) { // 觸發背景顏色
@@ -623,6 +653,16 @@ export default {
             this.selected = this.selected.filter(item => item['id'] !== select['id'])
         },
         //#endregion
+
+        //#region (expand)
+        toggleExpand(item) {
+            item.isExpanded = !item.isExpanded;
+        },
+
+        //#endregion
+
+
+
 
 
     },
@@ -649,7 +689,6 @@ export default {
     .data-table >>> .v-data-table__wrapper thead th.active-left,
     .data-table >>> .v-data-table__wrapper tbody tr td{
         left: 0 !important;
-        line-height: 3.5rem;
     }
 
     /* sticky-column */
