@@ -29,7 +29,8 @@ export default {
 
   computed: {},
 
-  async mounted() {},
+  async mounted() {
+  },
 
   methods: {},
 };
