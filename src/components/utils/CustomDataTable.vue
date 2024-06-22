@@ -1,7 +1,7 @@
 <template>
     <v-row>
         <!-- 欄位顯示功能 -->
-        <v-col cols="12" v-if="["hide-filter-column"]" class="d-flex flex-wrap gap-4 align-end">
+        <v-col cols="12" v-if="!hideFilterColumn" class="d-flex flex-wrap gap-4 align-end">
             
             <!-- 搜尋功能 -->
             <v-text-field
@@ -21,13 +21,13 @@
 
             <!-- 新增按鈕 -->
             <v-btn 
-                v-if="allowCreate"
+                v-if="!hideCreate"
                 :x-small="rwd_name === 'xs'" 
                 :small="rwd_name !== 'xs'"
                 height="50" class="d-flex align-center rounded-lg" 
                 color="pink darken-2" 
                 :disabled="loading"
-                @click="clickCreateButton">
+                @click="create">
                 <v-icon color="white" left size="20">mdi-plus-circle</v-icon>
                 <span class="font-weight-black text-subtitle-1 white--text">
                     {{ createButtonText }}
@@ -67,7 +67,7 @@
 
             <!-- 匯出按鈕 -->
             <v-btn 
-                v-if="allowExport"
+                v-if="!hideExport"
                 :x-small="rwd_name === 'xs'" 
                 :small="rwd_name !== 'xs'"
                 height="50" class="d-flex align-center rounded-lg" 
@@ -82,7 +82,7 @@
 
             <!-- 排序資訊 -->
             <CustomSortDisplay
-                v-if="["hide-sort-box"]"
+                v-if="!hideSortBox"
                 :sortBy="options['sortBy'][0]"
                 :sortDesc="options['sortDesc'][0]"
                 :headers="headers"
@@ -97,6 +97,7 @@
                 class="data-table elevation-2"
                 :headers="selectedHeaders"
                 :items="items"
+                item-key="id"
                 :item-class="itemRowBackground"
                 :server-items-length="itemsLength"
                 :loading="loading"
@@ -104,6 +105,7 @@
                 :options.sync="emitOptions"
                 :footerProps="footerProps"
                 hide-default-footer
+                :hide-default-header="hideDefaultHeader"
                 @update:options="emitUpdateOptions"
                 :mobile-breakpoint="0"
                 fixed-header
@@ -114,6 +116,9 @@
                 no-results-text="查詢不到你所蒐尋的內容"
                 v-model="selected"
                 :show-select="showSelect"
+                single-expand
+                :show-expand="showExpand"
+                :expanded.sync="expanded"
             >   
 
                 <!-- Header Group -->
@@ -140,6 +145,8 @@
                     </td>
                 </template>
 
+
+
                 <!-- #region (Parent Slots) -->
                 <!-- pass through scoped slots -->
                 <template
@@ -157,6 +164,49 @@
                         <slot :name="slotName" />
                 </template>
                 <!-- #endregion -->
+
+                <!-- 操作(item.actions) -->
+                <template #item.actions="{item}">
+                    <td @click.stop class="py-4">
+                        <template v-for="btn in actions_buttons">
+                            <v-tooltip 
+                                :key="btn['title']"
+                                v-if="!btn['hide']"
+                                bottom 
+                                :color="btn['tooltip_color']">
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-btn fab x-small class="mx-1" v-bind="attrs" v-on="on"
+                                        :color="btn['btn_color']"
+                                        @click="btn.onClick(item['id'])"
+                                        >
+                                        <v-icon small :color="btn['icon_color']">
+                                            {{btn['icon']}}
+                                        </v-icon>
+                                    </v-btn>
+                                </template>
+                                <span class="black--text font-weight-bold">
+                                    {{ btn['title'] }}
+                                </span>
+                            </v-tooltip>
+                        </template>
+                    </td>
+                </template>
+
+                <!-- Expand -->
+                <template v-slot:item.data-table-expand="{ item, expand, isExpanded }">
+                    <v-btn @click="expand(!isExpanded)"
+                        icon  v-if="item['children'] && item['children'].length > 0">
+                        <v-icon>
+                            {{ isExpanded ? 'mdi-chevron-up' : 'mdi-chevron-down' }}
+                        </v-icon>
+                    </v-btn>
+                </template>
+
+                <!-- Expanded Item -->
+                <!-- <template v-slot:expanded-item="{ item, headers }">
+                 
+                </template> -->
+         
 
                 <!-- 頁尾 -->
                 <template v-slot:footer="{ 
@@ -341,28 +391,42 @@ export default {
             type: Boolean,
             default: false,
         },
-
-        ["hide-filter-column"]: { // 隱藏篩選欄位顯示的功能
+        
+        showExpand:{ // 顯示 expand
             type: Boolean,
             default: false,
         },
-        ["hide-sort-box"]: { // 隱藏排序顯示功能
+
+        hideFilterColumn: { // 隱藏篩選欄位顯示的功能
+            type: Boolean,
+            default: false,
+        },
+        hideSortBox: { // 隱藏排序顯示功能
             type: Boolean,
             default: false,
         },
             
-        ["hide-export"]:{ // 隱藏匯出按鈕
+        hideExport:{ // 隱藏匯出按鈕
             type: Boolean,
             default: false,
         },
-        ["hide-create"]:{ // 隱藏新增按鈕
+        hideCreate:{ // 隱藏新增按鈕
+            type: Boolean,
+            default: false,
+        },
+        hideDefaultHeader: {
             type: Boolean,
             default: false,
         },
         createButtonText: { // 創建按鈕的文字
             type: String,
             default: "新增資料"
-        }
+        },
+
+        actions: { // 顯示方式
+            type: Array,
+            default: () => ['read', 'update', 'delete']
+        },
 
         
       
@@ -412,8 +476,13 @@ export default {
             // 勾選列內容
             selected: [],
 
+            expanded: [],
+
             // 該子組件專門使用的，最後會 $emit回去
             emitOptions: {},
+
+
+            
         }
     },
 
@@ -429,8 +498,36 @@ export default {
             }
 
             return height || map_height[rwd_name]
-
         },
+
+        actions_buttons(){
+            return [
+                {
+                    title: '瀏覽', 
+                    icon: 'mdi-eye', icon_color: 'grey darken-1', 
+                    tooltip_color: 'grey lighten-2', 
+                    btn_color: 'blue-grey lighten-4', 
+                    onClick: this.read,
+                    hide: !this.actions.includes("read")
+                },
+                {
+                    title: '修改', 
+                    icon: 'mdi-pencil', icon_color: 'primary darken-1', 
+                    tooltip_color: 'blue lighten-4', 
+                    btn_color: 'primary lighten-4', 
+                    onClick: this.update,
+                    hide: !this.actions.includes("update")
+                },
+                {
+                    title: '刪除', 
+                    icon: 'mdi-delete', icon_color: 'error darken-1', 
+                    tooltip_color: 'error lighten-4', 
+                    btn_color: 'error lighten-4', 
+                    onClick: this.delete,
+                    hide: !this.actions.includes("delete")
+                },
+            ]
+        } 
     },
 
     watch: {
@@ -462,7 +559,6 @@ export default {
         // 將 options返回
         emitUpdateOptions(){
             if(!this.loading){ // 透過 loading => 避免重複呼叫API的情況
-                // console.log("🤡emitUpdateOptions");
                 this.$emit('emitUpdateOptions', this.emitOptions)
             }
         },
@@ -533,13 +629,23 @@ export default {
             this.$emit('export', emitData)
         },
 
-
-        clickCreateButton(){
+        //#region (CRUD $emit)
+        create(){
             this.$emit('create')
+        },  
+        read(id){
+            this.$emit("read", id)
+        },
+        update(id){
+            this.$emit("update", id)
+        },
+        delete(id){
+            this.$emit("delete", id)
         },
 
+        //#endregion
 
-        
+
 
         //#region (select)
         // [select] 被勾選時的觸發樣式
@@ -552,6 +658,16 @@ export default {
             this.selected = this.selected.filter(item => item['id'] !== select['id'])
         },
         //#endregion
+
+        //#region (expand)
+        toggleExpand(item) {
+            item.isExpanded = !item.isExpanded;
+        },
+
+        //#endregion
+
+
+
 
 
     },

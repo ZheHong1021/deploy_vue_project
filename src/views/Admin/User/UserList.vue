@@ -2,7 +2,9 @@
   <v-container>
     <v-row>
       <v-col cols="12">
-        12312
+        <router-view></router-view>
+
+
       </v-col>
     </v-row>
   </v-container>
@@ -10,26 +12,23 @@
 
 <script>
 export default {
-    data(){
-        return {
+  components: {
+  },
+  data() {
+    return {
+    };
+  },
 
-        }
-    },
+  computed: {},
 
-    computed: {
 
-    },
+  async mounted() {
+  },
 
-    async mounted(){
 
-    },
-
-    methods: {
-
-    },
-}
+  methods: {},
+};
 </script>
 
 <style>
-
 </style>

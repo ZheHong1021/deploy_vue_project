@@ -1,0 +1,80 @@
+.data-table {
+    width: 100%;
+    overflow: auto;
+
+    /* 表格標題 */
+    .data-table-header,
+    .v-data-table__wrapper thead th {
+        white-space: nowrap;
+        background-color: #d5d1defe;
+        font-weight: bolder;
+        color: black;
+        padding: 0.5rem 0;
+        cursor: pointer;
+        position: sticky;
+        top: 0;
+        z-index: 2;
+
+
+        /* 標題ICON的hover動畫 */
+        &:hover span {
+            transition: 0.5s;
+            color: #546E7A;
+        }
+
+        &:hover .sort-icon {
+            transition: 0.5s;
+            color: #546E7A;
+            visibility: visible !important;
+        }
+    }
+
+    /* 有Fixed的欄位樣式 */
+    tbody {
+
+        /* 【一般】欄位的背景顏色配置 */
+        tr:nth-of-type(odd) {
+            background-color: #ecf0f1;
+        }
+
+        tr:nth-of-type(even) {
+            background-color: #0000000b;
+        }
+
+        /* 【固定】欄位的背景顏色配置 */
+        tr:nth-of-type(odd) td.sticky-column {
+            background-color: #dfe4ea !important;
+        }
+
+        tr:nth-of-type(even) td.sticky-column {
+            background-color: #ecf0f1 !important;
+        }
+
+        td{
+            white-space: nowrap; /* 不換行 */
+        }
+
+    }
+
+
+    /* 表格ScrollBar設定 */
+    /* width */
+    .v-data-table__wrapper::-webkit-scrollbar {
+        width: 0.5rem;
+        height: 15px;
+    }
+
+    /* Track */
+    .v-data-table__wrapper::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px grey;
+        border-radius: 10px;
+    }
+
+    /* Handle */
+    .v-data-table__wrapper::-webkit-scrollbar-thumb {
+        background: linear-gradient(to right, #34495e 50%, #fc466b 50%);
+        background-size: 30px 100%;
+        border-radius: 10px;
+    }
+
+}

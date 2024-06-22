@@ -24,6 +24,7 @@ const transformRoute = (menu) => {
         name: menu['name'],
         component: loadView(menu['component']),
         children: children,
+        redirect: menu['redirect'],
         meta: {
             title: menu['title'],
             icon: menu['icon'],
@@ -55,7 +56,6 @@ const generateRoutes = () => {
             router.addRoute(transformRoute(menu))
         }
     }
-
 }
 
 // 篩選出都是is_menu=true

@@ -7,7 +7,7 @@
 
     <v-card>
       <!-- 頂部區域 -->
-      <v-toolbar dark color="primary">
+      <v-toolbar dark :color="color">
         <!-- 關閉按鈕 -->
         <v-btn icon dark @click="closeDialog">
           <v-icon>mdi-close-thick</v-icon>
