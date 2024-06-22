@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <v-row>
       <v-col cols="12">
         <v-btn @click="dialog = true">新增數據</v-btn>
@@ -29,10 +29,13 @@
             show-select
             >
             <!--#region (Items) -->
+            <!-- ICON -->
             <template #item.icon="{item}">
-              <td>
-                <v-icon>{{ item['icon'] }}</v-icon>
-              </td>
+              <td><v-icon>{{ item['icon'] }}</v-icon></td>
+            </template>
+            <!-- Priority -->
+            <template #item.priority="{item}">
+              <td><v-avatar size="24" color="grey darken-2" class="font-weight-bold white--text">{{ item['priority'] }}</v-avatar></td>
             </template>
             <!-- #endregion -->
 
@@ -79,8 +82,13 @@ export default {
           sortDesc: [true], // 排序狀態
       },
       headers: [ // 欄位設定
+          { text: '操作', value: 'actions', sortable: true,},
           { text: '菜單標題', value: 'title', sortable: true,},
           { text: '菜單圖案', value: 'icon', sortable: true,},
+          { text: '顯示順序', value: 'priority', sortable: true,},
+          { text: '路徑', value: 'path', sortable: true,},
+          { text: '組件名稱', value: 'name', sortable: true,},
+          { text: '組件路徑', value: 'component', sortable: true,},
           { text: '創建時間', value: 'created_at', sortable: true, },
           { text: '更新時間', value: 'updated_at', sortable: true, },
       ],

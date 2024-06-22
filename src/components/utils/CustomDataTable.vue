@@ -27,7 +27,7 @@
                 height="50" class="d-flex align-center rounded-lg" 
                 color="pink darken-2" 
                 :disabled="loading"
-                @click="clickCreateButton">
+                @click="create">
                 <v-icon color="white" left size="20">mdi-plus-circle</v-icon>
                 <span class="font-weight-black text-subtitle-1 white--text">
                     {{ createButtonText }}
@@ -157,6 +157,33 @@
                         <slot :name="slotName" />
                 </template>
                 <!-- #endregion -->
+
+                <!-- 操作(item.actions) -->
+                <template #item.actions="{item}">
+                    <td @click.stop class="py-4">
+                        <template v-for="btn in actions_buttons">
+                            <v-tooltip 
+                                :key="btn['title']"
+                                v-if="!btn['hide']"
+                                bottom 
+                                :color="btn['tooltip_color']">
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-btn fab x-small class="mx-1" v-bind="attrs" v-on="on"
+                                        :color="btn['btn_color']"
+                                        @click="btn.onClick(item['id'])"
+                                        >
+                                        <v-icon small :color="btn['icon_color']">
+                                            {{btn['icon']}}
+                                        </v-icon>
+                                    </v-btn>
+                                </template>
+                                <span class="black--text font-weight-bold">
+                                    {{ btn['title'] }}
+                                </span>
+                            </v-tooltip>
+                        </template>
+                    </td>
+                </template>
 
                 <!-- 頁尾 -->
                 <template v-slot:footer="{ 
@@ -362,6 +389,11 @@ export default {
         createButtonText: { // 創建按鈕的文字
             type: String,
             default: "新增資料"
+        },
+
+        actions: { // 顯示方式
+            type: Array,
+            default: () => ['read', 'update', 'delete']
         }
 
         
@@ -414,6 +446,9 @@ export default {
 
             // 該子組件專門使用的，最後會 $emit回去
             emitOptions: {},
+
+
+            
         }
     },
 
@@ -429,8 +464,36 @@ export default {
             }
 
             return height || map_height[rwd_name]
-
         },
+
+        actions_buttons(){
+            return [
+                {
+                    title: '瀏覽', 
+                    icon: 'mdi-eye', icon_color: 'grey darken-1', 
+                    tooltip_color: 'grey lighten-2', 
+                    btn_color: 'blue-grey lighten-4', 
+                    onClick: this.read,
+                    hide: !this.actions.includes("read")
+                },
+                {
+                    title: '修改', 
+                    icon: 'mdi-pencil', icon_color: 'primary darken-1', 
+                    tooltip_color: 'blue lighten-4', 
+                    btn_color: 'primary lighten-4', 
+                    onClick: this.update,
+                    hide: !this.actions.includes("update")
+                },
+                {
+                    title: '刪除', 
+                    icon: 'mdi-delete', icon_color: 'error darken-1', 
+                    tooltip_color: 'error lighten-4', 
+                    btn_color: 'error lighten-4', 
+                    onClick: this.delete,
+                    hide: !this.actions.includes("delete")
+                },
+            ]
+        } 
     },
 
     watch: {
@@ -532,10 +595,21 @@ export default {
             this.$emit('export', emitData)
         },
 
-
-        clickCreateButton(){
+        //#region (CRUD $emit)
+        create(){
             this.$emit('create')
+        },  
+        read(id){
+            this.$emit("read", id)
         },
+        update(id){
+            this.$emit("update", id)
+        },
+        delete(id){
+            this.$emit("delete", id)
+        },
+
+        //#endregion
 
 
         //#region (select)

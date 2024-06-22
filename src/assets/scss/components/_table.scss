@@ -1,11 +1,11 @@
-.data-table{
+.data-table {
     width: 100%;
     border-radius: 10px !important;
     overflow: auto;
-    
+
     /* 表格標題 */
     .data-table-header,
-    .v-data-table__wrapper thead th{
+    .v-data-table__wrapper thead th {
         white-space: nowrap;
         background-color: #d5d1defe;
         font-weight: bolder;
@@ -15,15 +15,15 @@
         position: sticky;
         top: 0;
         z-index: 2;
-        
+
 
         /* 標題ICON的hover動畫 */
-        &:hover span{
+        &:hover span {
             transition: 0.5s;
             color: #546E7A;
         }
-    
-        &:hover .sort-icon{
+
+        &:hover .sort-icon {
             transition: 0.5s;
             color: #546E7A;
             visibility: visible !important;
@@ -31,28 +31,34 @@
     }
 
     /* 有Fixed的欄位樣式 */
-    tbody{
+    tbody {
 
         /* 【一般】欄位的背景顏色配置 */
         tr:nth-of-type(odd) {
             background-color: #ecf0f1;
         }
+
         tr:nth-of-type(even) {
             background-color: #0000000b;
         }
 
         /* 【固定】欄位的背景顏色配置 */
-        tr:nth-of-type(odd) td.sticky-column{
-             background-color: #dfe4ea !important;
-         }
-         tr:nth-of-type(even) td.sticky-column{
-             background-color: #ecf0f1 !important;
-         }
-   
+        tr:nth-of-type(odd) td.sticky-column {
+            background-color: #dfe4ea !important;
+        }
+
+        tr:nth-of-type(even) td.sticky-column {
+            background-color: #ecf0f1 !important;
+        }
+
+        td{
+            white-space: nowrap; /* 不換行 */
+        }
+
     }
 
     /* 固定標題設定 */
-    .header-freeze{
+    .header-freeze {
         position: sticky !important;
         color: #fa0 !important;
         background: #424242 !important;
@@ -60,7 +66,7 @@
     }
 
     /* 固定欄位設定 */
-    .sticky-column{
+    .sticky-column {
         position: sticky;
         z-index: 2 !important;
     }
@@ -68,10 +74,11 @@
 
     /* 表格ScrollBar設定 */
     /* width */
-    .v-data-table__wrapper::-webkit-scrollbar{
+    .v-data-table__wrapper::-webkit-scrollbar {
         width: 0.5rem;
         height: 15px;
     }
+
     /* Track */
     .v-data-table__wrapper::-webkit-scrollbar-track {
         box-shadow: inset 0 0 5px grey;
@@ -87,8 +94,7 @@
 
 
     /* 表尾 */
-    .v-data-footer{
+    .v-data-footer {
         background-color: #eee;
     }
 }
-

@@ -1,6 +1,6 @@
 <template>
     <v-main class="main-container">
-      <v-container class="h-100">
+      <v-container class="h-100" fluid>
         <!-- 標題 -->
         <Title />
 
