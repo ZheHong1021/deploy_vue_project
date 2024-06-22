@@ -1,7 +1,7 @@
 <template>
     <v-row>
         <!-- 欄位顯示功能 -->
-        <v-col cols="12" v-if="["hide-filter-column"]" class="d-flex flex-wrap gap-4 align-end">
+        <v-col cols="12" v-if="hideFilterColumn" class="d-flex flex-wrap gap-4 align-end">
             
             <!-- 搜尋功能 -->
             <v-text-field
@@ -82,7 +82,7 @@
 
             <!-- 排序資訊 -->
             <CustomSortDisplay
-                v-if="["hide-sort-box"]"
+                v-if="hideSortBox"
                 :sortBy="options['sortBy'][0]"
                 :sortDesc="options['sortDesc'][0]"
                 :headers="headers"
@@ -342,20 +342,20 @@ export default {
             default: false,
         },
 
-        ["hide-filter-column"]: { // 隱藏篩選欄位顯示的功能
+        hideFilterColumn: { // 隱藏篩選欄位顯示的功能
             type: Boolean,
             default: false,
         },
-        ["hide-sort-box"]: { // 隱藏排序顯示功能
+        hideSortBox: { // 隱藏排序顯示功能
             type: Boolean,
             default: false,
         },
             
-        ["hide-export"]:{ // 隱藏匯出按鈕
+        hideExport:{ // 隱藏匯出按鈕
             type: Boolean,
             default: false,
         },
-        ["hide-create"]:{ // 隱藏新增按鈕
+        hideCreate:{ // 隱藏新增按鈕
             type: Boolean,
             default: false,
         },
@@ -462,7 +462,6 @@ export default {
         // 將 options返回
         emitUpdateOptions(){
             if(!this.loading){ // 透過 loading => 避免重複呼叫API的情況
-                // console.log("🤡emitUpdateOptions");
                 this.$emit('emitUpdateOptions', this.emitOptions)
             }
         },
