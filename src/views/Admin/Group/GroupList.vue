@@ -1,8 +1,9 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <v-row>
+      <!-- 表格區域 -->
       <v-col cols="12">
-        12312
+     
       </v-col>
     </v-row>
   </v-container>
@@ -10,24 +11,22 @@
 
 <script>
 export default {
-    data(){
-        return {
+  components: {
+  },
+  data() {
+    return {
+    
+    };
+  },
 
-        }
-    },
+  computed: {
+   
+  },
 
-    computed: {
+  async mounted() {
+  },
 
-    },
-
-    async mounted(){
-
-    },
-
-    methods: {
-
-    },
-}
+};
 </script>
 
 <style>

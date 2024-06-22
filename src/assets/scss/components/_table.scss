@@ -1,6 +1,5 @@
 .data-table {
     width: 100%;
-    border-radius: 10px !important;
     overflow: auto;
 
     /* 表格標題 */
@@ -57,20 +56,6 @@
 
     }
 
-    /* 固定標題設定 */
-    .header-freeze {
-        position: sticky !important;
-        color: #fa0 !important;
-        background: #424242 !important;
-        z-index: 3 !important;
-    }
-
-    /* 固定欄位設定 */
-    .sticky-column {
-        position: sticky;
-        z-index: 2 !important;
-    }
-
 
     /* 表格ScrollBar設定 */
     /* width */
@@ -92,9 +77,4 @@
         border-radius: 10px;
     }
 
-
-    /* 表尾 */
-    .v-data-footer {
-        background-color: #eee;
-    }
 }

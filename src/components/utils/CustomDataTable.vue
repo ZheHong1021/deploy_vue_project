@@ -105,6 +105,7 @@
                 :options.sync="emitOptions"
                 :footerProps="footerProps"
                 hide-default-footer
+                :hide-default-header="hideDefaultHeader"
                 @update:options="emitUpdateOptions"
                 :mobile-breakpoint="0"
                 fixed-header
@@ -413,6 +414,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        hideDefaultHeader: {
+            type: Boolean,
+            default: false,
+        },
         createButtonText: { // 創建按鈕的文字
             type: String,
             default: "新增資料"
@@ -421,7 +426,7 @@ export default {
         actions: { // 顯示方式
             type: Array,
             default: () => ['read', 'update', 'delete']
-        }
+        },
 
         
       

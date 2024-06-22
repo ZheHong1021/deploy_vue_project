@@ -10,17 +10,14 @@
             :headers="headers"
             :loading="loading"
             :disabled_select="disabled_select"
-            fixed-header
-            :height="550"
+            :fixed-header="false"
             @emitUpdateOptions="emitUpdateOptions"
             @create="emitCreate"
             show-expand
-
             >
-            <!--#region (Items) -->
             <template v-slot:item="{ item, headers, expand, isExpanded }">
               <MenuTableItem
-                  :class="{ 'green lighten-5' : isExpanded}"
+                  :class="{ 'purple lighten-5' : isExpanded}"
                   :item="item" 
                   :headers="headers" 
                   :expand="expand" 
@@ -29,26 +26,21 @@
               />
               
             </template>
-            <!-- #endregion -->
 
             <template v-slot:expanded-item="{ headers, item }">
-              <MenuTableItem
-                  class="expanded-row"
-                  v-for="menu in item['children']"
-                  :key="menu['id']"
-                  :item="menu" 
-                  :headers="headers" 
-                  :expand="expand" 
-                  :isExpanded="isExpanded"
-                  :actions_buttons="actions_buttons"
-              />
+              <td :colspan="headers.length">
+                <MenuRecursiveTable 
+                    :items="item['children']"
+                    :headers="headers"
+                    :loading="loading"
+                    hide-default-header
+                    :actions_buttons="actions_buttons"
+                    :depth="depth + 1">
+                </MenuRecursiveTable>
+            </td>
             </template>
 
-            <template #expand="{item}">
-              <div>
-                <h6 class="font-weight-bold text-subtitle-2">{{ item['title'] }}</h6>
-              </div>
-            </template>
+          
         </CustomDataTable>
       </v-col>
     </v-row>
@@ -60,9 +52,7 @@
       title="新增菜單"
       color="pink darken-2">
       <template v-slot:body>
-        <div>
-          Create
-        </div>
+        <CreateMenuForm @refresh="refreshData"/>
       </template>
     </CustomDialog>
 
@@ -93,16 +83,20 @@
 </template>
 
 <script>
-import CustomDialog from "@/components/utils/CustomDialog.vue";
-import CustomDataTable from "@/components/utils/CustomDataTable.vue";
 import { MenuService } from '@/api/services';
 import { get_api_pagniation_query_parameter } from "@/utils"
+import CustomDialog from "@/components/utils/CustomDialog.vue";
+import CustomDataTable from "@/components/utils/CustomDataTable.vue";
 import MenuTableItem from '@/components/Admin/Menu/MenuTableItem.vue';
+import MenuRecursiveTable from "@/components/Admin/Menu/MenuRecursiveTable.vue"
+import CreateMenuForm from '@/components/Admin/Menu/CRUD/CreateMenuForm.vue';
 export default {
   components: {
     CustomDialog,
     CustomDataTable,
     MenuTableItem,
+    MenuRecursiveTable,
+    CreateMenuForm,
   },
   data() {
     return {
@@ -130,12 +124,11 @@ export default {
           { text: '操作', value: 'actions', sortable: true,},
           { text: '菜單圖案', value: 'icon', sortable: true,},
           { text: '顯示順序', value: 'priority', sortable: true,},
+          { text: '菜單', value: 'is_menu', sortable: true,},
           { text: '路徑', value: 'path', sortable: true,},
           { text: '組件名稱', value: 'name', sortable: true,},
           { text: '組件路徑', value: 'component', sortable: true,},
           { text: '跳轉路徑', value: 'redirect', sortable: true,},
-          { text: '創建時間', value: 'created_at', sortable: true, },
-          { text: '更新時間', value: 'updated_at', sortable: true, },
       ],
 
       //#endregion
@@ -145,6 +138,8 @@ export default {
       read_dialog: false,
       update_dialog: false,
       //#endregion
+
+      depth: 1,
 
     };
   },
@@ -230,13 +225,21 @@ export default {
           this.$swal.fire("刪除", id, "warning")
         },
 
+
+        async refreshData(){
+          // 重新讀取資料
+          await this.fetchData()
+          this.create_dialog = false
+          this.update_dialog = false
+        },
+
     //#endregion
 
   },
 };
 </script>
 
-<style>
+<style scoped>
     .expanded-row td:first-child {
         border-left: 10px solid green !important;
     }
