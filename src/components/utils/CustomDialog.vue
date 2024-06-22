@@ -1,4 +1,5 @@
 <template>
+
   <v-dialog 
     v-model="dialog"
     :width="dialogWidth"
@@ -20,6 +21,7 @@
 
         <!-- 內容區域 -->
       <v-card-text class="py-4 black--text">
+
         <slot name="body"></slot>
       </v-card-text>
 
@@ -30,6 +32,7 @@
 <script>
 export default {
   props: {
+
     value: { // Parent提供的Dialog
       type: Boolean,
       default: false,
@@ -46,6 +49,7 @@ export default {
   data() {
     return {
       dialog: false,
+
       originPath: null,
     };
   },
@@ -140,10 +144,12 @@ export default {
       history.replaceState(null, '', url);
     }
    
+
   }
 };
 </script>
 
 <style scoped>
+
 
 </style>
