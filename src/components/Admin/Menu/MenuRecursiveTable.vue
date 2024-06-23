@@ -26,6 +26,7 @@
         <template v-slot:expanded-item="{ headers, item }">
             <td :colspan="headers.length">
                 <MenuRecursiveTable 
+                    v-if="item['children'] && item['children'].length > 0"
                     :items="item['children']"
                     :headers="headers"
                     :loading="loading"

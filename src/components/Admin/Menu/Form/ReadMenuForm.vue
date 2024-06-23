@@ -79,6 +79,18 @@
         </v-col>
         <!-- #endregion -->
 
+        <!-- 選擇Parent -->
+        <v-col cols="12">
+            <div class="label-container font-weight-bold text-subtitle-1">
+                父親菜單:
+            </div>
+            <SelectParentMenu 
+                v-model="read_data['parent']"
+                readonly 
+            />
+
+        </v-col>
+
         <!--#region (顯示順序) -->
         <v-col cols="4" class="d-flex flex-wrap align-center gap-4">
             <span class="font-weight-bold text-subtitle-1">
@@ -114,9 +126,11 @@
 
 <script>
 import { MenuService } from '@/api/services'
+import SelectParentMenu from '../SelectParentMenu.vue'
 export default {
     name: "ReadMenuForm",
     components: {
+        SelectParentMenu,
     },
     props: ['id'],
     data() {
@@ -132,6 +146,7 @@ export default {
                 is_disabled: null,
                 redirect: null,
                 priority: null,
+                parent: null,
             },
         }
     },
@@ -163,6 +178,7 @@ export default {
                         redirect: menu['redirect'],
                         priority: menu['priority'],
                         icon: menu['icon'],
+                        parent: menu['parent'],
                     }
                 }
             }

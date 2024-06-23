@@ -197,11 +197,11 @@ export default {
   data(){
     return {
       depth_priority_color: {
-        1: '#342974',
-        2: '#4D2A79',
-        3: '#682A7E',
-        4: '#822B7F',
-        5: '#872B68',
+        1: '#80268C',
+        2: '#B33F00',
+        3: '#006663',
+        4: '#3B3B98',
+        5: '#5C8C46',
       }
     }
   },
@@ -234,8 +234,9 @@ export default {
 
 <style scoped>
 
+
     .expanded-row td:first-child{
-      border-left: 0.25rem solid rgb(159, 10, 159);
+      border-left: 0.25rem solid v-bind(depth_priority_color[depth]);
     }
 
     td.column-depth-1-padding{

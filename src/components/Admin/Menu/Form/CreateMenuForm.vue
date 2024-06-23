@@ -111,6 +111,19 @@
             </v-col> 
             <!-- #endregion -->
 
+
+            <!-- 選擇Parent -->
+            <v-col cols="12">
+                <div class="label-container font-weight-bold text-subtitle-1">
+                    父親菜單:
+                </div>
+                <SelectParentMenu 
+                    v-model="create_data['parent']"
+                    @select="select_parent_menu"
+                />
+
+            </v-col>
+
             <!--#region (顯示順序) -->
             <v-col cols="4" class="d-flex flex-wrap align-center gap-4">
                 <span class="font-weight-bold text-subtitle-1">
@@ -139,6 +152,7 @@
             <!-- #endregion -->
 
 
+
             <v-col cols="12" class="d-flex align-center justify-center gap-4">
                 <v-btn color="pink darken-2" type="submit" class="font-weight-bold white--text"
                     width="150" height="50">
@@ -153,22 +167,19 @@
 
 <script>
 import { MenuService } from '@/api/services'
+import SelectParentMenu from '../SelectParentMenu.vue'
 export default {
     name: "CreateMenuForm",
     components: {
+        SelectParentMenu,
     },
 
     data(){
       
         return {
             create_data: {
-                title: null,
-                path: null,
-                name: null,
-                component: null,
-                is_menu: null,
-                redirect: null,
-                priority: null,
+                is_menu: true,
+                priority: 1,
             },
             createFormValid: false, // 是否符合規則
             rules: {
@@ -185,6 +196,10 @@ export default {
     
     methods: {
 
+        select_parent_menu(menu_id){
+            this.$set(this.create_data, 'parent', menu_id)
+        },
+
         async create(){
             this.$refs.form.validate()
             if(!this.createFormValid){
@@ -195,7 +210,7 @@ export default {
             try{
                 const formData = new FormData()
                 for(const [key, value] of Object.entries(this.create_data)){
-                    if(value){
+                    if (value !== null && value !== undefined) {
                         formData.append(key, value)
                     }
                 }

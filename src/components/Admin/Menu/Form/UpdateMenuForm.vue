@@ -99,6 +99,18 @@
             </v-col>
             <!-- #endregion -->
 
+            <!-- 選擇Parent -->
+            <v-col cols="12">
+                <div class="label-container font-weight-bold text-subtitle-1">
+                    父親菜單:
+                </div>
+                <SelectParentMenu 
+                    v-model="update_data['parent']"
+                    @select="select_parent_menu"
+                />
+
+            </v-col>
+
             <!--#region (顯示順序) -->
             <v-col cols="4" class="d-flex flex-wrap align-center gap-4">
                 <span class="font-weight-bold text-subtitle-1">
@@ -144,9 +156,11 @@
 
 <script>
 import { MenuService } from '@/api/services'
+import SelectParentMenu from '../SelectParentMenu.vue'
 export default {
     name: "UpdateMenuForm",
     components: {
+        SelectParentMenu,
     },
     props: ['id'],
     data() {
@@ -189,6 +203,7 @@ export default {
                         redirect: menu['redirect'],
                         priority: menu['priority'],
                         icon: menu['icon'],
+                        parent: menu['parent'],
                     }
                 }
             }
@@ -198,6 +213,10 @@ export default {
             finally {
                 this.loading = false
             }
+        },
+
+        select_parent_menu(menu_id){
+            this.$set(this.update_data, 'parent', menu_id)
         },
 
 
@@ -211,7 +230,7 @@ export default {
             try {
                 const formData = new FormData()
                 for (const [key, value] of Object.entries(this.update_data)) {
-                    if (value !== null || value !== undefined) {
+                    if (value !== null && value !== undefined) {
                         formData.append(key, value)
                     }
                 }
