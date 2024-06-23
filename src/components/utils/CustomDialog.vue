@@ -3,6 +3,7 @@
   <v-dialog 
     v-model="dialog"
     :width="dialogWidth"
+    scrollable
     persistent>
 
     <v-card>

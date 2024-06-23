@@ -39,8 +39,6 @@
                 </MenuRecursiveTable>
             </td>
             </template>
-
-          
         </CustomDataTable>
       </v-col>
     </v-row>
@@ -268,7 +266,5 @@ export default {
 </script>
 
 <style scoped>
-    .expanded-row td:first-child {
-        border-left: 10px solid green !important;
-    }
+
 </style>
