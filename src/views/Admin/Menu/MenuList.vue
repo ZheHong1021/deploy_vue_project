@@ -196,7 +196,7 @@ export default {
 
         // 必須包含Children
         params.append("include_children", true)
-        const response = await MenuService.getAll(params)
+        const response = await MenuService.get_all(params)
         if(response.status === 200){
           const { data, count } = response.data
           this.items = data
@@ -233,11 +233,11 @@ export default {
         },
 
         async delete(id){
-            const first_response = await showDeleteWarning()
-            if(first_response.isConfirmed){
-              const is_confirm = await showConfirmDelete()
-              if(is_confirm){
-                try{
+            const first_response = await showDeleteWarning() // 第一次提醒Alert
+            if(first_response.isConfirmed){ // 點擊確定
+              const is_confirm = await showConfirmDelete() // 最後一次確定的 alert
+              if(is_confirm){ // 最後一次依舊確定
+                try{ // 進行刪除
                     const response = await MenuService.delete(id)
                     if(response.status === 204){
                         this.$swal.fire('刪除成功', '', 'success')

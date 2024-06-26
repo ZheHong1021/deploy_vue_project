@@ -35,7 +35,7 @@ export default {
           detail: true,
         })
 
-        const response = await OrderService.getAll(params)
+        const response = await OrderService.get_all(params)
         if(response.status === 200){
           this.orders = response.data
         }
