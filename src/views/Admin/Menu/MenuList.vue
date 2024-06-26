@@ -9,6 +9,7 @@
             :options="options"
             :headers="headers"
             :loading="loading"
+            height="100%"
             :disabled_select="disabled_select"
             :fixed-header="false"
             @emitUpdateOptions="emitUpdateOptions"

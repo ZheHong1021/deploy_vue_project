@@ -343,8 +343,7 @@ export default {
         },
 
         height: { // 表格最大高度(通常要跟 fixHeader搭配使用)
-            type: Number,
-            default: undefined,
+            type: [String, Number],
         },
 
         items: { // 表格數據

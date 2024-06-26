@@ -8,6 +8,7 @@
             :itemsLength="itemsLength"
             :options="options"
             :headers="headers"
+            height="100%"
             :loading="loading"
             :disabled_select="disabled_select"
             :fixed-header="false"
