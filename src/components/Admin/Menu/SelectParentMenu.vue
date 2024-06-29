@@ -120,7 +120,7 @@ export default {
           include_children: true, // 包含子路由
           is_children: false, // 最頂端
         });
-        const response = await MenuService.getAll(params);
+        const response = await MenuService.get_all(params);
         if (response.status === 200) {
           this.items = response.data;
         }

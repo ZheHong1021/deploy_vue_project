@@ -64,7 +64,7 @@ export default {
           is_menu: true, // 必須為菜單
           is_disabled: false, // 必須是起用中
         })
-        const response = await MenuService.getAll(params)
+        const response = await MenuService.get_all(params)
         if(response.status === 200){
           const menus = response.data
           

@@ -8,11 +8,11 @@ class BaseService {
     this.resource = resource;
   }
 
-  getAll(params) {
+  get_all(params) {
     return server.get(`/${this.resource}/`, {params});
   }
 
-  getById(id, params) {
+  get_by_id(id, params) {
     return server.get(`/${this.resource}/${id}/`, {params});
   }
 

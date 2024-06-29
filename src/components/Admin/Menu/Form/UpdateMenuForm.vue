@@ -189,7 +189,7 @@ export default {
     methods: {
         async fetchData() {
             try {
-                const response = await MenuService.getById(this.id)
+                const response = await MenuService.get_by_id(this.id)
                 if (response.status === 200) {
                     const menu = response.data
                     
