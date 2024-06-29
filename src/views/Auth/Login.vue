@@ -44,19 +44,19 @@ export default {
     return {
 
       //#region (輸入)
-      username: "admin",
-      password: "mirdcUC",
+      username: null,
+      password: null,
       //#endregion
 
       //#region (驗證)
       valid: false,
       usernameRules: [
         (v) => !!v || "必須填寫帳號",
-        (v) => v.length >= 3 || "帳號必須超過3個字元",
+        (v) => v.length >= 4 || "帳號必須超過4個字元",
       ],
       passwordRules: [
         (v) => !!v || "必須填寫密碼",
-        (v) => v.length >= 6 || "帳號必須超過6個字元",
+        (v) => v.length >= 8 || "帳號必須超過8個字元",
       ],
       //#endregion
 

@@ -64,8 +64,8 @@ export default {
     data(){
         return {
             create_data: {
-                "name": "guest",
-                "name_zh": "訪客",
+                "name": null,
+                "name_zh": null,
             },
             createFormValid: false, // 是否符合規則
             rules: {
