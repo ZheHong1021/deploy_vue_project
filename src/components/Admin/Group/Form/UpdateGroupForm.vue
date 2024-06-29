@@ -120,12 +120,7 @@ export default {
                 }
             }
             catch (err) {
-                console.log(err);
-                this.$swal.fire({
-                    title: "儲存發生錯誤",
-                    text: err,
-                    icon: "error",
-                })
+                console.error(err);
             }
         },
 

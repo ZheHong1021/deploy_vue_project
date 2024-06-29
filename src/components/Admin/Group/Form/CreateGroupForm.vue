@@ -63,7 +63,10 @@ export default {
 
     data(){
         return {
-            create_data: {},
+            create_data: {
+                "name": "guest",
+                "name_zh": "訪客",
+            },
             createFormValid: false, // 是否符合規則
             rules: {
                 required: value => !!value || '此欄位必須填寫!.',
@@ -103,12 +106,7 @@ export default {
                 }
             }
             catch(err){
-                console.log(err);
-                this.$swal.fire({
-                    title: "創建發生錯誤",
-                    text: err,
-                    icon: "error",
-                })
+                console.error(err);
             }
         },
 

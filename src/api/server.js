@@ -1,6 +1,7 @@
 // src/api/apiClient.js
 import axios from 'axios';
 import store from '@/store';
+import { errorHandler } from './errorHandler';
 
 const server = axios.create({
   // baseURL: "/api",
@@ -51,7 +52,10 @@ server.interceptors.request.use(async (config) => {
 
 server.interceptors.response.use(response => {
   return response;
-}, error => {
+}, (error) => {
+
+  // 客製化錯誤
+  errorHandler(error)
 
   return Promise.reject(error);
 });
