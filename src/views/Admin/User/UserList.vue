@@ -2,7 +2,6 @@
   <v-container>
     <v-row>
       <v-col cols="12">
-        <router-view></router-view>
 
 
       </v-col>

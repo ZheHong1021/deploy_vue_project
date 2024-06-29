@@ -5,8 +5,6 @@
         <RecursiveTableVue
           :items="items"
           :headers="headers">
-
-          
         </RecursiveTableVue>
       </v-col>
     </v-row>

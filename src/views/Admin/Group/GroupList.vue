@@ -30,14 +30,14 @@
       color="pink darken-2"
     >
       <template v-slot:body>
-        <CreateGroupForm @refresh="refreshData" />
+        <CreateGroupForm v-if="create_dialog" @refresh="refreshData" />
       </template>
     </CustomDialog>
 
     <!-- Read -->
     <CustomDialog v-model="read_dialog" title="瀏覽角色" color="grey darken-2">
       <template v-slot:body>
-        <ReadGroupForm :id="read_id" />
+        <ReadGroupForm v-if="read_dialog" :id="read_id" />
       </template>
     </CustomDialog>
 
@@ -48,7 +48,7 @@
       color="primary darken-2"
     >
       <template v-slot:body>
-        <UpdateGroupForm :id="update_id" @refresh="refreshData" />
+        <UpdateGroupForm v-if="update_dialog" :id="update_id" @refresh="refreshData" />
       </template>
     </CustomDialog>
   </v-container>

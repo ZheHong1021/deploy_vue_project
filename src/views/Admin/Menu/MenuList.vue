@@ -51,7 +51,7 @@
       title="新增菜單"
       color="pink darken-2">
       <template v-slot:body>
-        <CreateMenuForm @refresh="refreshData"/>
+        <CreateMenuForm v-if="create_dialog" @refresh="refreshData"/>
       </template>
     </CustomDialog>
 
@@ -61,7 +61,7 @@
       title="瀏覽菜單"
       color="grey darken-2">
       <template v-slot:body>
-        <ReadMenuForm 
+        <ReadMenuForm v-if="read_dialog"
           :id="read_id"
         />
       </template>
@@ -73,7 +73,7 @@
       title="修改菜單"
       color="primary darken-2">
       <template v-slot:body>
-        <UpdateMenuForm 
+        <UpdateMenuForm v-if="update_dialog"
           :id="update_id"
           @refresh="refreshData"
         />
