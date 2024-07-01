@@ -14,7 +14,7 @@
                 </div>
 
                 <v-text-field v-model="update_data['title']" background-color="white" outlined label="請填寫標題"
-                    :rules="[rules['required']]" placeholder="填寫範例: 菜單標題">
+                    :rules="[rules['requiredRules']]" placeholder="填寫範例: 菜單標題">
                 </v-text-field>
             </v-col>
             <!-- #endregion -->
@@ -30,7 +30,7 @@
                 </div>
 
                 <v-text-field v-model="update_data['path']" background-color="white" outlined label="請填寫路徑"
-                    :rules="[rules['required']]" placeholder="填寫範例: /path">
+                    :rules="[rules['requiredRules']]" placeholder="填寫範例: /path">
                 </v-text-field>
             </v-col>
             <!-- #endregion -->
@@ -45,7 +45,7 @@
                 </div>
 
                 <v-text-field v-model="update_data['name']" background-color="white" outlined label="請填寫組件名稱"
-                    :rules="[rules['required']]" placeholder="填寫範例: PathName">
+                    :rules="[rules['requiredRules']]" placeholder="填寫範例: PathName">
                 </v-text-field>
             </v-col>
             <!-- #endregion -->
@@ -60,7 +60,7 @@
                 </div>
 
                 <v-text-field v-model="update_data['component']" background-color="white" outlined label="請填寫組件路徑"
-                    :rules="[rules['required']]" placeholder="填寫範例: Path/PathName">
+                    :rules="[rules['requiredRules']]" placeholder="填寫範例: Path/PathName">
                 </v-text-field>
             </v-col>
             <!-- #endregion -->
@@ -119,7 +119,7 @@
 
 
                 <v-text-field v-model.number="update_data['priority']" type="number" input-mode="tel" background-color="white" outlined label="請填寫跳轉路徑路徑"
-                    hide-details="" style="max-width: 150px;" :rules="[rules['required']]">
+                    hide-details="" style="max-width: 150px;" :rules="[rules['requiredRules']]">
                 </v-text-field>
             </v-col>
             <!-- #endregion -->
@@ -157,6 +157,7 @@
 <script>
 import { MenuService } from '@/api/services'
 import SelectParentMenu from '../SelectParentMenu.vue'
+import { rules } from '@/utils';
 export default {
     name: "UpdateMenuForm",
     components: {
@@ -169,9 +170,7 @@ export default {
             loading: true,
             update_data: {},
             updateFormValid: false, // 是否符合規則
-            rules: {
-                required: value => !!value || '此欄位必須填寫!.',
-            },
+            rules:rules,
         }
     },
 

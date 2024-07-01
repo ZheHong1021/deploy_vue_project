@@ -14,7 +14,7 @@
                 </div>
 
                 <v-text-field v-model="update_data['name']" background-color="white" outlined label="請填寫代號"
-                    :rules="[rules['required']]" placeholder="填寫範例: teacher">
+                    :rules="[rules['requiredRules']]" placeholder="填寫範例: teacher">
                 </v-text-field>
             </v-col>
             <!-- #endregion -->
@@ -30,7 +30,7 @@
                 </div>
 
                 <v-text-field v-model="update_data['name_zh']" background-color="white" outlined label="請填寫名稱"
-                    :rules="[rules['required']]" placeholder="填寫範例: 老師">
+                    :rules="[rules['requiredRules']]" placeholder="填寫範例: 老師">
                 </v-text-field>
             </v-col>
             <!-- #endregion -->
@@ -48,6 +48,7 @@
 
 <script>
 import { GroupProfileService } from '@/api/services'
+import { rules } from '@/utils';
 export default {
     name: "UpdateGroupForm",
     components: {},
@@ -58,9 +59,7 @@ export default {
             loading: true,
             update_data: {},
             updateFormValid: false, // 是否符合規則
-            rules: {
-                required: value => !!value || '此欄位必須填寫!.',
-            },
+            rules: rules
         }
     },
 

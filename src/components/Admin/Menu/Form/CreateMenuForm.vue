@@ -17,7 +17,7 @@
 
                 <v-text-field v-model="create_data['title']"
                     background-color="white" outlined label="請填寫標題"
-                    :rules="[rules['required']]"
+                    :rules="[rules['requiredRules']]"
                     placeholder="填寫範例: 菜單標題">
                 </v-text-field>
             </v-col> 
@@ -35,7 +35,7 @@
 
                 <v-text-field v-model="create_data['path']"
                     background-color="white" outlined label="請填寫路徑"
-                    :rules="[rules['required']]"
+                    :rules="[rules['requiredRules']]"
                     placeholder="填寫範例: /path">
                 </v-text-field>
             </v-col> 
@@ -52,7 +52,7 @@
 
                 <v-text-field v-model="create_data['name']"
                     background-color="white" outlined label="請填寫組件名稱"
-                    :rules="[rules['required']]"
+                    :rules="[rules['requiredRules']]"
                     placeholder="填寫範例: PathName">
                 </v-text-field>
             </v-col> 
@@ -69,7 +69,7 @@
 
                 <v-text-field v-model="create_data['component']"
                     background-color="white" outlined label="請填寫組件路徑"
-                    :rules="[rules['required']]"
+                    :rules="[rules['requiredRules']]"
                     placeholder="填寫範例: Path/PathName">
                 </v-text-field>
             </v-col> 
@@ -135,7 +135,7 @@
                     background-color="white" outlined label="請填寫跳轉路徑路徑"
                     hide-details=""
                     style="max-width: 150px;"
-                    :rules="[rules['required']]">
+                    :rules="[rules['requiredRules']]">
                 </v-text-field>
             </v-col>
             <!-- #endregion -->
@@ -168,6 +168,7 @@
 <script>
 import { MenuService } from '@/api/services'
 import SelectParentMenu from '../SelectParentMenu.vue'
+import { rules } from '@/utils';
 export default {
     name: "CreateMenuForm",
     components: {
@@ -182,9 +183,9 @@ export default {
                 priority: 1,
             },
             createFormValid: false, // 是否符合規則
-            rules: {
-                required: value => !!value || '此欄位必須填寫!.',
-            },
+
+            // 將 rules給載入
+            rules: rules,
         }
     },
 

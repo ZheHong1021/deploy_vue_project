@@ -10,7 +10,7 @@
           <!-- 帳號 -->
           <v-text-field
             v-model="username"
-            :rules="usernameRules"
+            :rules="[rules['requiredRules'], rules['usernameRules']]"
             label="帳號"
             outlined
             required
@@ -18,7 +18,7 @@
           <!-- 密碼 -->
           <v-text-field
             v-model="password"
-            :rules="passwordRules"
+            :rules="[rules['requiredRules'], rules['passwordRules']]"
             label="密碼"
             outlined
             type="password"
@@ -39,6 +39,7 @@
 </template>
 
 <script>
+import { rules } from '@/utils';
 export default {
   data() {
     return {
@@ -48,19 +49,14 @@ export default {
       password: null,
       //#endregion
 
-      //#region (驗證)
+      // (驗證)
       valid: false,
-      usernameRules: [
-        (v) => !!v || "必須填寫帳號",
-        (v) => v.length >= 4 || "帳號必須超過4個字元",
-      ],
-      passwordRules: [
-        (v) => !!v || "必須填寫密碼",
-        (v) => v.length >= 8 || "帳號必須超過8個字元",
-      ],
-      //#endregion
 
+      // 登入載入中
       loading: false,
+
+      // 將 rules給載入
+      rules: rules,
 
     };
   },
@@ -79,10 +75,6 @@ export default {
       formData.append("password", this.password)
       await this.$store.dispatch("auth/login", formData) // 登入
       this.loading = false
-
-
-
-
     },
   },
 };

@@ -15,7 +15,7 @@
 
                 <v-text-field v-model="create_data['username']"
                     background-color="white" outlined label="請填寫帳號"
-                    :rules="[rules['required']]"
+                    :rules="[rules['requiredRules']]"
                     placeholder="填寫範例: example">
                 </v-text-field>
             </v-col> 
@@ -32,7 +32,7 @@
 
                 <v-text-field v-model="create_data['email']"
                     background-color="white" outlined label="請填寫信箱"
-                    :rules="[rules['required'], rules['gmailRules']]"
+                    :rules="[rules['requiredRules'], rules['emailRules']]"
                     placeholder="填寫範例: example@gmail.com">
                 </v-text-field>
             </v-col> 
@@ -50,7 +50,7 @@
                 <v-text-field
                     v-model="create_data['password']"
                     :append-icon="password_show ? 'mdi-eye' : 'mdi-eye-off'"
-                    :rules="[rules['required'], rules['passwordRules']]"
+                    :rules="[rules['requiredRules'], rules['passwordRules']]"
                     :type="password_show ? 'text' : 'password'"
                     label="請填寫密碼"
                     counter outlined
@@ -71,7 +71,7 @@
                 <v-text-field
                     v-model="confirm_password"
                     :append-icon="confirm_password_show ? 'mdi-eye' : 'mdi-eye-off'"
-                    :rules="[rules['required'], rules['confirmPasswordRules']]"
+                    :rules="[rules['requiredRules'], rules.confirmPasswordRules(create_data['password'])]"
                     :type="confirm_password_show ? 'text' : 'password'"
                     label="請填寫確認密碼"
                     counter outlined
@@ -91,7 +91,7 @@
 
                 <v-text-field v-model="create_data['firstname']"
                     background-color="white" outlined label="請填寫姓氏"
-                    :rules="[rules['required']]"
+                    :rules="[rules['requiredRules']]"
                     placeholder="填寫範例: 林">
                 </v-text-field>
             </v-col> 
@@ -108,7 +108,7 @@
 
                 <v-text-field v-model="create_data['lastname']"
                     background-color="white" outlined label="請填寫名字"
-                    :rules="[rules['required']]"
+                    :rules="[rules['requiredRules']]"
                     placeholder="填寫範例: 大明">
                 </v-text-field>
             </v-col> 
@@ -143,7 +143,7 @@
                 </div>
                 <v-radio-group 
                     v-model="create_data['gender']" row
-                    :rules="[rules['required']]">
+                    :rules="[rules['requiredRules']]">
                     <v-radio 
                         v-for="gender in gender_select_list"
                         :key="gender['value']"
@@ -183,6 +183,7 @@
 
 <script>
 import { UserService } from '@/api/services'
+import { rules } from '@/utils';
 export default {
     name: "CreateUserForm",
     components: {
@@ -207,16 +208,9 @@ export default {
                 "is_active": true,
             },
             createFormValid: false, // 是否符合規則
-            rules: {
-                required: v => !!v || '此欄位必須填寫!.',
-                gmailRules: v => /.+@.+/.test(v) || '必須為信箱格式',
-                phoneRules: v => !v || /^\d{10}$/.test(v) || '必須為10碼',
-                usernameRules: v => !v || v.length >= 4 || '帳號必須超過4個字元',
-                passwordRules: v => !v || v.length >= 8 || '密碼必須超過8個字元',
-                confirmPasswordRules: v => v === this.create_data['password'] || '密碼必須一致',
-            },
 
-            
+            // 規則
+            rules: rules,
 
 
             // 性別可選選項

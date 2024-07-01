@@ -17,7 +17,7 @@
 
                 <v-text-field v-model="create_data['name']"
                     background-color="white" outlined label="請填寫代號"
-                    :rules="[rules['required']]"
+                    :rules="[rules['requiredRules']]"
                     placeholder="填寫範例: role">
                 </v-text-field>
             </v-col> 
@@ -35,7 +35,7 @@
 
                 <v-text-field v-model="create_data['name_zh']"
                     background-color="white" outlined label="請填寫路徑"
-                    :rules="[rules['required']]"
+                    :rules="[rules['requiredRules']]"
                     placeholder="填寫範例: 角色">
                 </v-text-field>
             </v-col> 
@@ -56,6 +56,7 @@
 
 <script>
 import { GroupProfileService } from '@/api/services'
+import { rules } from '@/utils';
 export default {
     name: "CreateGroupForm",
     components: {
@@ -68,9 +69,7 @@ export default {
                 "name_zh": null,
             },
             createFormValid: false, // 是否符合規則
-            rules: {
-                required: value => !!value || '此欄位必須填寫!.',
-            },
+            rules: rules,
         }
     },
 
