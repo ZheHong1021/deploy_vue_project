@@ -5,8 +5,6 @@
         <RecursiveTableVue
           :items="items"
           :headers="headers">
-
-          
         </RecursiveTableVue>
       </v-col>
     </v-row>
@@ -14,7 +12,7 @@
 </template>
 
 <script>
-import RecursiveTableVue from '@/components/Admin/User/RecursiveTable.vue';
+import RecursiveTableVue from '@/components/Path/RecursiveTable.vue';
 export default {
   components: {
     RecursiveTableVue
