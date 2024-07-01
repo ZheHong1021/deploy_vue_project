@@ -89,7 +89,7 @@
                     </strong>
                 </div>
 
-                <v-text-field v-model="create_data['firstname']"
+                <v-text-field v-model="create_data['lastname']"
                     background-color="white" outlined label="請填寫姓氏"
                     :rules="[rules['requiredRules']]"
                     placeholder="填寫範例: 林">
@@ -106,7 +106,7 @@
                     </strong>
                 </div>
 
-                <v-text-field v-model="create_data['lastname']"
+                <v-text-field v-model="create_data['firstname']"
                     background-color="white" outlined label="請填寫名字"
                     :rules="[rules['requiredRules']]"
                     placeholder="填寫範例: 大明">

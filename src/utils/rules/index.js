@@ -9,7 +9,7 @@ const emailRules = v => {
 
 const phoneRules = v => {
     const pattern = /^\d{10}$/;
-    return pattern.test(v) || '手機號碼必須為10碼';
+    return !v || pattern.test(v) || '手機號碼必須為10碼';
 };
 
 const usernameRules = (v) =>  !v || v.length >= 4 || '帳號必須超過4個字元'
