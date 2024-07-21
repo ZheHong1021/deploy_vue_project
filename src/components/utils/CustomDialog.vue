@@ -8,16 +8,20 @@
 
     <v-card>
       <!-- 頂部區域 -->
-      <v-toolbar dark :color="color">
+      <v-toolbar dark :color="color" class="px-4">
+        
+        <!-- 標題 -->
+        <v-toolbar-title>
+          {{ title }}
+        </v-toolbar-title>
+
+        <v-spacer></v-spacer>
+
         <!-- 關閉按鈕 -->
         <v-btn icon dark @click="closeDialog">
           <v-icon>mdi-close-thick</v-icon>
         </v-btn>
 
-        <!-- 標題 -->
-        <v-toolbar-title>
-          {{ title }}
-        </v-toolbar-title>
       </v-toolbar>
 
         <!-- 內容區域 -->

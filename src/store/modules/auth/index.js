@@ -83,8 +83,7 @@ export default {
       try{
         const response = await apiAuthToken.login(payload)
         if(response.status === 200){
-          Swal.fire("登入成功", "", "success")
-
+          
           // 將數據傳入到 VueX當中
           const { data: {access, refresh} } = response
           commit("setAccessToken", access) // 將TOKEN設定到store中
@@ -95,6 +94,8 @@ export default {
 
           // 成功登入後導引到首頁
           router.push({name: "Home"})
+
+          Swal.fire("登入成功", "", "success")
         }
         else{
           Swal.fire("登入失敗", "發生非200狀態碼", "error")

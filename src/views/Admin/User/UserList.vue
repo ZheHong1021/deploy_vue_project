@@ -27,6 +27,7 @@
               <template v-else>未提供</template>
             </td>
           </template>
+
         <!-- 性別(gender) -->
           <template v-slot:item.gender="{item}">
             <td>
@@ -51,6 +52,19 @@
                 </v-icon>
                 {{ get_is_active_style(item['is_active'], 'text') }}
               </v-chip>
+            </td>
+          </template>
+
+          <!-- 最後登入時間(last_login) -->
+          <template v-slot:item.last_login="{item}">
+            <td>
+              <span class="font-weight-bold grey--text text--darken-2">
+                <template v-if="item['last_login']">{{ item['last_login'] }}</template>
+                <template v-else>
+                  <v-icon color='red'>mdi-close-thick</v-icon>
+                  無登入紀錄
+                </template>
+              </span>
             </td>
           </template>
 
@@ -128,8 +142,8 @@ export default {
         // 表格設定
         page: 1, // 當前頁數
         itemsPerPage: 30, // 單頁筆數: -1: 代表全部顯示
-        sortBy: ["id"], // 排序
-        sortDesc: [false], // 排序狀態
+        sortBy: ["last_login"], // 排序
+        sortDesc: [true], // 排序狀態
       },
       headers: [
         // 欄位設定
