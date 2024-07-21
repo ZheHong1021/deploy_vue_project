@@ -16,7 +16,7 @@
                 </div>
 
                 <v-text-field v-model="create_data['name']"
-                    background-color="white" outlined label="請填寫代號"
+                    background-color="white" outlined label="請填寫角色代號"
                     :rules="[rules['requiredRules']]"
                     placeholder="填寫範例: role">
                 </v-text-field>
@@ -24,7 +24,7 @@
             <!-- #endregion -->
     
 
-            <!-- #region (路徑) -->
+            <!-- #region (角色名稱) -->
             <v-col cols="12" md="6" class="d-flex flex-column gap-2">
                 <div class="label-container font-weight-bold text-subtitle-1">
                     角色名稱:
@@ -34,7 +34,7 @@
                 </div>
 
                 <v-text-field v-model="create_data['name_zh']"
-                    background-color="white" outlined label="請填寫路徑"
+                    background-color="white" outlined label="請填寫角色名稱"
                     :rules="[rules['requiredRules']]"
                     placeholder="填寫範例: 角色">
                 </v-text-field>
