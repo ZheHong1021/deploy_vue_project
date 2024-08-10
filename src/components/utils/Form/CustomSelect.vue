@@ -10,6 +10,7 @@
         outlined
         :rules="rules"
         no-data-text="無任何可選擇資料"
+        :placeholder="placeholder"
         @change="$emit('input', $event)"
         :menu-props="{ bottom: true, offsetY: true }">
     </v-select>
@@ -42,6 +43,11 @@ export default {
         rules: {
             type: Array,
             default: () => []
+        },
+
+        placeholder: {
+            type: String,
+            default: "請選擇以下內容"
         },
 
         itemText: {

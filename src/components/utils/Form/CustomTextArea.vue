@@ -8,6 +8,7 @@
         :clearable="clearable"
         clear-icon="mdi-close-circle"
         no-resize
+        :placeholder="placeholder"
         :value="value"
         @input="$emit('input', $event)"
     ></v-textarea>
@@ -24,7 +25,12 @@ export default {
 
         label: {
             type: String,
-            default: "請選擇內容"
+            default: "請填寫內容"
+        },
+
+        placeholder: {
+            type: String,
+            default: "請開始填寫您想輸入的內容"
         },
 
         rules: {

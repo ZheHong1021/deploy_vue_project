@@ -321,6 +321,9 @@
                 <slot name="expand" v-bind="slotData" />
             </template>
         </CustomTableSelectExpand>
+
+        <!-- 載入數據動畫 -->
+        <CustomGlobalLoading v-model="loading"></CustomGlobalLoading>
     </v-row>
 </template>
 
@@ -328,6 +331,7 @@
 import CustomSortDisplay from '@/components/utils/Table/CustomSortDisplay.vue'
 import CustomMenuSelectList from '@/components/utils/Table/CustomMenuSelectList.vue'
 import CustomTableSelectExpand from '@/components/utils/Table/CustomTableSelectExpand.vue'
+import CustomGlobalLoading from '@/components/utils/CustomGlobalLoading.vue'
 export default {
     // 只適用於跟 Server相關的表格
     name: "CustomDataTable",
@@ -335,6 +339,7 @@ export default {
         CustomSortDisplay, // 排序狀態
         CustomMenuSelectList, // 欄位篩選
         CustomTableSelectExpand, // 表格單一選擇匯出
+        CustomGlobalLoading, // 載入動畫
     },
     props: {
         fixHeader: { // 是否有要固定表頭

@@ -7,7 +7,7 @@
     
 
             <!-- #region (產品分類) -->
-            <v-col cols="12" md="6" class="d-flex flex-column gap-2">
+            <v-col cols="12" md="6" lg="4" xl="3" class="d-flex flex-column gap-2">
                 <div class="label-container font-weight-bold text-subtitle-1">
                     產品分類:
                     <strong class="red--text font-weight-bold text-caption text-left text-sm-right">
@@ -20,6 +20,7 @@
                     :items="product_categories"
                     :loading="product_category_loading"
                     label="請選擇產品分類"
+                    placeholder="選擇範例：廚房用具"
                     item-text="name"
                     item-value="id"
                     :rules="[rules['requiredRules']]"
@@ -27,10 +28,9 @@
                 </CustomSelect>
             </v-col> 
             <!-- #endregion -->
-    
 
             <!-- #region (產品名稱) -->
-            <v-col cols="12" md="6" class="d-flex flex-column gap-2">
+            <v-col cols="12" md="6" lg="4" xl="3" class="d-flex flex-column gap-2">
                 <div class="label-container font-weight-bold text-subtitle-1">
                     產品名稱:
                     <strong class="red--text font-weight-bold text-caption text-left text-sm-right">
@@ -38,16 +38,34 @@
                     </strong>
                 </div>
 
-                <v-text-field v-model="create_data['name_zh']"
+                <v-text-field v-model="create_data['name']"
                     background-color="white" outlined label="請填寫產品名稱"
-                    :rules="[rules['requiredRules'], rules.minLengthRules(0), rules.maxLengthRules(12)]"
+                    :rules="[rules['requiredRules'], rules.minLengthRules(2), rules.maxLengthRules(12)]"
                     placeholder="填寫範例: 哈哈電鍋">
                 </v-text-field>
             </v-col> 
             <!-- #endregion -->
 
+            <!-- #region (產品定價) -->
+            <v-col cols="12" md="6" lg="4" xl="3" class="d-flex flex-column gap-2">
+                <div class="label-container font-weight-bold text-subtitle-1">
+                    產品定價:
+                    <strong class="red--text font-weight-bold text-caption text-left text-sm-right">
+                        (*必填)
+                    </strong>
+                </div>
+
+                <v-text-field v-model.number="create_data['price']" type="number" inputmode="numeric"
+                    background-color="white" outlined label="請填寫產品定價"
+                    :rules="[rules['requiredRules'], rules['isNumbericRules'], rules['limitNumberRangeRules'](1, 99999)]"
+                    placeholder="填寫範例: 10000"
+                    prepend-inner-icon="mdi-currency-usd">
+                </v-text-field>
+            </v-col> 
+            <!-- #endregion -->
+
             <!-- #region (產品描述) -->
-            <v-col cols="12" md="6" class="d-flex flex-column gap-2">
+            <v-col cols="12" md="6" lg="6" xl="6" class="d-flex flex-column gap-2">
                 <div class="label-container font-weight-bold text-subtitle-1">
                     產品描述:
                     <strong class="blue--text font-weight-bold text-caption text-left text-sm-right">
@@ -100,7 +118,7 @@ export default {
                 "name": null, // 產品名稱
                 "category": null, // 產品項目
                 "description": null, // 產品描述
-                "price": 0, // 定價
+                "price": null, // 定價
             },
             createFormValid: false, // 是否符合規則
             rules: rules,

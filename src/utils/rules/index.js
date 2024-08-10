@@ -22,6 +22,9 @@ const minLengthRules = min => (v) => v && v.length >= min || `最小字元長度
 
 const maxLengthRules = max => (v) => v && v.length <= max || `最大字元長度: ${max}`;
 
+const limitNumberRangeRules = (min, max) => (v) => !isNaN(parseFloat(v)) && v >= min && v <= max || `請填入${min}~${max}的數字`
+
+const isNumbericRules = v => /^[-+]?\d+(\.\d+)?$/.test(v) || '請確認填入的是否為數字';
 
 export {
     requiredRules,
@@ -32,6 +35,8 @@ export {
     confirmPasswordRules,
     minLengthRules,
     maxLengthRules,
+    limitNumberRangeRules,
+    isNumbericRules,
 }
 
 
