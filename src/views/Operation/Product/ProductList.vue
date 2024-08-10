@@ -58,7 +58,11 @@
       color="primary darken-2"
     >
       <template v-slot:body>
-        <UpdateProductForm v-if="update_dialog" :id="update_id" @refresh="refreshData" />
+        <UpdateProductForm 
+          v-if="update_dialog" 
+          :id="update_id" 
+          @refresh="refreshData" 
+        />
       </template>
     </CustomDialog>
   </v-container>

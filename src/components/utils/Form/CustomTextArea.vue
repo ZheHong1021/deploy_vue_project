@@ -11,6 +11,7 @@
         :placeholder="placeholder"
         :value="value"
         @input="$emit('input', $event)"
+        :readonly="readonly"
     ></v-textarea>
 </template>
 
@@ -18,42 +19,47 @@
 export default {
     name: "CustomTextArea",
     props: {
-        value: {
+        value: { // 填寫內容
             type: [String],
             default: null,
         },
 
-        label: {
+        label: { // 標籤
             type: String,
             default: "請填寫內容"
         },
 
-        placeholder: {
+        placeholder: { // 填寫提示
             type: String,
             default: "請開始填寫您想輸入的內容"
         },
 
-        rules: {
+        rules: { // 填寫規則
             type: Array,
             default: () => []
         },
 
-        rows: {
+        rows: { // 共幾列
             type: Number,
             default: 4
         },
 
-        rowHeight: {
+        rowHeight: { // 單列高度
             type: Number,
             default: 30
         },
 
-        shaped: {
+        shaped: { // 邊框變橢圓
             type: Boolean,
             default: false,
         },
 
-        clearable: {
+        clearable: { // 允許刪除全部內容
+            type: Boolean,
+            default: false,
+        },
+
+        readonly: { // 唯讀
             type: Boolean,
             default: false,
         },

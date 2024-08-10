@@ -21,8 +21,6 @@
                     rounded
                 ></v-progress-linear>
             </v-card-text>
-
-        
         </v-card>
     </v-dialog>
 </template>
@@ -31,19 +29,19 @@
 export default {
     name: "CustomGlobalLoading",
     props: {
-        value: { // 載入時間
+        value: { // 是否載入
             type: Boolean,
             default: true,
         },
-        width: {
+        width: { // 寬度
             type: Number,
             default: 300,
         },
-        color: {
+        color: { // 背景顏色
             type: String,
             default: "primary",
         },
-        title: {
+        title: { // 載入標題
             type: String,
             default: "載入數據",
         },

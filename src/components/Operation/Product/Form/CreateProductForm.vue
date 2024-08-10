@@ -160,6 +160,19 @@ export default {
                 return
             }
 
+            const swal_response = await this.$swal.fire({
+                title: "提交提醒", 
+                text: "正在提交表單進行儲存", 
+                icon: "info",
+                showCancelButton: true,
+                cancelButtonText: "取消",
+                confirmButtonText: "儲存"
+            })
+
+            if(!swal_response.isConfirmed){
+                return
+            }
+
             try{
                 const formData = new FormData()
                 for(const [key, value] of Object.entries(this.create_data)){
