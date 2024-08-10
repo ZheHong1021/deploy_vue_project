@@ -61,7 +61,7 @@ import {
   showConfirmDelete,
   showDeleteWarning,
 } from "@/utils";
-import CustomDataTable from "@/components/utils/CustomDataTable.vue";
+import CustomDataTable from "@/components/utils/Table/CustomDataTable.vue";
 import CustomDialog from "@/components/utils/CustomDialog.vue";
 import CreateGroupForm from "@/components/Admin/Group/Form/CreateGroupForm.vue";
 import ReadGroupForm from "@/components/Admin/Group/Form/ReadGroupForm.vue";

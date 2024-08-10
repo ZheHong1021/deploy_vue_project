@@ -24,6 +24,10 @@ class BaseService {
     return server.put(`/${this.resource}/${id}/`, data);
   }
 
+  patch_update(id, data) {
+    return server.patch(`/${this.resource}/${id}/`, data);
+  }
+
   delete(id) {
     return server.delete(`/${this.resource}/${id}/`);
   }

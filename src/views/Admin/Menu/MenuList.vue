@@ -86,7 +86,7 @@
 import { MenuService } from '@/api/services';
 import { get_api_pagniation_query_parameter, showConfirmDelete, showDeleteWarning } from "@/utils"
 import CustomDialog from "@/components/utils/CustomDialog.vue";
-import CustomDataTable from "@/components/utils/CustomDataTable.vue";
+import CustomDataTable from "@/components/utils/Table/CustomDataTable.vue";
 import MenuTableItem from '@/components/Admin/Menu/MenuTableItem.vue';
 import MenuRecursiveTable from "@/components/Admin/Menu/MenuRecursiveTable.vue"
 import ReadMenuForm from '@/components/Admin/Menu/Form/ReadMenuForm.vue';

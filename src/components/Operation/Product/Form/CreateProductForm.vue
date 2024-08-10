@@ -6,38 +6,62 @@
         <v-row class="justify-start">
     
 
-            <!-- #region (代號) -->
+            <!-- #region (產品分類) -->
             <v-col cols="12" md="6" class="d-flex flex-column gap-2">
                 <div class="label-container font-weight-bold text-subtitle-1">
-                    角色代號:
+                    產品分類:
                     <strong class="red--text font-weight-bold text-caption text-left text-sm-right">
                         (*必填)
                     </strong>
                 </div>
 
-                <v-text-field v-model="create_data['name']"
-                    background-color="white" outlined label="請填寫角色代號"
+                <CustomSelect
+                    v-model="create_data['category']"
+                    :items="product_categories"
+                    :loading="product_category_loading"
+                    label="請選擇產品分類"
+                    item-text="name"
+                    item-value="id"
                     :rules="[rules['requiredRules']]"
-                    placeholder="填寫範例: role">
-                </v-text-field>
+                >
+                </CustomSelect>
+              
+             
             </v-col> 
             <!-- #endregion -->
     
 
-            <!-- #region (角色名稱) -->
+            <!-- #region (產品名稱) -->
             <v-col cols="12" md="6" class="d-flex flex-column gap-2">
                 <div class="label-container font-weight-bold text-subtitle-1">
-                    角色名稱:
+                    產品名稱:
                     <strong class="red--text font-weight-bold text-caption text-left text-sm-right">
                         (*必填)
                     </strong>
                 </div>
 
                 <v-text-field v-model="create_data['name_zh']"
-                    background-color="white" outlined label="請填寫角色名稱"
-                    :rules="[rules['requiredRules']]"
-                    placeholder="填寫範例: 角色">
+                    background-color="white" outlined label="請填寫產品名稱"
+                    :rules="[rules['requiredRules'], rules['minLengthRules'](0), rules['maxLengthRules'](12)]"
+                    placeholder="填寫範例: 哈哈電鍋">
                 </v-text-field>
+            </v-col> 
+            <!-- #endregion -->
+
+            <!-- #region (產品描述) -->
+            <v-col cols="12" md="6" class="d-flex flex-column gap-2">
+                <div class="label-container font-weight-bold text-subtitle-1">
+                    產品描述:
+                    <strong class="blue--text font-weight-bold text-caption text-left text-sm-right">
+                        (*非必填)
+                    </strong>
+                </div>
+
+                <!-- <v-textarea v-model="create_data['name_zh']"
+                    background-color="white" outlined label="請填寫產品名稱"
+                    :rules="[rules['requiredRules'], rules['minLengthRules'](0), rules['maxLengthRules'](12)]"
+                    placeholder="填寫範例: 哈哈電鍋">
+                </v-text-field> -->
             </v-col> 
             <!-- #endregion -->
 
@@ -55,18 +79,27 @@
 </template>
 
 <script>
-import { ProductService } from '@/api/services'
+import { ProductService, ProductCategoryService } from '@/api/services'
 import { rules } from '@/utils';
+import CustomSelect from '@/components/utils/Form/CustomSelect.vue';
 export default {
     name: "CreateProductForm",
     components: {
+        CustomSelect,
     },
 
     data(){
         return {
+            //#region (擷取API)
+            product_categories: [],
+            product_category_loading: true,
+
+            //#endregion
+
             create_data: {
-                "name": null,
-                "name_zh": null,
+                "name": null, // 產品名稱
+                "description": null, // 產品描述
+                "price": 0, // 定價
             },
             createFormValid: false, // 是否符合規則
             rules: rules,
@@ -77,9 +110,29 @@ export default {
     },
 
     async mounted(){
+        await this.fetchProductCategory()
     },
     
     methods: {
+        //#region (擷取API)
+        async fetchProductCategory(){
+            try{
+                const params = new URLSearchParams({
+                    page_size: -1, // 希望分頁可以一次查詢全部
+                })
+                const response = await ProductCategoryService.get_all(params)
+                if(response.status === 200){
+                    const { data } = response.data
+                    this.product_categories = data
+                }
+            }catch(err){
+                console.error(err)
+            }finally{
+                this.product_category_loading = false
+            }
+        },
+        //#endregion
+
 
         async create(){
             this.$refs.form.validate()

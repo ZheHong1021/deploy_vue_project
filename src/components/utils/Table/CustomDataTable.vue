@@ -325,9 +325,9 @@
 </template>
 
 <script>
-import CustomSortDisplay from '@/components/utils/CustomSortDisplay.vue'
-import CustomMenuSelectList from '@/components/utils/CustomMenuSelectList.vue'
-import CustomTableSelectExpand from '@/components/utils/CustomTableSelectExpand.vue'
+import CustomSortDisplay from '@/components/utils/Table/CustomSortDisplay.vue'
+import CustomMenuSelectList from '@/components/utils/Table/CustomMenuSelectList.vue'
+import CustomTableSelectExpand from '@/components/utils/Table/CustomTableSelectExpand.vue'
 export default {
     // 只適用於跟 Server相關的表格
     name: "CustomDataTable",

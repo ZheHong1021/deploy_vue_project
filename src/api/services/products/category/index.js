@@ -3,7 +3,7 @@ import BaseService from "@/api/services/BaseService"
 
 class ProductCategoryService extends BaseService{
     constructor(){
-        super('product/category') // 帶入 order為 resource
+        super('products/category') // 帶入 order為 resource
     }
 }
 
