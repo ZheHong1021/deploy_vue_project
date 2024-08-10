@@ -18,9 +18,9 @@ const passwordRules = (v) =>  !v || v.length >= 8 || '密碼必須超過8個字�
 
 const confirmPasswordRules = (password) => (v) => v === password || '密碼必須一致'
 
-const minLengthRules = min => (v) => v.length >= min || `最小字元長度: ${min}`;
+const minLengthRules = min => (v) => v && v.length >= min || `最小字元長度: ${min}`;
 
-const maxLengthRules = max => (v) => v.length <= max || `最大字元長度: ${max}`;
+const maxLengthRules = max => (v) => v && v.length <= max || `最大字元長度: ${max}`;
 
 
 export {

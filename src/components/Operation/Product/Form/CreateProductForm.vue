@@ -25,8 +25,6 @@
                     :rules="[rules['requiredRules']]"
                 >
                 </CustomSelect>
-              
-             
             </v-col> 
             <!-- #endregion -->
     
@@ -42,7 +40,7 @@
 
                 <v-text-field v-model="create_data['name_zh']"
                     background-color="white" outlined label="請填寫產品名稱"
-                    :rules="[rules['requiredRules'], rules['minLengthRules'](0), rules['maxLengthRules'](12)]"
+                    :rules="[rules['requiredRules'], rules.minLengthRules(0), rules.maxLengthRules(12)]"
                     placeholder="填寫範例: 哈哈電鍋">
                 </v-text-field>
             </v-col> 
@@ -57,11 +55,11 @@
                     </strong>
                 </div>
 
-                <!-- <v-textarea v-model="create_data['name_zh']"
-                    background-color="white" outlined label="請填寫產品名稱"
-                    :rules="[rules['requiredRules'], rules['minLengthRules'](0), rules['maxLengthRules'](12)]"
-                    placeholder="填寫範例: 哈哈電鍋">
-                </v-text-field> -->
+                <CustomTextArea
+                    v-model="create_data['description']"
+                    label="請填寫產品描述"
+                    clearable>
+                </CustomTextArea>
             </v-col> 
             <!-- #endregion -->
 
@@ -82,10 +80,12 @@
 import { ProductService, ProductCategoryService } from '@/api/services'
 import { rules } from '@/utils';
 import CustomSelect from '@/components/utils/Form/CustomSelect.vue';
+import CustomTextArea from '@/components/utils/Form/CustomTextArea.vue';
 export default {
     name: "CreateProductForm",
     components: {
         CustomSelect,
+        CustomTextArea,
     },
 
     data(){
@@ -98,6 +98,7 @@ export default {
 
             create_data: {
                 "name": null, // 產品名稱
+                "category": null, // 產品項目
                 "description": null, // 產品描述
                 "price": 0, // 定價
             },

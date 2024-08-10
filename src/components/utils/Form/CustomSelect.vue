@@ -1,5 +1,6 @@
 <template>
     <v-select
+        :value="value"
         :items="items"
         :loading="loading"
         loader-height="4"
@@ -9,6 +10,7 @@
         outlined
         :rules="rules"
         no-data-text="無任何可選擇資料"
+        @change="$emit('input', $event)"
         :menu-props="{ bottom: true, offsetY: true }">
     </v-select>
 </template>
