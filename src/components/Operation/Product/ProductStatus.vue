@@ -22,11 +22,11 @@ export default {
         return {
             status_style_map: {
                 "available": {
-                    color: "primary lighten-4",
+                    color: "primary lighten-5",
                     icon_color: "primary",
                 },
                 "out_of_stock": {
-                    color: "error lighten-4",
+                    color: "error lighten-5",
                     icon_color: "error",
                 },
                 "discontinued": {

@@ -61,7 +61,7 @@ import {
   showConfirmDelete,
   showDeleteWarning,
 } from "@/utils";
-import CustomDataTable from "@/components/utils/CustomDataTable.vue";
+import CustomDataTable from "@/components/utils/Table/CustomDataTable.vue";
 import CustomDialog from "@/components/utils/CustomDialog.vue";
 import CreateOrderForm from "@/components/Operation/Order/Form/CreateOrderForm.vue";
 import ReadOrderForm from "@/components/Operation/Order/Form/ReadOrderForm.vue";

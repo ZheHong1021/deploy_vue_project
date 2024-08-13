@@ -58,7 +58,11 @@
       color="primary darken-2"
     >
       <template v-slot:body>
-        <UpdateProductForm v-if="update_dialog" :id="update_id" @refresh="refreshData" />
+        <UpdateProductForm 
+          v-if="update_dialog" 
+          :id="update_id" 
+          @refresh="refreshData" 
+        />
       </template>
     </CustomDialog>
   </v-container>
@@ -71,7 +75,7 @@ import {
   showConfirmDelete,
   showDeleteWarning,
 } from "@/utils";
-import CustomDataTable from "@/components/utils/CustomDataTable.vue";
+import CustomDataTable from "@/components/utils/Table/CustomDataTable.vue";
 import CustomDialog from "@/components/utils/CustomDialog.vue";
 import CreateProductForm from "@/components/Operation/Product/Form/CreateProductForm.vue";
 import ReadProductForm from "@/components/Operation/Product/Form/ReadProductForm.vue";
@@ -104,8 +108,8 @@ export default {
         // 表格設定
         page: 1, // 當前頁數
         itemsPerPage: 30, // 單頁筆數: -1: 代表全部顯示
-        sortBy: ["name"], // 排序
-        sortDesc: [false], // 排序狀態
+        sortBy: ["created_at"], // 排序
+        sortDesc: [true], // 排序狀態
       },
       headers: [
         // 欄位設定
@@ -115,6 +119,7 @@ export default {
         { text: "狀態", value: "status", sortable: true },
         { text: "價格", value: "price", sortable: true },
         { text: "庫存", value: "stock", sortable: true },
+        { text: "建立時間", value: "created_at", sortable: true },
       ],
       //#endregion
 

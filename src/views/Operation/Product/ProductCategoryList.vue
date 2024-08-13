@@ -19,6 +19,7 @@
           @delete="emitDelete"
           show-expand
         >
+
         </CustomDataTable>
       </v-col>
     </v-row>
@@ -26,36 +27,40 @@
     <!-- Create -->
     <CustomDialog
       v-model="create_dialog"
-      title="新增角色"
+      title="新增產品分類"
       color="pink darken-2"
     >
       <template v-slot:body>
-        <CreateGroupForm v-if="create_dialog" @refresh="refreshData" />
+        <CreateProductCategoryForm v-if="create_dialog" @refresh="refreshData" />
       </template>
     </CustomDialog>
 
     <!-- Read -->
-    <CustomDialog v-model="read_dialog" title="瀏覽角色" color="grey darken-2">
+    <CustomDialog v-model="read_dialog" title="瀏覽產品分類" color="grey darken-2">
       <template v-slot:body>
-        <ReadGroupForm v-if="read_dialog" :id="read_id" />
+        <ReadProductCategoryForm v-if="read_dialog" :id="read_id" />
       </template>
     </CustomDialog>
 
     <!-- Update -->
     <CustomDialog
       v-model="update_dialog"
-      title="修改角色"
+      title="修改產品分類"
       color="primary darken-2"
     >
       <template v-slot:body>
-        <UpdateGroupForm v-if="update_dialog" :id="update_id" @refresh="refreshData" />
+        <UpdateProductCategoryForm 
+          v-if="update_dialog" 
+          :id="update_id" 
+          @refresh="refreshData" 
+        />
       </template>
     </CustomDialog>
   </v-container>
 </template>
 
 <script>
-import { GroupService, GroupProfileService } from "@/api/services";
+import { ProductCategoryService } from "@/api/services";
 import {
   get_api_pagniation_query_parameter,
   showConfirmDelete,
@@ -63,16 +68,18 @@ import {
 } from "@/utils";
 import CustomDataTable from "@/components/utils/Table/CustomDataTable.vue";
 import CustomDialog from "@/components/utils/CustomDialog.vue";
-import CreateGroupForm from "@/components/Admin/Group/Form/CreateGroupForm.vue";
-import ReadGroupForm from "@/components/Admin/Group/Form/ReadGroupForm.vue";
-import UpdateGroupForm from "@/components/Admin/Group/Form/UpdateGroupForm.vue";
+import CreateProductCategoryForm from "@/components/Operation/Product/Category/Form/CreateProductCategoryForm.vue";
+import ReadProductCategoryForm from "@/components/Operation/Product/Category/Form/ReadProductCategoryForm.vue";
+import UpdateProductCategoryForm from "@/components/Operation/Product/Category/Form/UpdateProductCategoryForm.vue";
+import ProductStatus from '@/components/Operation/Product/ProductStatus.vue';
 export default {
   components: {
     CustomDataTable,
     CustomDialog,
-    CreateGroupForm,
-    ReadGroupForm,
-    UpdateGroupForm,
+    ProductStatus,
+    CreateProductCategoryForm,
+    ReadProductCategoryForm,
+    UpdateProductCategoryForm,
   },
   data() {
     return {
@@ -86,21 +93,22 @@ export default {
 
       //#region (表格)
       // 欄位顯示
-      disabled_select: ["title"], // 不給選的 (text)
+      disabled_select: ["name"], // 不給選的 (text)
 
       options: {
         // 表格設定
         page: 1, // 當前頁數
         itemsPerPage: 30, // 單頁筆數: -1: 代表全部顯示
-        sortBy: ["id"], // 排序
-        sortDesc: [false], // 排序狀態
+        sortBy: ["created_at"], // 排序
+        sortDesc: [true], // 排序狀態
       },
       headers: [
         // 欄位設定
-        { text: "id", value: "id", sortable: true },
+        { text: "種類名稱", value: "name", sortable: true },
         { text: "操作", value: "actions", sortable: true },
-        { text: "角色名稱", value: "name_zh", sortable: true },
-        { text: "角色代號", value: "name", sortable: true },
+        { text: "描述", value: "description", sortable: true },
+        { text: "顏色", value: "color", sortable: true },
+        { text: "建立時間", value: "created_at", sortable: true },
       ],
       //#endregion
 
@@ -128,7 +136,7 @@ export default {
       try {
         // 得到Pagination必要的parameter
         const params = get_api_pagniation_query_parameter(this.options);
-        const response = await GroupService.get_all_group_with_profiles(params);
+        const response = await ProductCategoryService.get_all(params);
         if (response.status === 200) {
           const { data, count } = response.data;
           this.items = data;
@@ -175,7 +183,7 @@ export default {
           const is_confirm = await showConfirmDelete() // 最後一次確定的 alert
           if(is_confirm){ // 最後一次依舊確定
             try{ // 進行刪除
-                const response = await GroupProfileService.delete(id)
+                const response = await ProductCategoryService.delete(id)
                 if(response.status === 204){
                     this.$swal.fire('刪除成功', '', 'success')
                     await this.fetchData() // 重新讀取資料
