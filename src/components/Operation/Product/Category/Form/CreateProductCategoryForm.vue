@@ -109,7 +109,6 @@ export default {
     },
 
     async mounted(){
-        await this.fetchData()
     },
     
     methods: {

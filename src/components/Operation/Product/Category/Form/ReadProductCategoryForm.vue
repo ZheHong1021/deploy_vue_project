@@ -1,54 +1,47 @@
 <template>
-    <v-form ref="form" 
-        v-model="updateFormValid" 
-        @submit.prevent="update" >
+    <v-row class="justify-start">
 
-        <v-row class="justify-start">
+        <!-- #region (分類名稱) -->
+        <v-col cols="12" md="6" lg="4" xl="3" class="d-flex flex-column gap-2">
+            <div class="label-container font-weight-bold text-subtitle-1">
+                分類名稱:
+            </div>
 
-            <!-- #region (分類名稱) -->
-            <v-col cols="12" md="6" lg="4" xl="3" class="d-flex flex-column gap-2">
-                <div class="label-container font-weight-bold text-subtitle-1">
-                    分類名稱:
-                </div>
+            <v-text-field v-model="origin_data['name']"
+                background-color="white" outlined readonly>
+            </v-text-field>
+        </v-col> 
+        <!-- #endregion -->
 
-                <v-text-field v-model="origin_data['name']"
-                    background-color="white" outlined readonly>
-                </v-text-field>
-            </v-col> 
-            <!-- #endregion -->
-
-            <!-- #region (代表色碼) -->
-            <v-col cols="12" md="6" lg="4" xl="3" class="d-flex flex-column gap-2">
-                <div class="label-container font-weight-bold text-subtitle-1">
-                    代表色碼:
-                  
-                </div>
-
-                <v-text-field :value="origin_data['color']" 
-                    background-color="white" outlined readonly
-                    prepend-inner-icon="mdi-palette">
-                </v-text-field>
-            </v-col> 
-            <!-- #endregion -->
-
-            <!-- #region (分類描述) -->
-            <v-col cols="12" md="6" lg="6" xl="6" class="d-flex flex-column gap-2">
-                <div class="label-container font-weight-bold text-subtitle-1">
-                    分類描述:
-                </div>
-                <CustomTextArea
-                    v-model="origin_data['description']"
-                    label="請填寫分類描述"
-                    readonly>
-                </CustomTextArea>
-            </v-col> 
-            <!-- #endregion -->
-
-
-        </v-row>
-
-    </v-form>
+        <!-- #region (代表色碼) -->
+        <v-col cols="12" md="6" lg="4" xl="3" class="d-flex flex-column gap-2">
+            <div class="label-container font-weight-bold text-subtitle-1">
+                代表色碼:
                 
+            </div>
+
+            <v-text-field :value="origin_data['color']" 
+                background-color="white" outlined readonly
+                prepend-inner-icon="mdi-palette">
+            </v-text-field>
+        </v-col> 
+        <!-- #endregion -->
+
+        <!-- #region (分類描述) -->
+        <v-col cols="12" md="6" lg="6" xl="6" class="d-flex flex-column gap-2">
+            <div class="label-container font-weight-bold text-subtitle-1">
+                分類描述:
+            </div>
+            <CustomTextArea
+                v-model="origin_data['description']"
+                label="請填寫分類描述"
+                readonly>
+            </CustomTextArea>
+        </v-col> 
+        <!-- #endregion -->
+
+
+    </v-row>
 </template>
 
 <script>

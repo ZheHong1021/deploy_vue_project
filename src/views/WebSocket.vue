@@ -21,7 +21,7 @@ export default {
   },
   methods: {
     initWebSocket() {
-      this.socket = new WebSocket('ws://localhost:8000/ws/order/');
+      this.socket = new WebSocket('ws://localhost:8000/ws/test/');
 
       this.socket.onopen = () => {
         this.statusMessage = 'Connected';
