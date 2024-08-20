@@ -170,34 +170,28 @@ export default {
     data(){
         return {
             menu: false, // 開關
-            value: null,
         }
     },
 
     watch: { // 監聽主要v-model資料在 ParentComopnent有無變動
-        date_idx: {
-            immediate: true,
-            handler(newVal){
-                this.value = this.date_idx
-            }
-        }   
+       
     },
 
 
     computed: {
-        date_str:{
+        date_str:{ // 輸入框中的文字內容
             get(){
-                return this.range
-                        ? this.value 
-                            ? this.value.join('~') // 複選
-                            : null
-                        : this.value // 單選
+                // 單選
+                if(!this.range) return this.value
+
+                // 複選
+                return this.value
+                        ? this.value.join('~')
+                        : null
             },
 
             set(val){ // 通常事變空值
-                this.value = this.range
-                                    ? [] // 複選
-                                    : null // 單選
+              
             },
         },
 
@@ -219,7 +213,7 @@ export default {
         },
 
         emitEvent($event){
-            this.$emit('input', $event)
+            this.$emit('change', $event)
         },
 
         // 修改日期的Event
@@ -237,7 +231,10 @@ export default {
 
         // 直接清除
         clearDateIdx(){
-            this.emitEvent(null)
+            const clear_date_idx = this.range
+                                    ? []
+                                    : null
+            this.emitEvent(clear_date_idx)
         },
     },
 }
