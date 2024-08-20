@@ -32,57 +32,58 @@
 
     <v-divider class="mt-2 elevation-1"></v-divider>
 
-    <!-- 全選 -->
-    <v-list-item v-if="!disableSelectAll" ripple @mousedown.prevent @click="toggleSelectAll">
-        <!-- 全選 -->
-        <v-list-item-action>
-            <v-icon color="indigo darken-4">
-            {{ selectActionIcon }}
-            </v-icon>
-        </v-list-item-action>
 
-        <!-- 文字內容 -->
-        <v-list-item-content>
-            <v-list-item-title> 全選 </v-list-item-title>
-        </v-list-item-content>
-    </v-list-item>
+      <!-- 全選 -->
+      <v-list-item v-if="!disableSelectAll" v-show="!is_no_search_items"
+        ripple @mousedown.prevent @click="toggleSelectAll">
+          <!-- 全選 -->
+          <v-list-item-action>
+              <v-icon color="indigo darken-4">
+              {{ selectActionIcon }}
+              </v-icon>
+          </v-list-item-action>
 
-    <!-- 項目 -->
-    <v-list-item-group
-      :value="value"
-      multiple
-      active-class="primary--text font-weight-bold"
-      @change="emitEvent"
-    >
-      <!-- 透過 value綁定到 selected當中 -->
-        <template v-for="item in items">
-          <v-list-item 
-              v-show="item_is_search(item)"
-              :key="item[itemValue]" 
-              :value="item[itemValue]"
-              :disabled="item_is_disabled(item)">
-                  <template v-slot:default="{ active }">
-                      <!-- 勾選 -->
-                      <v-list-item-action>
-                      <v-checkbox :input-value="active" color="primary"></v-checkbox>
-                      </v-list-item-action>
-                      <!-- 內容 -->
-                      <v-list-item-content>
-                          <v-list-item-title>
-                              <div class="d-flex align-center gap-1">
-                                  <!-- 被選內容 -->
-                                  {{ item[itemText] }}
-                                  <!-- 必選 -->
-                                  <small v-if="item_is_disabled(item)" class="font-weight-black red--text">(*必選)</small>
-                              </div>
-                          </v-list-item-title>
-                      </v-list-item-content>
-                  </template>
-          </v-list-item>
+          <!-- 文字內容 -->
+          <v-list-item-content>
+              <v-list-item-title> 全選 </v-list-item-title>
+          </v-list-item-content>
+      </v-list-item>
 
-          <!-- 分割線 -->
-          <!-- <v-divider :key="`divider-${item[itemValue]}`"></v-divider> -->
-        </template>
+      <!-- 項目 -->
+      <v-list-item-group v-show="!is_no_search_items"
+        :value="value"
+        multiple
+        active-class="primary--text font-weight-bold"
+        @change="emitEvent"
+      >
+        <!-- 透過 value綁定到 selected當中 -->
+          <template v-for="item in items">
+            <v-list-item 
+                v-show="item_is_search(item)"
+                :key="item[itemValue]" 
+                :value="item[itemValue]"
+                :disabled="item_is_disabled(item)">
+                    <template v-slot:default="{ active }">
+                        <!-- 勾選 -->
+                        <v-list-item-action>
+                        <v-checkbox :input-value="active" color="primary"></v-checkbox>
+                        </v-list-item-action>
+                        <!-- 內容 -->
+                        <v-list-item-content>
+                            <v-list-item-title>
+                                <div class="d-flex align-center gap-1">
+                                    <!-- 被選內容 -->
+                                    {{ item[itemText] }}
+                                    <!-- 必選 -->
+                                    <small v-if="item_is_disabled(item)" class="font-weight-black red--text">(*必選)</small>
+                                </div>
+                            </v-list-item-title>
+                        </v-list-item-content>
+                    </template>
+            </v-list-item>
+          </template>
+      </v-list-item-group>
+
 
       <!-- 搜尋不到 -->
       <v-list-item v-if="is_no_search_items" disabled>
@@ -93,9 +94,6 @@
           </div>
         </v-list-item-content>
       </v-list-item>
-
-
-    </v-list-item-group>
   </v-list>
 </template>
 
@@ -180,9 +178,9 @@ export default {
     },
 
     selectActionIcon(){ // 選擇狀態的ICON
-        if(this.isAllSelected) return "mdi-close-box" // 全部選擇
-        else if(this.isSomeSelected) return "mdi-minus-box" // 部分選擇
-        else if(this.isAllNotSelected) return "mdi-checkbox-blank-outline" // 都未選擇
+        return this.isAllSelected ? "mdi-close-box"  // 全部選擇
+           : this.isSomeSelected ? "mdi-minus-box" // 部分選擇
+           : "mdi-checkbox-blank-outline"; // 都未選擇
     },
 
     selectDisabledList(){ // 被禁止選取的列表
