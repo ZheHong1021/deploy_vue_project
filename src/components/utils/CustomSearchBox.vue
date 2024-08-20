@@ -8,6 +8,7 @@
         @input="$emit('input', $event)"
         prepend-inner-icon="mdi-magnify"
         :clearable="clearable" clear-icon="mdi-close-circle"
+        :dense="dense"
         hide-details>
 
     </v-text-field>
@@ -37,12 +38,26 @@ export default {
             type: Boolean,
             default: false,
         },
+
+        dense: {
+            type: Boolean,
+            default: false,
+        }
     },
     data(){
         return {
 
         }
     },
+
+    watch: {
+        value(newVal){ // 當點擊 clear時 => 回傳 ""
+            if(newVal === null){
+                this.$emit("input", "")
+            }
+        }
+    }
+
 }
 </script>
 
