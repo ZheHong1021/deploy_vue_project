@@ -14,11 +14,10 @@
                         :outlined="outlined"
                         :hide-details="hideDetails" 
                         :background-color="backgroundColor"
-                        class="date-picker-text-field"
-                        :style="`width: ${width}`"
-                        :clearable="clearable"
-                        clear-icon="mdi-close-circle"
-                        @click:clear="clearDateIdx"
+                        :style="{
+                            'width': width
+                        }"
+                        :clearable="clearable" clear-icon="mdi-close-circle"
                         :rules="rules"
                         :disabled="disabled"
                     ></v-text-field>
@@ -37,8 +36,8 @@
                     :header-color="headerColor"
                     :color="color"
                     locale="zh-tw"
-                    show-current
-                ></v-date-picker>
+                    show-current>
+                </v-date-picker>
 
                 <!-- 詳細資訊 -->
                 <slot name="detail"></slot>
@@ -49,13 +48,13 @@
                     <v-icon color="primary" left small>mdi-information</v-icon>
                     <!-- 選擇第一個日期時 (通常會為 null 或是 []) -->
                     <!-- 或是已經選完 .length === 2 -->
-                    <span v-show="!value || value.length === 2" class="text-subtitle-2">
-                        請先選擇第一個日期
+                    <span v-show="isNoSelectOrSelectAll" class="text-subtitle-2">
+                        {{ is_no_select_or_select_all_text }}
                     </span>
                     
                     <!-- 選擇第二個日期時 (通常會為 [<date1>, ]) -->
-                    <span v-show="value && value.length === 1" class="text-subtitle-2">
-                        請再選擇第二個日期，形成日期範圍
+                    <span v-show="isOnlySelectOne" class="text-subtitle-2">
+                        {{ is_only_select_one_text }}
                     </span>
                 </div>
 
@@ -170,32 +169,36 @@ export default {
     data(){
         return {
             menu: false, // 開關
+            is_no_select_or_select_all_text: "請先選擇第一個日期",
+            is_only_select_one_text: "請再選擇第二個日期，形成日期範圍",
         }
     },
-
-    watch: { // 監聽主要v-model資料在 ParentComopnent有無變動
-       
-    },
-
 
     computed: {
         date_str:{ // 輸入框中的文字內容
             get(){
                 // 單選
                 if(!this.range) return this.value
-
                 // 複選
                 return this.value
                         ? this.value.join('~')
                         : null
             },
-
-            set(val){ // 通常事變空值
-              
+            set(val){ // 變成空
+                this.clearDateIdx()
             },
         },
 
-      
+        isNoSelectOrSelectAll(){ // 均未選擇或全選了 => 請選擇第一個日期
+            const { value } = this
+            return !value || value.length === 0 || value.length === 2
+        },
+
+        isOnlySelectOne(){ // 只選一個日期 => 請再選擇第二個日期，形成日期範圍
+            const { value } = this
+            return value && value.length === 1
+        },
+
     },
 
     methods: {
@@ -212,29 +215,24 @@ export default {
             return diffInDays >= 0 // 大於等於0才可以進行
         },
 
-        emitEvent($event){
-            this.$emit('change', $event)
-        },
 
         // 修改日期的Event
         ChangeDatePicker(date){
             this.menu = false // 確定選取完成後 => 關閉 menu
-            
             // 如果是複選 => 需要將日期做排序
             if(this.range){
                 date = date.sort( (a, b) => new Date(a) - new Date(b) )
             }
-
-            this.emitEvent(date)
+            this.$emit('change', date) // 這邊依照日期用@change比較合適
         },
 
 
-        // 直接清除
+        // 清空日期
         clearDateIdx(){
             const clear_date_idx = this.range
                                     ? []
                                     : null
-            this.emitEvent(clear_date_idx)
+            this.$emit('input', clear_date_idx) // 注意這邊要使用@input
         },
     },
 }
