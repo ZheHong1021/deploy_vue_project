@@ -55,9 +55,9 @@
       @change="emitEvent"
     >
       <!-- 透過 value綁定到 selected當中 -->
-      <template v-if="!is_no_search_items">
-        <template v-for="item in search_filter_items">
+        <template v-for="item in items">
           <v-list-item 
+              v-show="item_is_search(item)"
               :key="item[itemValue]" 
               :value="item[itemValue]"
               :disabled="item_is_disabled(item)">
@@ -83,10 +83,9 @@
           <!-- 分割線 -->
           <!-- <v-divider :key="`divider-${item[itemValue]}`"></v-divider> -->
         </template>
-      </template>
 
       <!-- 搜尋不到 -->
-      <v-list-item v-else disabled>
+      <v-list-item v-if="is_no_search_items" disabled>
         <v-list-item-content>
           <div class="d-flex align-center gap-1">
             <v-icon size="22">mdi-magnify-remove-outline</v-icon>
@@ -225,6 +224,10 @@ export default {
     item_is_disabled(item){ // 是否為被禁用
         const { itemValue } = this
         return this.selectDisabledList.some( (disabled_item) => item[itemValue] === disabled_item[itemValue] )
+    },
+
+    item_is_search(item){ // 有被搜尋到
+      return this.search_filter_items.some(search_item => search_item['id'] === item['id'])
     },
   }
 };
