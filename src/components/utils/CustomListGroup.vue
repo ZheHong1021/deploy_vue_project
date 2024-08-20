@@ -23,6 +23,13 @@
       </v-list-item-content>
     </v-list-item>
 
+    <!-- 搜尋 -->
+    <v-list-item v-if="!disableSearch">
+      <v-list-item-content>
+        <CustomSearchBox v-model="search" clearable ></CustomSearchBox>
+      </v-list-item-content>
+    </v-list-item>
+
     <v-divider class="mt-2 elevation-1"></v-divider>
 
     <!-- 全選 -->
@@ -48,40 +55,58 @@
       @change="emitEvent"
     >
       <!-- 透過 value綁定到 selected當中 -->
-      <template v-for="item in items">
-        <v-list-item 
-            :key="item[itemValue]" 
-            :value="item[itemValue]"
-            :disabled="item_is_disabled(item)">
-                <template v-slot:default="{ active }">
-                    <!-- 勾選 -->
-                    <v-list-item-action>
-                    <v-checkbox :input-value="active" color="primary"></v-checkbox>
-                    </v-list-item-action>
-                    <!-- 內容 -->
-                    <v-list-item-content>
-                        <v-list-item-title>
-                            <div class="d-flex align-center gap-1">
-                                <!-- 被選內容 -->
-                                {{ item[itemText] }}
-                                <!-- 必選 -->
-                                <small v-if="item_is_disabled(item)" class="font-weight-black red--text">(*必選)</small>
-                            </div>
-                        </v-list-item-title>
-                    </v-list-item-content>
-                </template>
-        </v-list-item>
+      <template v-if="!is_no_search_items">
+        <template v-for="item in search_filter_items">
+          <v-list-item 
+              :key="item[itemValue]" 
+              :value="item[itemValue]"
+              :disabled="item_is_disabled(item)">
+                  <template v-slot:default="{ active }">
+                      <!-- 勾選 -->
+                      <v-list-item-action>
+                      <v-checkbox :input-value="active" color="primary"></v-checkbox>
+                      </v-list-item-action>
+                      <!-- 內容 -->
+                      <v-list-item-content>
+                          <v-list-item-title>
+                              <div class="d-flex align-center gap-1">
+                                  <!-- 被選內容 -->
+                                  {{ item[itemText] }}
+                                  <!-- 必選 -->
+                                  <small v-if="item_is_disabled(item)" class="font-weight-black red--text">(*必選)</small>
+                              </div>
+                          </v-list-item-title>
+                      </v-list-item-content>
+                  </template>
+          </v-list-item>
 
-        <!-- 分割線 -->
-        <!-- <v-divider :key="`divider-${item[itemValue]}`"></v-divider> -->
+          <!-- 分割線 -->
+          <!-- <v-divider :key="`divider-${item[itemValue]}`"></v-divider> -->
+        </template>
       </template>
+
+      <!-- 搜尋不到 -->
+      <v-list-item v-else disabled>
+        <v-list-item-content>
+          <div class="d-flex align-center gap-1">
+            <v-icon size="22">mdi-magnify-remove-outline</v-icon>
+            <span>查詢不到搜尋內容</span>
+          </div>
+        </v-list-item-content>
+      </v-list-item>
+
+
     </v-list-item-group>
   </v-list>
 </template>
 
 <script>
+import CustomSearchBox from './CustomSearchBox.vue';
 export default {
   name: "CustomListGroup",
+  components: {
+    CustomSearchBox
+  },
   props: {
     value: { // 回傳值
         type: Array,
@@ -127,6 +152,11 @@ export default {
         default: false,
     },
 
+    disableSearch: { // 隱藏搜尋
+        type: Boolean,
+        default: false,
+    },
+
     disableSelectAll: { // 隱藏全選
         type: Boolean,
         default: false,
@@ -134,7 +164,7 @@ export default {
   },
   data(){
     return {
-
+      search: "",
     }
   },
   computed: {
@@ -162,7 +192,17 @@ export default {
 
         // 有進用 => 這些則無法被選取
         return this.itemDisabled(this.items) 
-    }
+    },
+
+
+    search_filter_items(){ // 透過搜尋的 items
+      const { items, search, itemText } = this
+      return items.filter(item => item[itemText].includes(search))
+    },
+
+    is_no_search_items(){  // 沒有搜尋到
+      return this.search_filter_items.length === 0
+    },
 
   },
 
