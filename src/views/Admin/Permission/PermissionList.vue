@@ -73,7 +73,7 @@ export default {
 
       //#region (表格)
       // 欄位顯示
-      disabled_select: ["codename"], // 不給選的 (text)
+      disabled_select: ["id"], // 不給選的 (text)
 
       options: {
         // 表格設定
