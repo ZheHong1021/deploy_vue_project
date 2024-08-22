@@ -15,9 +15,15 @@
           @emitUpdateOptions="emitUpdateOptions"
           @read="emitRead"
           @update="emitUpdate"
-          :actions="['read', 'update']"
-          show-expand
-        > 
+          :actions="['read', 'update']"> 
+
+          <!--#region (Items) -->
+          <template v-slot:item.action="{ item }">
+            <PermissionActionChip :action="item.action" />
+          </template>
+
+          <!--#endregion -->
+
         </CustomDataTable>
       </v-col>
     </v-row>
@@ -54,12 +60,14 @@ import CustomDataTable from "@/components/utils/Table/CustomDataTable.vue";
 import CustomDialog from "@/components/utils/CustomDialog.vue";
 import ReadPermissionForm from "@/components/Admin/Permission/Form/ReadPermissionForm.vue";
 import UpdatePermissionForm from "@/components/Admin/Permission/Form/UpdatePermissionForm.vue";
+import PermissionActionChip from "@/components/Admin/Permission/PermissionActionChip.vue";
 export default {
   components: {
     CustomDataTable,
     CustomDialog,
     ReadPermissionForm,
     UpdatePermissionForm,
+    PermissionActionChip,
   },
   data() {
     return {
@@ -85,10 +93,12 @@ export default {
       headers: [
         // 欄位設定
         { text: "編號", value: "id", sortable: true },
-        { text: "操作代號", value: "codename", sortable: true },
+        { text: "權限代號", value: "codename", sortable: true },
+        { text: "方法", value: "action", sortable: true },
         { text: "操作", value: "actions", sortable: false },
-        { text: "操作說明", value: "name", sortable: true },
-        { text: "操作對象", value: "content_type_name", sortable: false},
+        { text: "權限說明", value: "name", sortable: true },
+        { text: "針對對象", value: "content_type_name", sortable: false},
+        { text: "權限標籤", value: "content_type_app_label", sortable: false},
       ],
 
       

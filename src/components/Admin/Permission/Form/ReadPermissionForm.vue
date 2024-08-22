@@ -2,6 +2,16 @@
     <v-row class="justify-start">
 
 
+        <!-- #region (方法 - codename) -->
+        <v-col cols="12" class="d-flex flex-wrap gap-2">
+            <span class="label-container font-weight-bold text-subtitle-1 ">
+                方法:
+            </span>
+
+            <PermissionActionChip :action="read_data['action']" />
+        </v-col>
+        <!-- #endregion -->
+
         <!-- #region (操作代號 - codename) -->
         <v-col cols="12" md="6" class="d-flex flex-column gap-2">
             <div class="label-container font-weight-bold text-subtitle-1">
@@ -43,29 +53,25 @@
         </v-col>
         <!-- #endregion -->
 
-        
-
-
     </v-row>
 </template>
 
 <script>
 import { PermissionService } from '@/api/services'
 import CustomTextArea from '@/components/utils/Form/CustomTextArea.vue';
+import PermissionActionChip from '../PermissionActionChip.vue';
 export default {
     name: "ReadPermissionForm",
     components: {
         CustomTextArea,
+        PermissionActionChip
     },
     props: ['id'],
     data() {
 
         return {
             loading: true,
-            read_data: {
-                title: null,
-              
-            },
+            read_data: {},
         }
     },
 
@@ -85,12 +91,7 @@ export default {
             try {
                 const response = await PermissionService.get_by_id(this.id)
                 if (response.status === 200) {
-                    const permission = response.data
-                    this.read_data = {
-                        content_type_name: permission['content_type_name'],
-                        name: permission['name'],
-                        codename: permission['codename'],
-                    }
+                    this.read_data = response.data
                 }
             }
             catch (err) {

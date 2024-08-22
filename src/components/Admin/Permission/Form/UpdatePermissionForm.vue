@@ -2,7 +2,15 @@
     <v-form ref="form" v-model="updateFormValid" @submit.prevent="update">
 
         <v-row class="justify-start">
+            <!-- #region (方法 - codename) -->
+            <v-col cols="12" class="d-flex flex-wrap gap-2">
+                <span class="label-container font-weight-bold text-subtitle-1 ">
+                    方法:
+                </span>
 
+                <PermissionActionChip :action="response_data['action']" />
+            </v-col>
+            <!-- #endregion -->
 
             <!-- #region (操作代號 - codename) -->
             <v-col cols="12" md="6" class="d-flex flex-column gap-2">
@@ -63,10 +71,12 @@
 import { PermissionService } from '@/api/services'
 import { rules } from '@/utils';
 import CustomTextArea from '@/components/utils/Form/CustomTextArea.vue';
+import PermissionActionChip from '../PermissionActionChip.vue';
 export default {
     name: "UpdatePermissionForm",
     components: {
         CustomTextArea,
+        PermissionActionChip
     },
     props: ['id'],
     data() {
