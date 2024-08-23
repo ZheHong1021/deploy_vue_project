@@ -32,7 +32,9 @@
             <div class="label-container font-weight-bold text-subtitle-1">
                 權限選擇:
             </div>
-            <PermissionTreeList />
+            <PermissionTreeList 
+                v-model="read_data['permissions']"
+                readonly/>
         </v-col>
         <!-- #endregion -->
 
@@ -43,7 +45,7 @@
 
 <script>
 import { GroupProfileService } from '@/api/services'
-import PermissionTreeList from '../../Permission/PermissionTreeList.vue';
+import PermissionTreeList from '../../Permission/PermissionCheckedList.vue';
 export default {
     name: "ReadGroupForm",
     components: {
@@ -56,6 +58,7 @@ export default {
             read_data: {
                 name: null,
                 name_zh: null,
+                permissions: [],
             },
         }
     },
@@ -76,10 +79,10 @@ export default {
             try {
                 const response = await GroupProfileService.get_by_id(this.id)
                 if (response.status === 200) {
-                    const Group = response.data
                     this.read_data = {
-                        name: Group['name'],
-                        name_zh: Group['name_zh'],
+                        name: response.data.name,
+                        name_zh: response.data.name_zh,
+                        permissions: response.data.permissions.map(permission => permission.id),
                     }
                 }
             }

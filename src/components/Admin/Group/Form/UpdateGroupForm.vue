@@ -35,6 +35,18 @@
             </v-col>
             <!-- #endregion -->
 
+
+            <!-- #region (角色權限選擇) -->
+            <v-col cols="12" class="d-flex flex-column gap-2">
+                <div class="label-container font-weight-bold text-subtitle-1">
+                    權限選擇:
+                </div>
+                <PermissionTreeList 
+                    v-model="update_data['permissions']"
+                />
+            </v-col>
+            <!-- #endregion -->
+
             <v-col cols="12" class="d-flex align-center justify-center gap-4">
                 <v-btn color="primary darken-2" type="submit" class="font-weight-bold white--text" width="150" height="50">
                     儲存
@@ -48,10 +60,14 @@
 
 <script>
 import { GroupProfileService } from '@/api/services'
+import PermissionTreeList from '../../Permission/PermissionCheckedList.vue';
 import { rules } from '@/utils';
+import permissions from '@/api/services/permissions';
 export default {
     name: "UpdateGroupForm",
-    components: {},
+    components: {
+        PermissionTreeList
+    },
     props: ['id'],
     data() {
 
@@ -83,6 +99,7 @@ export default {
                     this.update_data = {
                         name: Group['name'],
                         name_zh: Group['name_zh'],
+                        permissions: Group['permissions'].map(permission => permission['id'])   
                     }
                 }
             }
