@@ -55,6 +55,7 @@
         multiple
         active-class="primary--text font-weight-bold"
         @change="emitEvent"
+        
       >
         <!-- 透過 value綁定到 selected當中 -->
           <template v-for="item in items">
@@ -62,7 +63,7 @@
                 v-show="item_is_search(item)"
                 :key="item[itemValue]" 
                 :value="item[itemValue]"
-                :disabled="item_is_disabled(item)">
+                :disabled="readonly || item_is_disabled(item)">
                     <template v-slot:default="{ active }">
                         <!-- 勾選 -->
                         <v-list-item-action>
@@ -75,7 +76,7 @@
                                     <!-- 被選內容 -->
                                     {{ item[itemText] }}
                                     <!-- 必選 -->
-                                    <small v-if="item_is_disabled(item)" class="font-weight-black red--text">(*必選)</small>
+                                    <small v-if="item_is_disabled(item) && showRequiredText" class="font-weight-black red--text">(*必選)</small>
                                 </div>
                             </v-list-item-title>
                         </v-list-item-content>
@@ -155,6 +156,16 @@ export default {
     },
 
     disableSelectAll: { // 隱藏全選
+        type: Boolean,
+        default: false,
+    },
+
+    showRequiredText: { // 顯示必選文字
+        type: Boolean,
+        default: false,
+    },
+
+    readonly: { // 唯讀
         type: Boolean,
         default: false,
     },
