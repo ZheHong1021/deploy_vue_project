@@ -88,6 +88,23 @@ export function errorHandler(error) {
         router.push({
           name: '403_Forbidden' 
         })
+        break;
+
+
+      case 404:
+        if (response_data) {
+          Swal.fire({
+              title: "找不到資源", 
+              text: extractErrorMessage(response_data), 
+              icon: "error",
+              confirmButtonText: "確認",
+          })
+        }
+
+        // 重新導向至 404 頁面
+        router.push({
+          name: '404_NotFound' 
+        })
 
 
         break;

@@ -3,18 +3,18 @@
         <v-row justify="center" align="center">
             <v-col cols="12" class="d-flex flex-column justify-center align-center">
                 <h4 class="text-h4 font-weight-black">
-                    500 Interval Server Error
+                    404 Not Found
                 </h4>
             </v-col>
             <v-col cols="12" class="d-flex flex-column gap-4 justify-center align-center">
                 <p class="text-h5">
-                    伺服器發生點小問題
+                    找不到頁面，請確認網址是否正確
                 </p>
 
-                <v-btn rounded class="font-weight-black text-h6 error--text" color="error lighten-5" 
-                    @click="refreshGoBackPage">
-                    <v-icon class="mr-1">mdi-update</v-icon>
-                    重新載入
+                <v-btn rounded class="font-weight-black text-h6 primary--text" color="blue lighten-5" 
+                    @click="goToHome">
+                    <v-icon class="mr-1">mdi-home</v-icon>
+                    回到首頁
                 </v-btn>
             </v-col>
 
@@ -22,7 +22,7 @@
             <v-col cols="12" class="d-flex justify-center align-center">
                 <v-img 
                     class="error-image"
-                    src="@/assets/images/errors/500.png" 
+                    src="@/assets/images/errors/404.png" 
                     ></v-img>
             </v-col>
         </v-row>
@@ -35,8 +35,8 @@
 <script>
 export default {
     methods: {
-        refreshGoBackPage() { // 回到上一頁
-            this.$router.go(-1)
+        goToHome() {
+            this.$router.push({ name: 'Home' });
         }
     }
 }
