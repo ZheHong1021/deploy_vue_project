@@ -97,11 +97,11 @@ export default {
 
     leftCols: {
       type: [Number, String],
-      default: 3,
+      default: 6,
     },
     rightCols: {
       type: [Number, String],
-      default: 9,
+      default: 6,
     },
   },
   computed: {

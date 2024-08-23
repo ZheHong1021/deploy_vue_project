@@ -21,7 +21,7 @@
 
             <!-- 新增按鈕 -->
             <v-btn 
-                v-if="!hideCreate"
+                v-if="actions.includes('create')"
                 :x-small="rwd_name === 'xs'" 
                 :small="rwd_name !== 'xs'"
                 height="50" class="d-flex align-center rounded-lg" 
@@ -414,10 +414,6 @@ export default {
             type: Boolean,
             default: false,
         },
-        hideCreate:{ // 隱藏新增按鈕
-            type: Boolean,
-            default: false,
-        },
         hideDefaultHeader: {
             type: Boolean,
             default: false,
@@ -429,7 +425,7 @@ export default {
 
         actions: { // 顯示方式
             type: Array,
-            default: () => ['read', 'update', 'delete']
+            default: () => ['create', 'read', 'update', 'delete']
         },
 
         

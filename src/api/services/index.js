@@ -5,6 +5,7 @@ import OrderService from '@/api/services/orders'
 import UserService from '@/api/services/users'
 import GroupService from '@/api/services/groups'
 import GroupProfileService from '@/api/services/groups/group-profile'
+import PermissionService from '@/api/services/permissions'
 import MenuService from '@/api/services/menus'
 import ProductService from '@/api/services/products'
 import ProductCategoryService from '@/api/services/products/category'
@@ -15,6 +16,7 @@ export {
     UserService,
     GroupService,
     GroupProfileService,
+    PermissionService,
     MenuService,
     apiAuthToken,
     ProductService,

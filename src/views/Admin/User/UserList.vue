@@ -38,6 +38,27 @@
             </td>
           </template>
 
+        <!-- 系統角色(group) -->
+          <template v-slot:item.groups="{item}">
+            <td class="py-4">
+              <div class="d-flex flex-wrap gap-2" v-if="item?.groups && item.groups.length > 0">
+                <v-chip v-for="group in item.groups" :key="group.id"
+                  rounded class="font-weight-bold text-subtitle-2 black--text elevation-4"
+                  color="indigo lighten-5">
+                  <div class="d-flex align-center gap-1">
+                    <v-icon small color="indigo darken-2">mdi-account-multiple</v-icon>
+                    {{ group['name_zh'] }}
+                  </div>
+                </v-chip>
+              </div>
+              
+              <div v-else class="font-weight-bold grey--text text--darken-2 d-flex align-center gap-0">
+                  <v-icon color="error">mdi-close-thick</v-icon>
+                  尚未擁有
+              </div>
+            </td>
+          </template>
+
 
         <!-- 啟動狀態(is_active) -->
           <template v-slot:item.is_active="{item}">
@@ -58,13 +79,13 @@
           <!-- 最後登入時間(last_login) -->
           <template v-slot:item.last_login="{item}">
             <td>
-              <span class="font-weight-bold grey--text text--darken-2">
+              <div>
                 <template v-if="item['last_login']">{{ item['last_login'] }}</template>
                 <template v-else>
                   <v-icon color='red'>mdi-close-thick</v-icon>
-                  無登入紀錄
+                  <span class="font-weight-bold grey--text text--darken-2">無登入紀錄</span>
                 </template>
-              </span>
+              </div>
             </td>
           </template>
 
@@ -76,7 +97,7 @@
     <!-- Create -->
     <CustomDialog
       v-model="create_dialog"
-      title="新增角色"
+      title="新增用戶"
       color="pink darken-2"
     >
       <template v-slot:body>
@@ -85,7 +106,7 @@
     </CustomDialog>
 
     <!-- Read -->
-    <CustomDialog v-model="read_dialog" title="瀏覽角色" color="grey darken-2">
+    <CustomDialog v-model="read_dialog" title="瀏覽用戶" color="grey darken-2">
       <template v-slot:body>
         <ReadUserForm v-if="read_dialog" :id="read_id" />
       </template>
@@ -94,7 +115,7 @@
     <!-- Update -->
     <CustomDialog
       v-model="update_dialog"
-      title="修改角色"
+      title="修改用戶"
       color="primary darken-2"
     >
       <template v-slot:body>
@@ -142,7 +163,7 @@ export default {
         // 表格設定
         page: 1, // 當前頁數
         itemsPerPage: 30, // 單頁筆數: -1: 代表全部顯示
-        sortBy: ["last_login"], // 排序
+        sortBy: ["date_joined"], // 排序
         sortDesc: [true], // 排序狀態
       },
       headers: [
@@ -151,9 +172,11 @@ export default {
         { text: "姓名", value: "fullname", sortable: true },
         { text: "操作", value: "actions", sortable: false},
         { text: "信箱", value: "email", sortable: true },
-        { text: "年齡", value: "age", sortable: true },
+        // { text: "年齡", value: "age", sortable: true },
         { text: "性別", value: "gender", sortable: true },
+        { text: "系統角色", value: "groups", sortable: true },
         { text: "啟動狀態", value: "is_active", sortable: true },
+        { text: "註冊時間", value: "date_joined", sortable: true },
         { text: "最後登入時間", value: "last_login", sortable: true },
       ],
 

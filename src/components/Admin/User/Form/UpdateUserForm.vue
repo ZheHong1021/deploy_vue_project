@@ -128,6 +128,28 @@
             </v-col> 
             
             <!-- #endregion -->
+            
+
+            <!-- #region (角色選擇) -->
+            <v-col cols="12" class="d-flex flex-column gap-2">
+                <div class="label-container font-weight-bold text-subtitle-1">
+                    角色選擇:
+                </div>
+                <GroupCheckedList v-model="update_data['groups']"/>
+            </v-col>
+            <!-- #endregion -->
+            
+            <!-- #region (權限選擇) -->
+            <v-col cols="12" class="d-flex flex-column gap-2">
+                <PermissionCheckedList 
+                    v-model="update_data['user_permissions']"
+                    :group_checked="group_permission_checked"
+                />
+            </v-col>
+            <!-- #endregion -->
+
+            
+            
             <v-col cols="12" class="d-flex align-center justify-center gap-4">
                 <v-btn color="primary darken-2" type="submit" class="font-weight-bold white--text" width="150" height="50">
                     儲存
@@ -141,10 +163,15 @@
 
 <script>
 import { UserService } from '@/api/services'
+import PermissionCheckedList from '../../Permission/PermissionCheckedList.vue';
+import GroupCheckedList from '../../Group/GroupCheckedList.vue';
 import { rules } from '@/utils';
 export default {
     name: "UpdateUserForm",
-    components: {},
+    components: {
+        PermissionCheckedList,
+        GroupCheckedList
+    },
     props: ['id'],
 
     data(){
@@ -158,6 +185,7 @@ export default {
             loading: true,
             update_data: {},
             updateFormValid: false, // 是否符合規則
+            group_permission_checked: [], // 透過Group選取的權限 (只會在 User相關頁面使用)
 
             // 規則
             rules: rules,
@@ -204,7 +232,12 @@ export default {
                         "phone_number": response_data['phone_number'],
                         "gender": response_data['gender'],
                         "is_active": response_data['is_active'],
+                        "user_permissions": response_data['user_permissions'].map(permission => permission.id), // 權限只需要ID
+                        "groups": response_data['groups'].map(group => group.id), // 權限只需要ID
                     }
+
+                    // 透過Group選取的權限 (只會在 User相關頁面使用)
+                    this.group_permission_checked = response_data.groups.flatMap(group => group.permissions)
                 }
             }
             catch (err) {
