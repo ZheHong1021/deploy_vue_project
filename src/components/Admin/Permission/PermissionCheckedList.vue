@@ -49,6 +49,17 @@
                 <template v-if="header.value === 'content_type_name'">
                     {{ key }}
                 </template>
+
+                <!-- 全選 -->
+                <template v-else-if="header.value === '全選'">
+                    <v-checkbox 
+                      :input-value="is_row_checked_all(value)"
+                      label="全選"
+                      :readonly="readonly"
+                      :disabled="readonly"
+                      @change="$event => toggleCheckedAll($event, value)">
+                    </v-checkbox>
+                </template>
                 
                 <!-- 其他操作 -->
                 <template v-else>
@@ -60,7 +71,7 @@
                           :label="value[header.value]['name']"
                           :readonly="readonly || is_group_checked(value[header.value]['id'])" 
                           :disabled="readonly || is_group_checked(value[header.value]['id'])"
-                          @change="emitEvent">
+                          @change="changePermissionChecked">
                       </v-checkbox>
                   </div>
                 </template>
@@ -107,6 +118,7 @@ export default {
 
       headers: [
         {text: '權限對象', value: 'content_type_name'},
+        {text: '全選', value: '全選'},
         {text: '查看', value: '查看'},
         {text: '新增', value: '新增'},
         {text: '修改', value: '修改'},
@@ -136,6 +148,7 @@ export default {
   },
 
   methods: {
+    //#region (API處理)
     async fetchPermission() {
       try {
         const params = new URLSearchParams({
@@ -153,21 +166,6 @@ export default {
         this.loading = false;
       }
     },
-
-    emitEvent($event){
-      const { permission_checked } = this
-
-      // 已經存在
-      if(permission_checked.includes($event)){
-        this.$emit('input', permission_checked.filter(item => item !== $event));
-      }
-
-      // 勾選
-      else if($event){
-        this.$emit('input', this.permission_checked);
-      }
-    },
-
     // 整理permissions
     // 1. 將permissions整理成樹狀結構
     // 2. 將permissions整理成v-treeview需要的格式
@@ -188,6 +186,56 @@ export default {
       }
 
       this.tree_permissions = tree_permissions;
+    },
+    //#endregion
+
+    // 權限選取
+    changePermissionChecked($event){
+      const { permission_checked } = this
+
+      // 已經存在
+      if(permission_checked.includes($event)){
+        this.emitEvent(permission_checked.filter(item => item !== $event))
+      }
+
+      // 勾選
+      else if($event){
+        this.emitEvent(this.permission_checked)
+      }
+    },
+
+    // 回傳給父層
+    emitEvent($event){
+      this.$emit('input', $event);
+    },
+
+    // 全選功能
+    toggleCheckedAll($event, value){
+      // 得到該列全部的權限id
+      const permission_ids = Object.values(value).map(item => item.id);
+
+      // true => 全選
+      if($event){
+        this.permission_checked = [
+          ...new Set([...this.permission_checked, ...permission_ids])
+        ];
+      } 
+      
+      // false => 全部取消
+      else {
+        this.permission_checked = this.permission_checked.filter(
+          // 只要不是該列的權限id 或 是Group選擇的就保留
+          item => !permission_ids.includes(item) || this.is_group_checked(item)
+        );
+      }
+
+      this.emitEvent(this.permission_checked);
+    },
+
+    // 檢查該列是否均被選取
+    is_row_checked_all(value){
+      const permission_ids = Object.values(value).map(item => item.id);
+      return permission_ids.every((id) => this.permission_checked.includes(id));
     },
 
     // 檢查是否有被選取
