@@ -140,7 +140,6 @@ export default {
                 if (response.status === 200) {
                     this.$swal.fire("儲存成功", "", "success")
                     this.$emit("refresh")
-                    this.$store.dispatch("permission/getPermissions")
                 }
                 else {
                     this.$swal.fire("儲存失敗", "", "error")
