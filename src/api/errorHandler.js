@@ -1,6 +1,6 @@
 // src/errorHandler.js
-
 import Swal from 'sweetalert2';
+import router from '@/router';
 
 
 // [錯誤訊息的回傳]
@@ -54,10 +54,59 @@ export function errorHandler(error) {
               confirmButtonText: "確認",
           })
         }
+
+        break;
+
+      case 401:
+        if (response_data) {
+          Swal.fire({
+              title: "身分未被授權", 
+              text: extractErrorMessage(response_data), 
+              icon: "error",
+              confirmButtonText: "確認",
+          })
+        }
+
+        // 重新導向至 401 頁面
+        router.push({
+          name: '401_Unauthorized' 
+        })
+
+        break;
+
+      case 403:
+        if (response_data) {
+          Swal.fire({
+              title: "權限不足禁止訪問", 
+              text: extractErrorMessage(response_data), 
+              icon: "error",
+              confirmButtonText: "確認",
+          })
+        }
+
+        // 重新導向至 403 頁面
+        router.push({
+          name: '403_Forbidden' 
+        })
+
+
         break;
 
       case 500:
-       
+        if (response_data) {
+          Swal.fire({
+              title: "伺服器發生了點問題", 
+              text: extractErrorMessage(response_data), 
+              icon: "error",
+              confirmButtonText: "確認",
+          })
+        }
+
+        // 重新導向至 500 頁面
+        router.push({
+          name: '500_InternalServerError' 
+        })
+
         break;
 
 
