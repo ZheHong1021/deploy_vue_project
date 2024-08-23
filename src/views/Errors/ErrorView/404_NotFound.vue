@@ -10,6 +10,12 @@
                 <p class="text-h5">
                     找不到頁面，請確認網址是否正確
                 </p>
+
+                <v-btn rounded class="font-weight-black text-h6 primary--text" color="blue lighten-5" 
+                    @click="goToHome">
+                    <v-icon class="mr-1">mdi-home</v-icon>
+                    回到首頁
+                </v-btn>
             </v-col>
 
 
@@ -29,7 +35,9 @@
 <script>
 export default {
     methods: {
-      
+        goToHome() {
+            this.$router.push({ name: 'Home' });
+        }
     }
 }
 </script>
