@@ -1,5 +1,35 @@
 <template>
   <v-row>
+    <v-col cols="12" class="d-flex flex-wrap">
+      <div class="label-container font-weight-bold text-subtitle-1">
+          權限選擇:
+      </div>
+
+      <v-spacer></v-spacer>
+      
+      <div class="d-flex align-center gap-4">
+
+        <!-- 當前選擇 -->
+        <v-card outlined class="pa-2 d-flex flex-wrap gap-2" color="#ffcfc4">
+          <v-icon small color="red darken-2">mdi-check-circle</v-icon>
+          <span class="font-weight-black text-subtitle-2">
+            當前選擇
+          </span>
+        </v-card>
+
+        <!-- 角色選擇 -->
+        <v-card v-if="group_checked.length > 0"
+            outlined class="pa-2 d-flex flex-wrap gap-2" color="#c4e1ff">
+            <v-icon small color="indigo darken-2">mdi-check-circle</v-icon>
+            <span class="font-weight-black text-subtitle-2">
+              角色選擇
+            </span>
+        </v-card>
+
+      </div>
+
+    </v-col>
+
     <v-col cols="12">
       <div class="table-container mt-1">
         <table id="table" border="1" class="black--text text-subtitle-2 text-md-subtitle-1">
@@ -12,7 +42,8 @@
             <tr v-for="(value, key) in tree_permissions" :key="key">
               <td v-for="header in headers" :key="header['value']"
                 :class="{
-                  'is_checked': is_checked_column(value[header['value']]?.id)
+                  'is_checked': is_checked_column(value[header['value']]?.id),
+                  'is_group_checked': is_group_checked(value[header['value']]?.id),
                 }">
                 <!-- 權限對象 -->
                 <template v-if="header.value === 'content_type_name'">
@@ -22,11 +53,13 @@
                 <!-- 其他操作 -->
                 <template v-else>
                   <div class="d-flex flex-wrap justify-center align-center">
-                      <v-checkbox class="custom-checkbox"
+                    <!-- 唯讀或是Group選擇的則不能變更(User情況) -->
+                      <v-checkbox 
                           v-model="permission_checked"
                           :value="value[header.value]['id']"
                           :label="value[header.value]['name']"
-                          :readonly="readonly" :disabled="readonly"
+                          :readonly="readonly || is_group_checked(value[header.value]['id'])" 
+                          :disabled="readonly || is_group_checked(value[header.value]['id'])"
                           @change="emitEvent">
                       </v-checkbox>
                   </div>
@@ -55,7 +88,12 @@ export default {
     readonly: {
       type: Boolean,
       default: false,
-    }
+    },
+
+    group_checked: { // 透過Group選取的權限 (只會在 User相關頁面使用)
+      type: Array,
+      default: () => [],
+    },
 
   },
   data() {
@@ -82,6 +120,13 @@ export default {
       immediate: true,
       handler(newVal){
         this.permission_checked = this.value
+      }
+    },
+
+    group_checked: {
+      immediate: true,
+      handler(newVal){
+        this.permission_checked = [...new Set([...this.value, ...newVal])]
       }
     }
   },
@@ -149,6 +194,11 @@ export default {
     is_checked_column(id){
       return this.value.includes(id);
     },
+
+    // 檢查是否被Group選中的權限
+    is_group_checked(id){
+      return this.group_checked.includes(id);
+    }
   },
 };
 </script>
@@ -195,6 +245,10 @@ export default {
 
     &.is_checked{
       background-color: #ffcfc4;
+    }
+
+    &.is_group_checked{
+      background-color: #c4e1ff;
     }
   }
 

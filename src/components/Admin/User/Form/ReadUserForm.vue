@@ -114,11 +114,9 @@
 
             <!-- #region (權限選擇) -->
             <v-col cols="12" class="d-flex flex-column gap-2">
-                <div class="label-container font-weight-bold text-subtitle-1">
-                    權限選擇:
-                </div>
                 <PermissionCheckedList 
                     v-model="read_data['user_permissions']"
+                    :group_checked="group_permission_checked"
                     readonly/>
             </v-col>
             <!-- #endregion -->
@@ -133,7 +131,7 @@ import { UserService } from '@/api/services'
 import PermissionCheckedList from '../../Permission/PermissionCheckedList.vue';
 import GroupCheckedList from '../../Group/GroupCheckedList.vue';
 export default {
-    name: "UpdateUserForm",
+    name: "ReadUserForm",
     components: {
         PermissionCheckedList,
         GroupCheckedList
@@ -144,6 +142,8 @@ export default {
         return {
             loading: true,
             read_data: {},
+
+            group_permission_checked: [], // 透過Group選取的權限 (只會在 User相關頁面使用)
 
             // 性別可選選項
             gender_select_list: [
@@ -189,6 +189,9 @@ export default {
                         "user_permissions": response.data.user_permissions.map(permission => permission.id),
                         "groups": response.data.groups.map(group => group.id),
                     }
+                    
+                    // 透過Group選取的權限 (只會在 User相關頁面使用)
+                    this.group_permission_checked = response_data.groups.flatMap(group => group.permissions)
                 }
             }
             catch (err) {

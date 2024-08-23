@@ -38,9 +38,6 @@
 
             <!-- #region (角色權限選擇) -->
             <v-col cols="12" class="d-flex flex-column gap-2">
-                <div class="label-container font-weight-bold text-subtitle-1">
-                    權限選擇:
-                </div>
                 <PermissionCheckedList 
                     v-model="update_data['permissions']"
                 />
