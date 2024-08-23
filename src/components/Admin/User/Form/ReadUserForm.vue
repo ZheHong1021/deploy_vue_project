@@ -103,6 +103,14 @@
             </v-col> 
             <!-- #endregion -->
 
+            <!-- #region (角色選擇) -->
+            <v-col cols="12" class="d-flex flex-column gap-2">
+                <div class="label-container font-weight-bold text-subtitle-1">
+                    角色選擇:
+                </div>
+                <GroupCheckedList v-model="read_data['groups']" readonly/>
+            </v-col>
+            <!-- #endregion -->
 
             <!-- #region (權限選擇) -->
             <v-col cols="12" class="d-flex flex-column gap-2">
@@ -123,10 +131,12 @@
 <script>
 import { UserService } from '@/api/services'
 import PermissionCheckedList from '../../Permission/PermissionCheckedList.vue';
+import GroupCheckedList from '../../Group/GroupCheckedList.vue';
 export default {
     name: "UpdateUserForm",
     components: {
-        PermissionCheckedList
+        PermissionCheckedList,
+        GroupCheckedList
     },
     props: ['id'],
 
@@ -177,6 +187,7 @@ export default {
                         "gender": response_data['gender'],
                         "is_active": response_data['is_active'],
                         "user_permissions": response.data.user_permissions.map(permission => permission.id),
+                        "groups": response.data.groups.map(group => group.id),
                     }
                 }
             }

@@ -170,6 +170,15 @@
             
             <!-- #endregion -->
 
+            <!-- #region (角色選擇) -->
+            <v-col cols="12" class="d-flex flex-column gap-2">
+                <div class="label-container font-weight-bold text-subtitle-1">
+                    角色選擇:
+                </div>
+                <GroupCheckedList v-model="create_data['groups']"/>
+            </v-col>
+            <!-- #endregion -->
+
             <!-- #region (權限選擇) -->
             <v-col cols="12" class="d-flex flex-column gap-2">
                 <div class="label-container font-weight-bold text-subtitle-1">
@@ -199,10 +208,12 @@
 import { UserService } from '@/api/services'
 import { rules } from '@/utils';
 import PermissionCheckedList from '../../Permission/PermissionCheckedList.vue';
+import GroupCheckedList from '../../Group/GroupCheckedList.vue';
 export default {
     name: "CreateUserForm",
     components: {
         PermissionCheckedList,
+        GroupCheckedList
     },
 
     data(){
@@ -223,6 +234,7 @@ export default {
                 "gender": 'private',
                 "is_active": true,
                 "user_permissions": [],
+                "groups": [],
             },
             createFormValid: false, // 是否符合規則
 

@@ -129,17 +129,28 @@
             
             <!-- #endregion -->
             
+
+            <!-- #region (角色選擇) -->
+            <v-col cols="12" class="d-flex flex-column gap-2">
+                <div class="label-container font-weight-bold text-subtitle-1">
+                    角色選擇:
+                </div>
+                <GroupCheckedList v-model="update_data['groups']"/>
+            </v-col>
+            <!-- #endregion -->
             
-            <!-- #region (角色權限選擇) -->
+            <!-- #region (權限選擇) -->
             <v-col cols="12" class="d-flex flex-column gap-2">
                 <div class="label-container font-weight-bold text-subtitle-1">
                     權限選擇:
                 </div>
-                <PermissionTreeList 
+                <PermissionCheckedList 
                     v-model="update_data['user_permissions']"
                 />
             </v-col>
             <!-- #endregion -->
+
+            
             
             <v-col cols="12" class="d-flex align-center justify-center gap-4">
                 <v-btn color="primary darken-2" type="submit" class="font-weight-bold white--text" width="150" height="50">
@@ -154,12 +165,14 @@
 
 <script>
 import { UserService } from '@/api/services'
-import PermissionTreeList from '../../Permission/PermissionCheckedList.vue';
+import PermissionCheckedList from '../../Permission/PermissionCheckedList.vue';
+import GroupCheckedList from '../../Group/GroupCheckedList.vue';
 import { rules } from '@/utils';
 export default {
     name: "UpdateUserForm",
     components: {
-        PermissionTreeList
+        PermissionCheckedList,
+        GroupCheckedList
     },
     props: ['id'],
 
@@ -221,6 +234,7 @@ export default {
                         "gender": response_data['gender'],
                         "is_active": response_data['is_active'],
                         "user_permissions": response_data['user_permissions'].map(permission => permission.id), // 權限只需要ID
+                        "groups": response_data['groups'].map(group => group.id), // 權限只需要ID
                     }
                 }
             }
