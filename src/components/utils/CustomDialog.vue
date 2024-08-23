@@ -2,7 +2,7 @@
 
   <v-dialog 
     v-model="dialog"
-    :width="dialogWidth"
+    :width="customDialogWidth"
     scrollable
     persistent>
 
@@ -10,13 +10,14 @@
       <!-- 頂部區域 -->
       <v-toolbar dark :color="color" class="px-4">
         
+
         <!-- 標題 -->
         <v-toolbar-title>
           {{ title }}
         </v-toolbar-title>
 
         <v-spacer></v-spacer>
-
+        
         <!-- 關閉按鈕 -->
         <v-btn icon dark @click="closeDialog">
           <v-icon>mdi-close-thick</v-icon>
@@ -49,18 +50,24 @@ export default {
     title: { // title標題名稱
         type: String,
         default: "開啟"
+    },
+    width: { // 寬度
+      type: String,
+      default: null,
     }
   },
   data() {
     return {
       dialog: false,
-
       originPath: null,
+
+
+      customDialogWidth: "100%",
     };
   },
 
   computed:{
-    dialogWidth(){
+    responsiveWidth(){
       const { rwd_name } = this
       const width = {
         'xs': '95%',
@@ -102,6 +109,24 @@ export default {
     // 如果有進行關閉 => 會回傳給 Parent做同步
     dialog(val) {
       this.$emit('input', val); // 通常都是關閉
+      
+      if(!val){
+        // 如果之前有重新整理 => #dialog(還會存在) => 但這樣會累積超多#dialog#dialog
+        if (window.location.hash === '#dialog') {
+          // 要刪除
+          this.restoreOriginalHash();
+        }
+      }
+    },
+    width: {
+      immediate: true,
+      handler(newVal){
+        if(newVal){
+          this.customDialogWidth = newVal
+        }else{
+          this.customDialogWidth = this.responsiveWidth
+        }
+      }
     }
   },
 
@@ -115,6 +140,7 @@ export default {
   },
 
   beforeDestroy() { // 離開時也會關閉
+    
     window.removeEventListener('popstate', this.handlePopState);
   },
 
