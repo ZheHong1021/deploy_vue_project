@@ -76,7 +76,7 @@
     <!-- Create -->
     <CustomDialog
       v-model="create_dialog"
-      title="新增角色"
+      title="新增用戶"
       color="pink darken-2"
     >
       <template v-slot:body>
@@ -85,7 +85,7 @@
     </CustomDialog>
 
     <!-- Read -->
-    <CustomDialog v-model="read_dialog" title="瀏覽角色" color="grey darken-2">
+    <CustomDialog v-model="read_dialog" title="瀏覽用戶" color="grey darken-2">
       <template v-slot:body>
         <ReadUserForm v-if="read_dialog" :id="read_id" />
       </template>
@@ -94,7 +94,7 @@
     <!-- Update -->
     <CustomDialog
       v-model="update_dialog"
-      title="修改角色"
+      title="修改用戶"
       color="primary darken-2"
     >
       <template v-slot:body>

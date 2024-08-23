@@ -1,6 +1,5 @@
 <template>
     <v-form ref="form" 
-        v-model="readFormValid" 
         @submit.prevent="read" >
 
         <v-row class="justify-start">
@@ -102,6 +101,19 @@
                     </template>
                 </v-switch>
             </v-col> 
+            <!-- #endregion -->
+
+
+            <!-- #region (權限選擇) -->
+            <v-col cols="12" class="d-flex flex-column gap-2">
+                <div class="label-container font-weight-bold text-subtitle-1">
+                    權限選擇:
+                </div>
+                <PermissionCheckedList 
+                    v-model="read_data['user_permissions']"
+                    readonly/>
+            </v-col>
+            <!-- #endregion -->
         </v-row>
 
     </v-form>
@@ -110,9 +122,12 @@
 
 <script>
 import { UserService } from '@/api/services'
+import PermissionCheckedList from '../../Permission/PermissionCheckedList.vue';
 export default {
     name: "UpdateUserForm",
-    components: {},
+    components: {
+        PermissionCheckedList
+    },
     props: ['id'],
 
     data(){
@@ -161,6 +176,7 @@ export default {
                         "phone_number": response_data['phone_number'],
                         "gender": response_data['gender'],
                         "is_active": response_data['is_active'],
+                        "user_permissions": response.data.user_permissions.map(permission => permission.id),
                     }
                 }
             }

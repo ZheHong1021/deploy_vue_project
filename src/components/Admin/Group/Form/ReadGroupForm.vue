@@ -32,7 +32,7 @@
             <div class="label-container font-weight-bold text-subtitle-1">
                 權限選擇:
             </div>
-            <PermissionTreeList 
+            <PermissionCheckedList 
                 v-model="read_data['permissions']"
                 readonly/>
         </v-col>
@@ -45,11 +45,11 @@
 
 <script>
 import { GroupProfileService } from '@/api/services'
-import PermissionTreeList from '../../Permission/PermissionCheckedList.vue';
+import PermissionCheckedList from '../../Permission/PermissionCheckedList.vue';
 export default {
     name: "ReadGroupForm",
     components: {
-        PermissionTreeList
+        PermissionCheckedList
     },
     props: ['id'],
     data() {

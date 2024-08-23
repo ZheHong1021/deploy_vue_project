@@ -128,6 +128,19 @@
             </v-col> 
             
             <!-- #endregion -->
+            
+            
+            <!-- #region (角色權限選擇) -->
+            <v-col cols="12" class="d-flex flex-column gap-2">
+                <div class="label-container font-weight-bold text-subtitle-1">
+                    權限選擇:
+                </div>
+                <PermissionTreeList 
+                    v-model="update_data['user_permissions']"
+                />
+            </v-col>
+            <!-- #endregion -->
+            
             <v-col cols="12" class="d-flex align-center justify-center gap-4">
                 <v-btn color="primary darken-2" type="submit" class="font-weight-bold white--text" width="150" height="50">
                     儲存
@@ -141,10 +154,13 @@
 
 <script>
 import { UserService } from '@/api/services'
+import PermissionTreeList from '../../Permission/PermissionCheckedList.vue';
 import { rules } from '@/utils';
 export default {
     name: "UpdateUserForm",
-    components: {},
+    components: {
+        PermissionTreeList
+    },
     props: ['id'],
 
     data(){
@@ -204,6 +220,7 @@ export default {
                         "phone_number": response_data['phone_number'],
                         "gender": response_data['gender'],
                         "is_active": response_data['is_active'],
+                        "user_permissions": response_data['user_permissions'].map(permission => permission.id), // 權限只需要ID
                     }
                 }
             }
