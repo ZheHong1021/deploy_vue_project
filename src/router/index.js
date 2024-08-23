@@ -36,8 +36,8 @@ const routes = [
 
   {
     path: '*',
-    name: 'PageNotFound',
-    component: loadView('PageNotFound'),
+    name: '404_NotFound',
+    component: loadView('Errors/ErrorView/404_NotFound'),
     meta: {
       is_menu: false,
     }
