@@ -41,7 +41,7 @@
                 <div class="label-container font-weight-bold text-subtitle-1">
                     權限選擇:
                 </div>
-                <PermissionTreeList 
+                <PermissionCheckedList 
                     v-model="update_data['permissions']"
                 />
             </v-col>
@@ -60,13 +60,12 @@
 
 <script>
 import { GroupProfileService } from '@/api/services'
-import PermissionTreeList from '../../Permission/PermissionCheckedList.vue';
+import PermissionCheckedList from '../../Permission/PermissionCheckedList.vue';
 import { rules } from '@/utils';
-import permissions from '@/api/services/permissions';
 export default {
     name: "UpdateGroupForm",
     components: {
-        PermissionTreeList
+        PermissionCheckedList
     },
     props: ['id'],
     data() {

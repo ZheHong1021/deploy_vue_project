@@ -45,7 +45,7 @@
 <script>
 import { PermissionService } from "@/api/services";
 export default {
-  name: "PermissionTreeList",
+  name: "PermissionCheckedList",
   props: {
     value: { // 已被選取的權限
       type: Array,

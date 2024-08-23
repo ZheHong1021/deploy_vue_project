@@ -120,9 +120,9 @@ export function errorHandler(error) {
         }
 
         // 重新導向至 500 頁面
-        router.push({
-          name: '500_InternalServerError' 
-        })
+        // router.push({
+        //   name: '500_InternalServerError' 
+        // })
 
         break;
 

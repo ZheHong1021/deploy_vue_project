@@ -169,12 +169,26 @@
             </v-col> 
             
             <!-- #endregion -->
+
+            <!-- #region (權限選擇) -->
+            <v-col cols="12" class="d-flex flex-column gap-2">
+                <div class="label-container font-weight-bold text-subtitle-1">
+                    權限選擇:
+                </div>
+                <PermissionCheckedList 
+                    v-model="create_data['user_permissions']"
+                    />
+            </v-col>
+            <!-- #endregion -->
+
             <v-col cols="12" class="d-flex align-center justify-center gap-4">
                 <v-btn color="pink darken-2" type="submit" class="font-weight-bold white--text"
                     width="150" height="50">
                     創建
                 </v-btn>
             </v-col>
+
+            
         </v-row>
 
     </v-form>
@@ -184,9 +198,11 @@
 <script>
 import { UserService } from '@/api/services'
 import { rules } from '@/utils';
+import PermissionCheckedList from '../../Permission/PermissionCheckedList.vue';
 export default {
     name: "CreateUserForm",
     components: {
+        PermissionCheckedList,
     },
 
     data(){
@@ -206,6 +222,7 @@ export default {
                 "phone_number": null,
                 "gender": 'private',
                 "is_active": true,
+                "user_permissions": [],
             },
             createFormValid: false, // 是否符合規則
 

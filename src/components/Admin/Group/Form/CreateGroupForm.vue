@@ -41,6 +41,17 @@
             </v-col> 
             <!-- #endregion -->
 
+            <!-- #region (權限選擇) -->
+            <v-col cols="12" class="d-flex flex-column gap-2">
+                <div class="label-container font-weight-bold text-subtitle-1">
+                    權限選擇:
+                </div>
+                <PermissionCheckedList 
+                    v-model="create_data['permissions']"
+                    />
+            </v-col>
+            <!-- #endregion -->
+
 
             <v-col cols="12" class="d-flex align-center justify-center gap-4">
                 <v-btn color="pink darken-2" type="submit" class="font-weight-bold white--text"
@@ -57,9 +68,11 @@
 <script>
 import { GroupProfileService } from '@/api/services'
 import { rules } from '@/utils';
+import PermissionCheckedList from '../../Permission/PermissionCheckedList.vue';
 export default {
     name: "CreateGroupForm",
     components: {
+        PermissionCheckedList
     },
 
     data(){
@@ -67,6 +80,7 @@ export default {
             create_data: {
                 "name": null,
                 "name_zh": null,
+                "permissions": [],
             },
             createFormValid: false, // 是否符合規則
             rules: rules,
