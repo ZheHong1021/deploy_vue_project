@@ -3,7 +3,7 @@ import { generateRoutes } from '@/router/utils';
 import router, { resetRouter } from "@/router"
 
 // 將vue-router的路由轉成能讓Sidebar讀取
-const tranformRouterToSidebar = (route) => {
+const transformRouterToSidebar = (route) => {
   return {
     name: route['name'],
     path: route['path'],
@@ -20,7 +20,7 @@ const CONST_ROUTES = router.options.routes
 // 只需要菜單路由
 const CONST_MENU_ROUTES = CONST_ROUTES
                           .filter(route => route['meta']['is_menu'])
-                          .map(menu => tranformRouterToSidebar(menu))
+                          .map(menu => transformRouterToSidebar(menu))
 
 export default {
   namespaced: true,
@@ -35,6 +35,9 @@ export default {
     async setMenus(state, payload){
       // 菜單路由
       state.menus = [...CONST_MENU_ROUTES, ...payload]
+
+      await generateRoutes()
+      
     },
    
   },
@@ -57,10 +60,12 @@ export default {
           commit("setMenus", menus)
 
           // 添加進去前，先清除一次
-          await resetRouter()
+          // 不用await，因為不需要等待
+          resetRouter()
           
           // 請求完畢後 => 添加進前端路由
           await generateRoutes()
+          
         }
       }
       catch(err){
