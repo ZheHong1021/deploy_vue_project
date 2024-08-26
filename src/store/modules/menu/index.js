@@ -35,21 +35,6 @@ export default {
     async setMenus(state, payload){
       // 菜單路由
       state.menus = [...CONST_MENU_ROUTES, ...payload]
-      
-      // 添加進去前，先清除一次
-      await resetRouter()
-      
-      // 請求完畢後 => 添加進前端路由
-      await generateRoutes()
-    },
-    
-    // 刪除菜單列
-    clearMenus(state, payload){
-      // 重新定義
-      state.menus = CONST_MENU_ROUTES
-
-      // 登出後清空路由
-      resetRouter()
     },
    
   },
@@ -71,14 +56,26 @@ export default {
           // 設定路由到store中
           commit("setMenus", menus)
 
-          // 將新路添加進去
-          generateRoutes()
+          // 添加進去前，先清除一次
+          await resetRouter()
+          
+          // 請求完畢後 => 添加進前端路由
+          await generateRoutes()
         }
       }
       catch(err){
         console.log(err);
       }
     },
+
+    // 刪除菜單列
+    async clearMenus({state, commit}, payload){
+      // 清空菜單(只保留預設的菜單)
+      await commit("setMenus", [])
+
+      // 登出後清空路由
+      resetRouter()
+    }
    
   },
 

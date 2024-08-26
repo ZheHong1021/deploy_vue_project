@@ -138,7 +138,7 @@ export default {
         await commit("clearToken");
 
         // 清除菜單列
-        await commit("menu/clearMenus")
+        await dispatch("menu/clearMenus")
 
         // 導引到登入頁面
         router.push({ name: "Login" });
