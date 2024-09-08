@@ -12,13 +12,24 @@
             {{ title }}
         </v-toolbar-title>
 
+        <v-spacer></v-spacer>
+
+
+        <!-- 使用者下拉選單 -->
+         <div class="d-flex">
+             <UserDropMenu />
+         </div>
     </v-app-bar>
 </template>
 
 <script>
+import UserDropMenu from './Appbar/UserDropMenu.vue';
+
 export default {
     name: 'Appbar',
-
+    components: {
+        UserDropMenu
+    },  
     data(){
         return {
             title: process.env.VUE_APP_TITLE,
