@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import { GroupService, GroupProfileService } from "@/api/services";
+import { GroupService } from "@/api/services";
 import {
   get_api_pagniation_query_parameter,
   showConfirmDelete,
@@ -128,7 +128,7 @@ export default {
       try {
         // 得到Pagination必要的parameter
         const params = get_api_pagniation_query_parameter(this.options);
-        const response = await GroupService.get_all_group_with_profiles(params);
+        const response = await GroupService.get_all(params);
         if (response.status === 200) {
           const { data, count } = response.data;
           this.items = data;
@@ -175,7 +175,7 @@ export default {
           const is_confirm = await showConfirmDelete() // 最後一次確定的 alert
           if(is_confirm){ // 最後一次依舊確定
             try{ // 進行刪除
-                const response = await GroupProfileService.delete(id)
+                const response = await GroupService.delete(id)
                 if(response.status === 204){
                     this.$swal.fire('刪除成功', '', 'success')
                     await this.fetchData() // 重新讀取資料

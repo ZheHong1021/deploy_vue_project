@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { GroupProfileService } from "@/api/services";
+import { GroupService } from "@/api/services";
 import CustomListGroup from "@/components/utils/CustomListGroup.vue";
 export default {
   name: "GroupCheckedList",
@@ -63,9 +63,10 @@ export default {
         const params = new URLSearchParams({
           page_size: -1,
         });
-        const response = await GroupProfileService.get_all(params);
+        const response = await GroupService.get_all(params);
         if (response.status === 200) {
-          this.groups = response.data;
+          const { data } = response.data;
+          this.groups = data;
         }
       } catch (e) {
         console.log(e);
