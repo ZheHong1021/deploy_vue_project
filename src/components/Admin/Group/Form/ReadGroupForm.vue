@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { GroupProfileService } from '@/api/services'
+import { GroupService } from '@/api/services'
 import PermissionCheckedList from '../../Permission/PermissionCheckedList.vue';
 export default {
     name: "ReadGroupForm",
@@ -74,7 +74,7 @@ export default {
     methods: {
         async fetchData() {
             try {
-                const response = await GroupProfileService.get_by_id(this.id)
+                const response = await GroupService.get_by_id(this.id)
                 if (response.status === 200) {
                     this.read_data = {
                         name: response.data.name,

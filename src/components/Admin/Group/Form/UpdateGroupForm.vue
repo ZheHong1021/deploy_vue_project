@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { GroupProfileService } from '@/api/services'
+import { GroupService } from '@/api/services'
 import PermissionCheckedList from '../../Permission/PermissionCheckedList.vue';
 import { rules } from '@/utils';
 export default {
@@ -89,7 +89,7 @@ export default {
     methods: {
         async fetchData() {
             try {
-                const response = await GroupProfileService.get_by_id(this.id)
+                const response = await GroupService.get_by_id(this.id)
                 if (response.status === 200) {
                     const Group = response.data
                     this.update_data = {
@@ -122,7 +122,7 @@ export default {
                         formData.append(key, value)
                     }
                 }
-                const response = await GroupProfileService.update(this.id, formData)
+                const response = await GroupService.update(this.id, formData)
                 if (response.status === 200) {
                     this.$swal.fire("儲存成功", "", "success")
                     this.$emit("refresh")

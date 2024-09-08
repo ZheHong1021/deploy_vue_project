@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import { GroupProfileService } from '@/api/services'
+import { GroupService } from '@/api/services'
 import { rules } from '@/utils';
 import PermissionCheckedList from '../../Permission/PermissionCheckedList.vue';
 export default {
@@ -106,7 +106,7 @@ export default {
                         formData.append(key, value)
                     }
                 }
-                const response = await GroupProfileService.create(formData)
+                const response = await GroupService.create(formData)
                 if(response.status === 201){
                     this.$swal.fire("創建成功", "", "success")
                     this.$emit("refresh")
