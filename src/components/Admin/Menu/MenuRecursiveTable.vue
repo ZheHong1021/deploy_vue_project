@@ -13,7 +13,6 @@
 
         <template v-slot:item="{ item, headers, expand, isExpanded }">
             <MenuTableItem
-                :class="{ 'purple lighten-5' : isExpanded}"
                 :item="item"
                 :headers="headers"
                 :expand="expand"

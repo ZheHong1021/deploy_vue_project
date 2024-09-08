@@ -1,5 +1,5 @@
 <template>
-  <tr :class="{'expanded-row' : item['parent'] && !isExpanded}">
+  <tr :class="{'expanded-row' : item['parent']}">
     <template v-for="header in headers">
       <!-- Expand -->
       <td
@@ -11,15 +11,9 @@
           icon
           @click="expand(!isExpanded)"
           :disabled="!checkHasChildren(item)"
-          :color="
-            isExpanded ? 'purple' : checkHasChildren(item) ? 'primary' : ''
-          "
+          :color="get_is_expanded_color(item)"
         >
-          <v-icon>{{
-            isExpanded
-              ? "mdi-arrow-up-drop-circle"
-              : "mdi-arrow-down-drop-circle"
-          }}</v-icon>
+          <v-icon>{{ get_is_expanded_icon() }}</v-icon>
         </v-btn>
       </td>
 
@@ -63,8 +57,6 @@
             </template>
         </div>
       </td>
-
-      
 
       <!-- icon -->
       <td
@@ -202,7 +194,14 @@ export default {
         3: '#006663',
         4: '#3B3B98',
         5: '#5C8C46',
-      }
+      },
+      depth_priority_row_color: { 
+        1: '#EED6F0',  // 更淺的紫色，基於 #80268C
+        2: '#F4D9CC',  // 更淺的橙色，基於 #B33F00
+        3: '#CCE7E5',  // 更淺的綠色，基於 #006663
+        4: '#D9D9F2',  // 更淺的藍色，基於 #3B3B98
+        5: '#E2F0D9',  // 更淺的綠色，基於 #5C8C46
+      },
     }
   },
 
@@ -212,6 +211,22 @@ export default {
       return item["children"] && item["children"].length > 0;
     },
 
+    // 取得 is_expanded的按鈕顏色
+    get_is_expanded_color(item){
+      if(!this.checkHasChildren(item)) return 'grey lighten-2' // 沒有 children 的顏色
+      return this.depth === 1
+            ? 'primary' // 第一層的顏色
+            : this.depth_priority_color[this.depth]
+
+
+    },
+
+    // 取得 is_expanded的按鈕圖示
+    get_is_expanded_icon(){
+      return this.isExpanded ? 'mdi-arrow-up-drop-circle' : 'mdi-arrow-down-drop-circle'
+    },
+
+    // 取得 is_menu 的樣式
     get_is_menu_style(value, mode="color"){
       const map_style = {
         true: {text: '是', color: 'primary'},
@@ -220,6 +235,7 @@ export default {
       return map_style[value][mode]
     },
 
+    // 取得 is_disabled 的樣式
     get_is_disabled_style(value, mode="color"){
       const map_style = {
         true: {text: '停用', color: 'error lighten-4', icon_color: 'error darken-1'},
@@ -233,9 +249,13 @@ export default {
 
 
 <style scoped>
+    /* 添加背景顏色 */
+    tr.expanded-row{
+      background-color: v-bind(depth_priority_row_color[depth]) !important;
+    }
 
-
-    .expanded-row td:first-child{
+    /* 第一欄添加左粗邊框 */
+    tr.expanded-row td:first-child{
       border-left: 0.25rem solid v-bind(depth_priority_color[depth]);
     }
 
