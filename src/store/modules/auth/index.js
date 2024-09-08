@@ -2,25 +2,32 @@ import { apiAuthToken } from "@/api/services";
 import Swal from 'sweetalert2';
 import router from "@/router";
 import menu from "@/store/modules/menu"
+import user from "@/store/modules/user"
 
 
 export default {
   namespaced: true,
+  // 引入其他模塊
   modules: {
-    menu
+    menu,
+    user
   },
   state: {
+    // 用來存放Token
     accessToken: localStorage.getItem("accessToken") || null,
     refreshToken: localStorage.getItem("refreshToken") || null,
   },
   getters: {
+    // 是否登入
     isLoggedIn: state => !!state.accessToken,
   },
   mutations: {
+    // 設定Token
     setAccessToken(state, payload){
       state.accessToken = payload
       localStorage.setItem("accessToken", payload)
     },
+    // 設定Refresh Token
     setRefreshToken(state, payload){
       state.refreshToken = payload
       localStorage.setItem("refreshToken", payload)
@@ -89,6 +96,9 @@ export default {
           commit("setAccessToken", access) // 將TOKEN設定到store中
           commit("setRefreshToken", refresh) // 將TOKEN設定到store中
 
+          // 登入後要向後端請求取得當前登入用戶的資訊
+          await dispatch("user/getUser")
+
           // 登入後要向後端請求相對應的菜單列
           await dispatch("menu/getMenus")
 
@@ -106,10 +116,8 @@ export default {
       }
     },
 
-
-
     // 登出
-    async logout({commit}, payload){
+    async logout({commit, dispatch}, payload){
       // 如果失敗代表Refresh Token過期了，無法再進行更新(必須重新登入)
       const response = await Swal.fire({
         title: "登出提醒",
@@ -123,11 +131,14 @@ export default {
       });
 
       if (response.isConfirmed) {
+        // 登出後清除使用者資訊
+        await dispatch("user/clearUser")
+
         // 清除Token
         await commit("clearToken");
 
         // 清除菜單列
-        await commit("menu/clearMenus")
+        await dispatch("menu/clearMenus")
 
         // 導引到登入頁面
         router.push({ name: "Login" });

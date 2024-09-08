@@ -305,7 +305,7 @@ export default {
                 }
             }
             catch(err){
-                this.$swal.fire('刪除失敗', err, 'error')
+              console.log(err);
             }
           }
         }

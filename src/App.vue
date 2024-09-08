@@ -43,10 +43,15 @@ export default {
   },
 
   computed: {
+    // 取得使用者是否登入
     ...mapGetters('auth', ['isLoggedIn']),
   },
 
   async mounted(){
+    // 取得使用者資料(前提是已經登入)
+    if(this.isLoggedIn){
+      await this.$store.dispatch('user/getUser');
+    }
   },
 
   methods:{

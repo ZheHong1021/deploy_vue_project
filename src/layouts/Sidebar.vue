@@ -22,26 +22,29 @@
               <v-img :src="require('@/assets/images/logo.svg')"></v-img>
             </v-list-item-avatar>
 
-            <!-- intro -->
-            <v-list-item-content>
+            <!-- 用戶資訊 -->
+            <v-list-item-content >
               <!-- 使用者名稱 -->
               <v-list-item-title
                 class="font-weight-medium d-flex flex-wrap align-center"
                 style="gap: 0.25rem"
               >
-                <!-- <h6 class="font-weight-black text-subtitle-1 text-lg-h6">{{name}}</h6> -->
                 <h6 class="font-weight-black text-subtitle-1 text-lg-h6">
-                  使用者
+                  {{ fullname }}
                 </h6>
               </v-list-item-title>
 
               <!-- 角色 -->
               <v-list-item-subtitle class="d-flex flex-wrap gap-2">
-                <v-chip small class="white--text" color="info">
-                  角色
+                <v-chip small 
+                  class="white--text" 
+                  :color="!isLoggedIn || groups.includes('尚未分配') ? 'grey darken-2' : 'info'"
+                  v-for="group in groups" :key="group">
+                  {{ group }}
                 </v-chip>
               </v-list-item-subtitle>
             </v-list-item-content>
+
           </v-list-item>
         </v-list>
 
@@ -107,6 +110,23 @@ export default {
   computed: {
     ...mapGetters('auth', ['isLoggedIn']),
     ...mapState('menu', ['menus']),
+    ...mapState('user', ['user']),
+
+    // 取得用戶名稱
+    fullname(){
+      return this.user?.fullname || "訪客"
+    },
+
+    // 取得用戶擔任角色
+    groups(){
+      if(!this.isLoggedIn){
+        return ['尚未登入']
+      }
+      const groups = this.user?.groups 
+      return groups && groups.length > 0 
+            ? groups.map(group => group.name_zh) 
+            : ['尚未分配']
+    },
     
     // 過濾只有is_menu=true
     filter_menus(){

@@ -45,8 +45,10 @@ export default {
     return {
 
       //#region (輸入)
-      username: null,
-      password: null,
+      username: "haha",
+      password: "haha45La",
+      // username: null,
+      // password: null,
       //#endregion
 
       // (驗證)

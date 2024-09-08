@@ -39,8 +39,26 @@ function extractErrorMessage(errorData) {
 
 export function errorHandler(error) {
   if (error.response) {
-    const status = error.response.status
+    // 取得該回應的method
+    const method = error.response.config.method
+    const method_hash_map_title = { // 用於顯示的文字
+      "get": '查詢',
+      "post": '新增',
+      "put": '更新',
+      "delete": '刪除'
+    }
+
+    // 取得該method的中文名稱
+    const method_title = method_hash_map_title[method]
+
+    // 取得該錯誤的標題
+    const title = `${method_title}發生錯誤`
+    
+    // 取得該回應的data
     const response_data = error.response?.data
+
+    // 取得該回應的status code
+    const status = error.response.status
 
     // 排查錯誤代號
     switch (status) {
@@ -48,7 +66,7 @@ export function errorHandler(error) {
       case 400:
         if (response_data) {
           Swal.fire({
-              title: "發生錯誤", 
+              title: title, 
               text: extractErrorMessage(response_data), 
               icon: "error",
               confirmButtonText: "確認",
@@ -59,11 +77,14 @@ export function errorHandler(error) {
 
       case 401:
         if (response_data) {
+          const error_status_title = "身分未被授權"
+          const error_message = extractErrorMessage(response_data)
           Swal.fire({
-              title: "身分未被授權", 
-              text: extractErrorMessage(response_data), 
+              title: title, 
+              html: `<strong>【錯誤問題】：${error_status_title}</strong><br><br>${error_message}`, 
               icon: "error",
               confirmButtonText: "確認",
+              footer: '<a href="/login">請重新登入</a>'
           })
         }
 
@@ -76,11 +97,15 @@ export function errorHandler(error) {
 
       case 403:
         if (response_data) {
+          const error_status_title = "權限不足禁止訪問"
+          const error_message = extractErrorMessage(response_data)
           Swal.fire({
-              title: "權限不足禁止訪問", 
-              text: extractErrorMessage(response_data), 
+              title: title, 
+              html: `<strong>【錯誤問題】：${error_status_title}</strong><br><br>${error_message}`, 
               icon: "error",
               confirmButtonText: "確認",
+              footer: '請確認您的權限是否足夠'
+
           })
         }
 
@@ -93,11 +118,14 @@ export function errorHandler(error) {
 
       case 404:
         if (response_data) {
+          const error_status_title = "找不到資源"
+          const error_message = extractErrorMessage(response_data)
           Swal.fire({
-              title: "找不到資源", 
-              text: extractErrorMessage(response_data), 
+              title: title, 
+              html: `<strong>【錯誤問題】：${error_status_title}</strong><br><br>${error_message}`, 
               icon: "error",
               confirmButtonText: "確認",
+              footer: '請確認您的網址是否正確'
           })
         }
 
@@ -111,11 +139,14 @@ export function errorHandler(error) {
 
       case 500:
         if (response_data) {
+          const error_status_title = "伺服器發生了點問題"
+          const error_message = extractErrorMessage(response_data)
           Swal.fire({
-              title: "伺服器發生了點問題", 
-              text: extractErrorMessage(response_data), 
+              title: title, 
+              html: `<strong>【錯誤問題】：${error_status_title}</strong><br><br>${error_message}`, 
               icon: "error",
               confirmButtonText: "確認",
+              footer: '請聯絡開發人員!'
           })
         }
 
