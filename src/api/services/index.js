@@ -4,7 +4,6 @@
 import apiAuthToken  from '@/api/services/auth/token'
 import UserService from '@/api/services/auth/users'
 import GroupService from '@/api/services/auth/groups'
-import GroupProfileService from '@/api/services/auth/groups/group-profile'
 import PermissionService from '@/api/services/auth/permissions'
 import MenuService from '@/api/services/auth/menus'
 
@@ -16,7 +15,6 @@ export {
     apiAuthToken,
     UserService,
     GroupService,
-    GroupProfileService,
     PermissionService,
     MenuService,
     OrderService,
